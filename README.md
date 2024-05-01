@@ -1,4 +1,4 @@
-# My Contractor Exam
+# House Theme
 
 a shopify theme built during my time with [carney](https://carney.co/).
 
