@@ -1,0 +1,68 @@
+{% liquid
+  assign custom_fields = product.metafields.custom
+  assign content_areas = custom_fields.content_areas.value
+  assign areas_count = content_areas.count
+%}
+
+{% if areas_count > 0 %}
+
+  {{ "product-content-areas.css" | asset_url | stylesheet_tag }}
+
+  <div class="product-content-areas__inner" style="--tabCount: {{ areas_count }};">
+
+    <nav
+      role="tablist"
+      aria-label="Product Details"
+      aria-multiselectable="false"
+      id="product-content-tabs"
+      class="product-content-areas__tabs display-none md-display-block">
+      <menu>
+        {% for area in content_areas %}
+          {% assign tab_id = area.label | handleize %}
+          <li>
+            <button
+              id="{{ tab_id }}-tab"
+              class="product-content-area__tab p-block-md"
+              aria-controls="{{ tab_id }}"
+              role="tab"
+              {% if forloop.first %}
+              aria-selected="true"
+              {% endif %}>
+              <span class="h3 text-uppercase">{{ area.label }}</span>
+            </button>
+          </li>
+        {% endfor %}
+      </menu>
+    </nav>
+    {% for area in content_areas %}
+      {% assign tab_id = area.label | handleize %}
+      <div
+        id="{{ tab_id }}"
+        aria-labelledby="{{ tab_id }}-tab"
+        role="tabpanel"
+        class="product-content-area container p-block-lg lead"
+        tablist="product-content-tabs"
+        tabindex="0"
+        {% if forloop.first %}
+        aria-expanded="true"
+        {% endif %}>
+        <div class="display-block md-display-none">
+          <p class="h3">{{ area.label }}</p>
+        </div>
+        {{ area.content | metafield_tag }}
+      </div>
+    {% endfor %}
+  </div>
+
+  <script src="{{ "product-content-areas.js" | asset_url }}" defer></script>
+
+{% endif %}
+
+{% schema %}
+  {
+    "name": "Product: Content Areas",
+    "tag": "section",
+    "class": "product-content-areas",
+    "settings": []
+  }
+{% endschema %}

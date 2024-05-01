@@ -1,0 +1,32 @@
+{% liquid
+  assign has_social_icons = true
+  if settings.social_instagram_link == blank and settings.social_tiktok_link == blank and settings.social_facebook_link == blank and settings.social_pinterest_link == blank and settings.social_twitter_link == blank and settings.social_youtube_link == blank and settings.social_linkedin_link == blank and settings.social_vimeo_link == blank
+    assign has_social_icons = false
+  endif
+%}
+
+<footer class="footer">
+  <div class="footer__upper container--min">
+    <div class="col footer__logo d-flex flex-column align-items-center md-align-items-start">
+      <div class="width-100 p-block-lg md-p-right-lg">
+        {% render 'site-logo-footer'
+          , color: "var(--color-blue-500)" %}
+        {% render "social-links"
+          , color: "var(--color-blue-500)" %}
+      </div>
+    </div>
+    <div class="footer__menu col">
+      {% render 'footer-menu' %}
+    </div>
+    <div class="col footer__contact d-flex justify-content-center">
+      <div>
+        {{ settings.footer_contact_content }}
+      </div>
+    </div>
+  </div>
+
+  <div class="footer__lower background-color-blue-200 p-block-md container d-flex justify-content-between align-items-center md-align-items-start flex-column md-flex-row">
+    <div class="footer__copyright">©{{ "now" | date: '%Y' }} |  ALL RIGHTS RESERVED.</div>
+    {% render 'footer-submenu' %}
+  </div>
+</footer>

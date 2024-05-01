@@ -1,0 +1,24 @@
+{
+    "name": "my-contractor-exam",
+    "version": "0.9.0",
+    "author": {
+        "name": "Kirby Johnston",
+        "url": "https://kirbyjohnston.com/"
+    },
+    "license": "ISC",
+    "homepage": "https://kirbyjohnston.com",
+    "description": "",
+    "browserslist": "> 0.5%, last 2 versions, not dead",
+    "scripts": {
+        "clean": "rm -rf .parcel-cache && rm -rf 'my-contractor-exam/assets'",
+        "watch": "npm run clean && npx parcel watch 'dev/*.scss' 'dev/*.js' --dist-dir 'my-contractor-exam/assets' --no-source-maps",
+        "build": "npm run clean && npx parcel build 'dev/*.scss' 'dev/*.js' --dist-dir 'my-contractor-exam/assets' --no-source-maps",
+        "shopify:dev": "shopify theme dev --path 'my-contractor-exam' --store 225297-2",
+        "shopify:push": "shopify theme push --live --path 'my-contractor-exam' --store 225297-2",
+        "shopify:pull": "shopify theme pull --live --path 'my-contractor-exam' --store 225297-2"
+    },
+    "devDependencies": {
+        "@parcel/transformer-sass": "^2.9.3",
+        "parcel": "^2.9.3"
+    }
+}

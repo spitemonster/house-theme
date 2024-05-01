@@ -1,0 +1,80 @@
+{% liquid
+
+  assign has_heading = false
+  assign has_subhead = false
+
+  if section.settings.heading != empty
+    assign has_heading = true
+  endif
+
+  if section.settings.subhead_content != empty
+    assign has_subhead = true
+  endif
+%}
+
+{{ "linked-figure-grid.css" | asset_url | stylesheet_tag }}
+
+<div class="linked-figure-grid__inner container p-block-xl">
+  {% if has_heading %}
+    <h2 class="display-md">{{ section.settings.heading }}</h2>
+  {% endif %}
+  {% if has_subhead %}
+    <p class="lead">{{ section.settings.subhead_content }}</p>
+  {% endif %}
+  <nav class="grid m-top-xl" style="--column-count: 1; --md-column-count: 4; --gap: var(--spacer-md);">
+    {% for block in section.blocks %}
+      {% assign figure = block.settings %}
+      {% render "linked-figure"
+        , image: figure.image
+        , url: figure.url
+        , content: figure.content %}
+    {% endfor %}
+  </nav>
+</div>
+
+
+{% schema %}
+  {
+    "name": "Linked Figure Grid",
+    "class": "linked-figure-grid",
+    "tag": "section",
+    "settings": [
+      {
+        "id": "heading",
+        "label": "Heading",
+        "type": "text"
+      }, {
+        "id": "subhead_content",
+        "label": "Section Info",
+        "type": "inline_richtext",
+        "info": "Optionally display a paragraph of content below the section heading,"
+      }, {
+        "id": "items_per_row",
+        "label": "Items Per Row",
+        "type": "number",
+        "default": 4
+      }
+    ],
+    "blocks": [
+      {
+        "name": "Linked Figure",
+        "type": "linked-figure",
+        "settings": [
+          {
+            "id": "image",
+            "label": "Image",
+            "type": "image_picker"
+          }, {
+            "id": "url",
+            "label": "URL",
+            "type": "url"
+          }, {
+            "id": "content",
+            "label": "Content",
+            "type": "text"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

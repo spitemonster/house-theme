@@ -1,0 +1,19 @@
+{% liquid 
+
+	assign anchor_text = content_area.sidebar_label | handleize
+
+%}
+
+{% if content_area != empty %}
+	<div id="{{ anchor_text }}" class="collection-content-area">
+		<img src="{{ content_area.header_image |  image_url: width: 960 }}" loading="lazy" role="presentation" width="960" height="400">
+		<div class="collection-content-area__inner lg-p-left-lg m-bottom-md m-bottom-md lg-m-bottom-xl">
+			<div class="collection-content-area__heading d-flex flex-column-reverse m-top-md lg-m-top-lg m-bottom-md lg-m-bottom-lg">
+				<h2 class="color-black">{{ content_area.heading }}</h1>
+				<p class="h4 color-green-500 text-uppercase m-top-none">{{ content_area.sub_heading }}</p>
+			</div>
+			
+    		{{ content_area.content | metafield_tag }}
+		</div>
+	</div>
+{% endif %}

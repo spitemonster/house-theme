@@ -1,0 +1,30 @@
+{% liquid
+%}
+<div class="related-products__inner">
+
+  <details class="collapsible-related-products">
+    <summary class="container">
+      <h2 class="display-md">{{ section.settings.heading }}</h2>
+    </summary>
+    <div>
+      {% render "related-product-slider"
+        , product: product %}
+    </div>
+  </details>
+</div>
+
+{% schema %}
+  {
+    "name": "Related Products",
+    "class": "related-products",
+    "tag": "section",
+    "settings": [
+      {
+        "id": "heading",
+        "label": "Heading",
+        "type": "text",
+        "default": "Explore Related Products"
+      }
+    ]
+  }
+{% endschema %}

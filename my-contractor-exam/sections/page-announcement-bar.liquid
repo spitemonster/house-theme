@@ -1,0 +1,30 @@
+{% liquid
+%}
+
+{% if section.settings.content != empty %}
+  {% render "announcement-bar"
+    , content: section.settings.content 
+    , url: section.settings.url 
+    , color: "yellow"
+    , id: section.id %}
+{% endif %}
+
+{% schema %}
+  {
+    "name": "Announcement Bar",
+    "tag": "aside",
+    "class": "announcement-bar__outer announcement-bar--page",
+    "settings": [
+      {
+        "id": "content",
+        "label": "Content",
+        "type": "inline_richtext",
+        "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+      }, {
+        "id": "url",
+        "label": "URL",
+        "type": "url"
+      }
+    ]
+  }
+{% endschema %}

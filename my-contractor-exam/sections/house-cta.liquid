@@ -1,0 +1,45 @@
+{% liquid
+%}
+
+<div class="house-cta__inner background-color-blue-500 container color-white">
+  <div class="grid" style="--column-count: 1; --md-column-count: 2; --gap: var(--gap-base); --md-gap: 12rem;">
+    <div class="flex flex-column align-items-start justify-content-start lead p-block-xl ">
+      <h2 class="h1 m-bottom-base">{{ section.settings.heading }}</h2>
+      {{ section.settings.content }}
+      <a href="{{ section.settings.button_link }}" class="m-top-md height-auto button--yellow">{{ section.settings.button_label }}</a>
+    </div>
+    <div class="display-none md-display-block">
+      {% render "icon-hummingbird-logo" %}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+  {
+    "name": "house CTA",
+    "tag": "section",
+    "class": "house-cta",
+    "settings": [
+      {
+        "id": "heading",
+        "label": "Heading",
+        "type": "text",
+        "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+      }, {
+        "id": "content",
+        "label": "Content",
+        "type": "richtext",
+        "default": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>"
+      }, {
+        "id": "button_link",
+        "label": "Button Link",
+        "type": "url"
+      }, {
+        "id": "button_label",
+        "label": "Button Label",
+        "type": "text",
+        "default": "Learn More"
+      }
+    ]
+  }
+{% endschema %}

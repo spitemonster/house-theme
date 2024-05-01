@@ -1,0 +1,21 @@
+{% liquid
+%}
+
+<div class="header-search">
+  <div class="header-search__inner">
+    <form class="d-flex flex-row-reverse align-items-center justify-content-end background-color-white" action="{{ routes.search_url }}">
+      <label>
+        <input
+          type="text"
+          name="q"
+          value="{{ search.terms | escape }}"
+          placeholder=" ">
+        <span>Search</span>
+      </label>
+      <button>
+        {% render 'icon-magnifying-glass' %}
+        <span class="visually-hidden">Submit Search</span>
+      </button>
+    </form>
+  </div>
+</div>

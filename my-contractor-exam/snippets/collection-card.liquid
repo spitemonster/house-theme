@@ -1,0 +1,22 @@
+{% liquid
+
+  assign image = settings.fallback_image
+
+  if collection.image != blank
+    assign image = collection.image
+  endif
+%}
+
+<a href="{{ collection.url }}" class="collection-card__link text-decoration-none">
+  <figure class="collection-card card">
+    <img
+      src="{{ image | image_url: width: 640 }} "
+      alt="{{ collection.title }}"
+      loading="lazy"
+      width="640"
+      height="auto">
+    <figcaption class="p-md">
+      <h3 class="font-size-h2 color-blue-500">{{ collection.title }}</h3>
+    </figcaption>
+  </figure>
+</a>

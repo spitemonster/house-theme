@@ -1,0 +1,73 @@
+{% liquid
+  assign custom_fields = product.metafields.custom
+  assign image_count = product.media | where: "media_type", "image" | size
+  assign images = product.media | where: "media_type", "image"
+  assign has_gallery = false
+
+
+  if image_count > 0
+    assign has_gallery = true
+  endif
+
+  assign has_gallery = true
+
+  assign has_product_information = false
+
+  if custom_fields.product_information != empty
+    assign has_product_information = true
+  endif
+%}
+
+<link rel="stylesheet" href="{{ "product-details.css" | asset_url }}" />
+
+
+<div class="product-details__inner grid" style="--gap: 24px;">
+  <div class="col display-flex flex-column" style="--column-span: 12; --lg-column-span: 8; --order: 2;">
+    {% render "product-details-card"
+      , variant_heading: section.settings.variant_selector_heading
+      , card_type: section.settings.card_type %}
+    {% if has_product_information %}
+      <div class="product-information p-md">
+        {{ custom_fields.product_information | metafield_tag }}
+      </div>
+    {% endif %}
+  </div>
+  {% if has_gallery %}
+    <div class="col" style="--column-span: 12; --lg-column-span: 4; --order: 1;">
+      {% render "product-details-gallery"
+        , images: images %}
+    </div>
+  {% endif %}
+
+</div>
+
+{% schema %}
+  {
+    "name": "Product Details",
+    "tag": "section",
+    "class": "product-details container m-block-lg",
+    "settings": [
+      {
+        "id": "variant_selector_heading",
+        "type": "text",
+        "label": "Variant Heading",
+        "info": "Optionally display a heading above the product variant selectors, if any are present with this product.",
+        "default": "Lorem ipsum"
+      }, {
+        "id": "card_type",
+        "label": "Card Type",
+        "type": "select",
+        "default": "default",
+        "options": [
+          {
+            "label": "Book Bundle",
+            "value": "book_bundle"
+          }, {
+            "label": "Default",
+            "value": "default"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

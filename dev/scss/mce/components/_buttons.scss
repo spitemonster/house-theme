@@ -1,0 +1,130 @@
+%btn {
+	position: relative;
+	flex-shrink: 0;
+	// height: 100%;
+	overflow: hidden;
+	text-decoration: none;
+	transition: background 120ms ease;
+	border: none;
+	border-radius: to_rem(3px);
+	font-weight: bold;
+	text-transform: uppercase;
+	cursor: pointer;
+	padding-inline: var(--spacer-base);
+	padding-block: .75rem;
+	
+	svg {
+		flex-shrink: 0;
+	}
+}
+
+button {
+	@extend %btn;
+}
+
+.button {
+	&--yellow,
+	&--green,
+	&--blue,
+	&--red {
+		
+		@extend %btn;
+
+		&::after {
+			content: "";
+			position: absolute;
+			border-radius: inherit;
+			top: 0;
+			left: 0;
+			height: 100%;
+			width: 100%;
+			border: 3px solid;
+			clip-path: polygon(50% 0, 50% 0%, 50% 100%, 50% 100%);
+			transition: clip-path 64ms ease;
+		}
+
+		&[disabled] {
+			background-color: var(--color-charcoal-300) !important;
+			color: var(--color-white) !important;
+			cursor: not-allowed !important;
+		}
+	}
+
+	// this is only slightly clever and will not work for any more than two buttons of the same color in a row
+	// will probably need a fix -KJ
+
+	// for yellow buttons, and buttons with the green class that are immediate siblings
+	&--yellow,
+	&--green + .button--green {
+		color: var(--color-black);
+		background: var(--color-yellow-500);
+
+		&::after {
+			border-color: var(--color-yellow-500);
+		}
+
+		&:not([disabled]):hover, &:not([disabled]):focus, &:not([disabled]):focus-visible {
+			background: var(--color-yellow-dark);
+			color: var(--color-black);
+		}
+
+		&:not([disabled]):active {
+			background: var(--color-yellow-300);
+
+			&::after {
+				clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+			}
+		}
+	}
+
+	// same as above in reverse
+	&--green,
+	&--yellow + .button--yellow {
+		color: var(--color-white);
+		background: var(--color-green-500);
+
+		&::after {
+			border-color: var(--color-green-500);
+		}
+
+		&:not([disabled]):hover, &:not([disabled]):focus, &:not([disabled]):focus-visible {
+			background: var(--color-green-dark);
+		}
+
+		&:not([disabled]):active {
+			background: var(--color-green-400);
+
+			&::after {
+				clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+			}
+		}
+	}
+
+	&--blue {
+		color: var(--color-white);
+		background: var(--color-blue-500);
+
+		&:not([disabled]):hover, &:not([disabled]):focus, &:not([disabled]):focus-visible {
+			background: var(--color-white);
+			color: var(--color-blue-500);
+		}
+
+		&:not([disabled]):active {
+			background: var(--color-blue-300);
+		}
+	}
+
+	&--red {
+		text-transform: none;
+		background: var(--color-red-500);
+		color: var(--color-white);
+
+		&:not([disabled]):hover, &:not([disabled]):focus, &:not([disabled]):focus-visible {
+			background: var(--color-red-700);
+		}
+
+		&:not([disabled]):active {
+			background: var(--color-red-300);
+		}
+	}
+}

@@ -1,0 +1,18 @@
+{% comment %} to be distinguished from collection content areas, this just renders a content metaobject from a metafield {% endcomment %}
+{% liquid
+  assign custom_fields = collection.metafields.custom
+  assign content = custom_fields.featured_content.value
+%}
+
+{% if content != blank %}
+  {% render "two-column-content-block"
+    , content: content %}
+{% endif %}
+
+{% schema %}
+  {
+    "name": "Collection Content",
+    "tag": "section",
+    "class": "collection-content container m-top-lg"
+  }
+{% endschema %}

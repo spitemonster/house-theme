@@ -1,0 +1,57 @@
+{% liquid
+%}
+
+<div class="sponsor-grid__inner m-block-lg">
+  <h2 class="display-md m-bottom-md">{{ section.settings.heading }}</h2>
+  <div class="sponsor-grid__items grid" style="--column-count: 4; --gap: var(--spacer-base); --md-column-count: 6; --md-gap: var(--spacer-base);">
+    {% for block in section.blocks %}
+      <div class="sponsor-grid__item d-flex justify-content-center align-items-center">
+        <a href="{{block.settings.sponsor_link}}" target="_blank">
+          <img
+            src="{{ block.settings.image | image_url: width: 240 }}"
+            alt="{{ block.settings.sponsor_title }}"
+            loading="lazy"
+            height="240"
+            width="240">
+        </a>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+
+{% schema %}
+  {
+    "name": "Sponsor Block",
+    "tag": "section",
+    "class": "sponsor-grid container m-top-xl",
+    "settings": [
+      {
+        "type": "text",
+        "id": "heading",
+        "label": "Heading",
+        "default": "Corporate Clients We Serve"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "sposor_data",
+        "name": "Sponsor Data",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Logo"
+          }, {
+            "type": "text",
+            "id": "sponsor_link",
+            "label": "Sponsor Link URL"
+          }, {
+            "type": "text",
+            "id": "sponsor_title",
+            "label": "Sponsor Title"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

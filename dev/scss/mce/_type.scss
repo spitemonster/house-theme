@@ -1,0 +1,69 @@
+.display-lg {
+	line-height: 1.04;
+}
+
+.display-md {
+	line-height: 1.085;
+}
+
+.display-sm {
+	line-height: 1.1;
+}
+
+h1, .h1 {
+	line-height: 1.1;
+}
+
+h2, .h2 {
+	line-height: 1.2;
+}
+
+h3, .h3 {
+	line-height: 1;
+}
+
+h4, .h4 {
+	text-transform: uppercase;
+	line-height: 1.55;
+}
+
+h5, .h5 {
+	line-height: 1.35;
+}
+
+.lead {
+	line-height: 1.2;
+}
+
+body {
+	line-height: 1.32;
+}
+
+p + p {
+	margin-top: 1rem;
+}
+
+p, h1, h2, h3, h4, h5 {
+	&:empty {
+		display: none;
+	}
+
+	& + p, & + h1, & + h2, & + h3, & + h4, & + h5 {
+		margin-top: 1rem;
+	}
+
+	& + ol,
+	& + ul {
+		margin-top: var(--spacer-base);
+
+		li:not(:first-child) {
+			margin-top: var(--spacer-sm);
+		}
+	}
+}
+
+ol, ul {
+	& + p, & + h1, & + h2, & + h3, & + h4, & + h5 {
+		margin-top: var(--spacer-base);
+	}
+}

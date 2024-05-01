@@ -1,0 +1,204 @@
+{% liquid
+  assign custom_fields = product.metafields.custom
+  assign has_highlighted_feature = false
+
+  if custom_fields.highlighted_feature != blank
+    assign has_highlighted_feature = true
+    assign highlighted_feature = custom_fields.highlighted_feature
+    assign highlighted_feature_handle = highlighted_feature | handleize
+  endif
+
+  assign book_bundle_class = ""
+
+  if card_type == empty
+    assign card_type = "empty"
+  endif
+
+  if card_type == "book_bundle"
+    assign book_bundle_class = "book_bundle"
+  endif
+%}
+
+<div class="product-details-card {{ book_bundle_class }}">
+
+  <div class="product-details-card__inner d-flex flex-column">
+    {% if has_highlighted_feature %}
+      <span class="highlight-tag {{ highlighted_feature_handle }} display-block m-bottom-base">{{ highlighted_feature
+}}</span>
+    {% endif %}
+    <h1 class="">{{ product.title }}</h1>
+    <div class="product-card__price flex align-items-center" style="--gap: var(--spacer-base);">
+      <p class="h1 color-green-500 m-bottom-0">{{ product.price | money }}</p>
+      {% if product.compare_at_price != blank %}
+        <p class="compare-at">
+          <span class="visually-hidden"></span>
+          {{ product.compare_at_price | money }}
+        </p>
+      {% endif %}
+    </div>
+    <div class="product-description m-block-base">
+      {{ product.description }}
+    </div>
+
+    <form
+      method="post"
+      action="{{ routes.cart_add_url }}?return_to=/cart"
+      id="product_form_{{ product.id }}"
+      accept-charset="UTF-8"
+      class="shopify-product-form"
+      enctype="multipart/form-data"
+      data-discount-content="{{ settings.bundle_discount_tag | escape }}">
+      <input
+        type="hidden"
+        name="form_type"
+        value="product" />
+      <input
+        type="hidden"
+        name="utf8"
+        value="✓" />
+      <div id="bundle-addons" class="m-bottom-base"></div>
+
+      {% if product.variants.size > 1 %}
+        <div class="variant-select-wrap">
+          <h3 class="font-size-h3">Select Course Date & Location</h3>
+          {% for option in product.options_with_values %}
+            <p>{{ option.name | remove: "(Title)" }}</p>
+            <label class="select-wrap">
+              <select
+                data-index="{{ option.position }}"
+                data-name="{{ option.name | handleize }}"
+                class="product-option-selector">
+                <option disabled selected>Select Option</option>
+                {% for value in option.values %}
+                  <option value="{{ value }}">{{ value }}</option>
+                {% endfor %}
+              </select>
+
+            </label>
+          {% endfor %}
+        </div>
+      {% else %}
+        <input
+          type="hidden"
+          name="id"
+          value="{{ product.variants.first.id }}" />
+
+      {% endif %}
+
+
+      <label class="select-wrap visually-hidden">
+        <input
+          type="hidden"
+          id="StartDate"
+          name="properties[_start_date]" />
+        <input
+          type="hidden"
+          id="EndDate"
+          name="properties[_end_date]" />
+        <input
+          type="hidden"
+          id="EducationType"
+          name="properties[_education_type]" />
+        <input
+          type="hidden"
+          id="ExtensionDuration"
+          name="properties[_extension_duration]" />
+
+        <select
+          id="test"
+          class="product-variant-selector"
+          name="id">
+          {% for variant in product.variants %}
+            <option
+              {% if product.variants.size == 1 %}
+              selected
+              {% endif %}
+              value="{{ variant.id }}"
+              id="{{ variant.id }}"
+              data-title="{{ variant.title }}"
+              data-price="{{ variant.price | money }}"
+              data-sale-price="{{ variant.compare_at_price | money }}"
+              data-available="{{ variant.available }}"
+              name="properties[_profession]"
+              data-startdate="{{variant.metafields.house.start_date}}"
+              data-enddate="{{variant.metafields.house.end_date}}"
+              data-educationtype="{{variant.metafields.house.education_type}}"
+              data-extensionduration="{{variant.metafields.house.extension_duration}}">
+              {{ variant.available }} - {{ variant.title }} - {{ variant.price | money }} {{ variant.id }}
+            </option>
+          {% endfor %}
+        </select>
+      </label>
+
+      <input
+        type="hidden"
+        name="return_to"
+        value="back" />
+      <input
+        type="hidden"
+        name="properties[_Highlighted Feature]"
+        value="{{ product.metafields.custom.highlighted_feature }}" />
+      <input
+        type="hidden"
+        name="properties[_Comparison Table - Product Title]"
+        value="{{ product.metafields.custom.comparison_title }}" />
+      <input
+        type="hidden"
+        name="properties[_Comparison Table - Product Description]"
+        value="{{ product.metafields.custom.short_description }}" />
+      <input
+        type="hidden"
+        name="properties[_Comparison Table - Product Features]"
+        value="{{ product.metafields.custom.product_features.value | join: " , " }}" />
+      <input
+        type="hidden"
+        name="properties[_delivery_method]"
+        value="{{ product.metafields.house.delivery_method }}" />
+
+
+      {% for metaobject in product.metafields.custom.content_areas.value %}
+        <input
+          type="hidden"
+          name="properties[_{{metaobject.title}}-title]"
+          value="{{ metaobject.title }}" />
+        <input
+          type="hidden"
+          name="properties[_{{metaobject.title}}-label]"
+          value="{{ metaobject.label }}" />
+        <input
+          type="hidden"
+          name="properties[_{{metaobject.title}}-content]"
+          value="{{ metaobject.content |   metafield_text }}" />
+      {% endfor %}
+      <input
+        type="hidden"
+        name="product-id"
+        value="{{ product.id }}" />
+      <button
+        id="add"
+        type="submit"
+        class="product-section__inner__form__add-btn button--yellow">Add to Cart</button>
+    </form>
+
+  </div>
+</div>
+
+<script>
+  let select = document.getElementById("test")
+  let selectedOption = select.options[select.selectedIndex];
+
+  document.getElementById('StartDate').value = selectedOption.dataset.startdate;
+  document.getElementById('EndDate').value = selectedOption.dataset.enddate;
+  document.getElementById('EducationType').value = selectedOption.dataset.educationtype;
+  document.getElementById('ExtensionDuration').value = selectedOption.dataset.extensionduration;
+  select.addEventListener('change', function handleChange(event) {
+    let selectedOption = select.options[select.selectedIndex];
+    document.getElementById('StartDate').value = selectedOption.dataset.startdate;
+    document.getElementById('EndDate').value = selectedOption.dataset.enddate;
+    document.getElementById('EducationType').value = selectedOption.dataset.educationtype;
+    document.getElementById('ExtensionDuration').value = selectedOption.dataset.extensionduration;
+
+
+  });
+
+</script>

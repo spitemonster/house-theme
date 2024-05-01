@@ -1,0 +1,60 @@
+{% liquid
+%}
+
+<div class="info-card-grid__inner text-center p-block-xl background-color-porcelain-200 container">
+
+  <h2 class="h4 color-blue-500">{{ section.settings.heading }}</h2>
+  <h3 class="display-md m-top-none">{{ section.settings.subhead }}</h3>
+
+  <div class="grid m-top-lg" style="--column-count: 1; --sm-column-count: 2; --md-column-count: 4; --gap: var(--spacer-base);">
+    {% for block in section.blocks %}
+      {% assign info_card = block.settings %}
+      {% render "info-card"
+        , img: info_card.image
+        , heading: info_card.heading
+        , content: info_card.content %}
+    {% endfor %}
+  </div>
+</div>
+
+{% schema %}
+  {
+    "name": "Information Card Grid",
+    "tag": "section",
+    "class": "info-card-grid",
+    "settings": [
+      {
+        "id": "heading",
+        "label": "Heading",
+        "type": "text",
+        "default": "Why choose us?"
+      }, {
+        "id": "subhead",
+        "label": "Subhead",
+        "type": "text",
+        "default": "We are committed to your success."
+      }
+    ],
+    "blocks": [
+      {
+        "name": "Info Card",
+        "type": "info-card",
+        "settings": [
+          {
+            "id": "image",
+            "label": "Card Image",
+            "type": "image_picker"
+          }, {
+            "id": "heading",
+            "label": "Card Heading",
+            "type": "text"
+          }, {
+            "id": "content",
+            "label": "Card Content",
+            "type": "inline_richtext"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

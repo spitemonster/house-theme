@@ -1,0 +1,37 @@
+{% liquid
+%}
+
+{% render "dashed-separator" %}
+
+<div class="link-cards__inner container m-top-lg">
+  {% if section.settings.heading != empty %}
+    <h2 class="display-md m-bottom-lg">{{ section.settings.heading }}</h2>
+  {% endif %}
+  <div class="grid" style="--column-count: 1; --sm-column-count: 2; --md-column-count: 3; --lg-column-count: 4; --gap: var(--spacer-base); --md-gap: 1.5rem;">
+    {% for link in section.settings.menu.links %}
+      <a class="card font-size-lead display-block p-block-md p-inline-base text-center color-black text-decoration-none font-bold" href="{{ link.url }}">{{ link.title }}</a>
+    {% endfor %}
+  </div>
+
+
+</div>
+
+{% schema %}
+  {
+    "name": "Link Cards",
+    "tag": "section",
+    "class": "link-cards m-bottom-lg",
+    "settings": [
+      {
+        "id": "heading",
+        "label": "Section Heading",
+        "type": "text",
+        "default": "Choose a license to begin:"
+      }, {
+        "id": "menu",
+        "label": "Menu",
+        "type": "link_list"
+      }
+    ]
+  }
+{% endschema %}

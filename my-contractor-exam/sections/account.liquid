@@ -1,0 +1,113 @@
+{% liquid
+%}
+
+<div class="account__inner container m-block-lg">
+  <div class="flex justify-content-start align-items-center" style="--gap: var(--spacer-md);">
+    <h1 class="display-md">Account</h1>
+    <a href="{{ routes.account_logout_url }}" class="color-green-500">Log Out</a>
+  </div>
+  <div class="grid m-top-md" style="--column-count: 3; --gap: var(--spacer-md);">
+    <div id="orders" style="--column-span: 1; --md-column-span: 2;">
+      <h2 class="display-sm">Orders</h2>
+      <div class="orders__inner">
+        {% paginate customer.orders by 20 %}
+          {%- if customer.orders.size > 0 -%}
+            <table role="table" class="order-history">
+              <caption class="visually-hidden">
+                Orders
+              </caption>
+              <thead role="rowgroup">
+                <tr role="row">
+                  <th
+                    id="ColumnOrder"
+                    scope="col"
+                    role="columnheader">Order Number</th>
+                  <th
+                    id="ColumnDate"
+                    scope="col"
+                    role="columnheader">Order Date</th>
+                  <th
+                    id="ColumnPayment"
+                    scope="col"
+                    role="columnheader">Payment Status</th>
+                  <th
+                    id="ColumnFulfillment"
+                    scope="col"
+                    role="columnheader">
+                    Fulfillment Status
+                  </th>
+                  <th
+                    id="ColumnTotal"
+                    scope="col"
+                    role="columnheader">Order Total</th>
+                </tr>
+              </thead>
+              <tbody role="rowgroup">
+                {%- for order in customer.orders -%}
+                  <tr role="row">
+                    <td
+                      id="RowOrder"
+                      role="cell"
+                      headers="ColumnOrder"
+                      data-label="Order Number">
+                      <a href="{{ order.customer_url }}">
+                        {{ order.name }}
+                      </a>
+                    </td>
+                    <td
+                      headers="RowOrder ColumnDate"
+                      role="cell"
+                      data-label="Order Date">
+                      {{ order.created_at | time_tag: format: 'date' }}
+                    </td>
+                    <td
+                      headers="RowOrder ColumnPayment"
+                      role="cell"
+                      data-label="Payment Status">
+                      {{ order.financial_status_label }}
+                    </td>
+                    <td
+                      headers="RowOrder ColumnFulfillment"
+                      role="cell"
+                      data-label="Fulfillment Status">
+                      {{ order.fulfillment_status_label }}
+                    </td>
+                    <td
+                      headers="RowOrder ColumnTotal"
+                      role="cell"
+                      data-label="Order Total">
+                      {{ order.total_net_amount | money_with_currency }}
+                    </td>
+                  </tr>
+                {%- endfor -%}
+              </tbody>
+            </table>
+          {%- else -%}
+            <p class="h4 m-block-md">No Orders</p>
+          {%- endif -%}
+
+          {%- if paginate.pages > 1 -%}
+            {% render "pagination" %}
+          {%- endif -%}
+        {% endpaginate %}
+      </div>
+    </div>
+    <div id="details" style="--column-span: 1;">
+      <div class="details__inner">
+        <h2 class="display-sm">Customer Account Details</h2>
+        {{ customer.default_address | format_address }}
+        <a href="{{ routes.account_addresses_url }}" class="display-block m-top-base color-green-500 font-size-lead">View Addresses</a>
+      </div>
+    </div>
+  </div>
+
+
+</div>
+
+{% schema %}
+  {
+    "name": "Account",
+    "tag": "section",
+    "class": "account"
+  }
+{% endschema %}

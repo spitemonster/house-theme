@@ -1,0 +1,81 @@
+{% liquid
+%}
+
+<div class="register__inner container m-block-lg">
+  <h1 class="display-md m-bottom-md">Register</h1>
+  <div class="register__form">
+    {% form 'create_customer' %}
+      {{ form.errors | default_errors }}
+
+      <div>
+        <label>
+          <input
+            type="text"
+            name="customer[first_name]"
+            class="p-inline-base p-block-sm"
+            placeholder="">
+          <span>First Name</span>
+        </label>
+      </div>
+
+      <div class="m-top-base">
+        <label>
+          <input
+            type="text"
+            name="customer[last_name]"
+            class="p-inline-base p-block-sm"
+            placeholder="">
+          <span>Last Name</span>
+        </label>
+      </div>
+
+      <div class="m-top-base">
+        <label>
+          <input
+            type="email"
+            name="customer[email]"
+            class="p-inline-base p-block-sm"
+            placeholder="">
+          <span>Email</span>
+        </label>
+        {%- if form.errors contains 'email' -%}
+          <span id="RegisterForm-email-error" class="font-size-sm color-red-500">
+            <svg aria-hidden="true" focusable="false">
+              <use href="#icon-error" />
+            </svg>
+            {{ form.errors.translated_fields.email | capitalize }}
+            {{ form.errors.messages.email }}.
+          </span>
+        {%- endif -%}
+      </div>
+
+      <div class="m-top-base">
+        <label>
+          <input
+            type="password"
+            name="customer[password]"
+            class="p-inline-base p-block-sm"
+            placeholder="">
+          <span>Password</span>
+        </label>
+        {%- if form.errors contains 'password' -%}
+          <span id="RegisterForm-password-error" class="font-size-sm color-red-500">
+            {{ form.errors.translated_fields.password | capitalize }}
+            {{ form.errors.messages.password }}.
+          </span>
+        {%- endif -%}
+      </div>
+
+      <button class="button--yellow m-top-md">Submit & Create Account</button>
+    {% endform %}
+
+  </div>
+</div>
+
+{% schema %}
+  {
+    "name": "Register",
+    "tag": "section",
+    "class": "register"
+  }
+{% endschema %}

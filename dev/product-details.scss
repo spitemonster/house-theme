@@ -1,0 +1,403 @@
+@import "scss/core/functions";
+@import "scss/core/variables";
+@import "scss/mce/partials/compare-at";
+@import "scss/core/buttons";
+@import "scss/mce/components/buttons";
+
+.product-details {
+	
+	&__inner {
+	}
+
+	&-gallery {
+		order: -1;
+
+		&__main-image {
+			display: block;
+			width: 100%;
+			height: auto;
+			aspect-ratio: 1/1;
+
+			position: relative;
+			overflow: hidden;
+
+			img {
+				position: absolute;
+				top: 0;
+				left: 0;
+				height: 100%;
+				width: 100%;
+				transition: transform 120ms ease;
+			}
+
+			&:hover {
+				img {
+					transform: scale(1.1);
+				}
+			}
+		}
+
+		&__thumbs {
+			display: flex;
+			gap: 1rem;
+			flex-wrap: nowrap;
+			width: 100%;
+			overflow: scroll;
+			margin-top: 1.5rem;
+
+			button {
+				display: block;
+				flex-basis: to_rem(88);
+				flex-shrink: 0;
+
+				position: relative;
+
+				border: none;
+				background: none;
+				padding: 0;
+				margin: 0;
+				
+				height: auto;
+				aspect-ratio: 1/1;
+				cursor: pointer;
+
+				img {
+					position: absolute;
+					top: 0;
+					left: 0;
+					height: 100%;
+					width: 100%;
+				}
+			}
+		}
+	}
+	
+	&-card {
+		border-radius: var(--border-radius-md);
+		box-shadow: var(--box-shadow);
+		padding: var(--spacer-md);
+		height: 100%;
+
+		.product-description {
+			height: 100%;
+			flex-shrink: 1;
+		}
+
+		&__inner {
+			position: relative;
+			height: 100%;
+		}
+
+		.highlight-tag {
+			width: auto;
+			display: flex;
+			align-self: flex-start;
+			position: relative;
+			top: unset;
+			left: unset;
+		}
+
+		.compare-at {
+			@extend %compare-at;
+		}
+
+		.select-wrap {
+			margin-bottom: 1rem;
+		}
+
+		&.book_bundle {
+			.variant-select-wrap {
+				// display: none;
+			}
+		}
+	}
+}
+
+#bundle-addons {
+
+	.spice-spa-addon-heading {
+		font-size: var(--font-size-h3);
+		font-weight: bold;
+		font-family: var(--font-sans-serif);
+		margin-top: var(--spacer-base);
+		margin-bottom: var(--spacer-sm);
+	}
+
+	.spice-spa-addon-price-main {
+		color: var(--color-green-500);
+	}
+
+	.spicegems-cross-amount {
+		position: relative;
+		text-decoration: none !important;
+		color: var(--color-green-500);
+		font-weight: bold;
+
+
+		&::after {
+			// content: "";
+			position: absolute;
+			top: 50%;
+			left:0;
+			display: block;
+			height: 1px;
+			width: 100%;
+			background: black;
+			transform: translateY(-50%) rotate(12deg);
+			
+		}
+	}
+
+	.spice-spa-addon-product-item {
+		border: none;
+
+
+		&:hover, &:focus {
+			box-shadow: none;
+		}
+	}
+
+	.spice-spa-addon-product-link {
+		font-family: var(--font-sans-serif);
+		font-size: var(--font-size-base);
+	}
+
+	.spice-spa-addon-checkbox {
+		display: contents;
+	}
+
+	.spice-spa-addon-checkbox-label {
+		display: block;
+		height: auto;
+		width: to_rem(28);
+		flex-shrink: 0;
+		aspect-ratio: 1/1;
+		cursor: pointer;
+		margin-right: var(--spacer-base);
+		font-family: var(--font-sans-serif);
+		
+
+		.spice-spa-addon-checkbox-text {
+			border: none;
+			height: 100%;
+			width: 100%;
+			max-height: none;
+			max-width: none;
+			animation: none;
+			left: 0;
+			transform: none;
+			top: 0;
+			border: 2px solid var(--color-charcoal-200);
+			transition: all 120ms ease !important;
+
+			svg {
+				display: none;
+			}
+
+			display: flex;
+			justify-content: center;
+			align-items: center;
+
+			&::after {
+				content: "";
+				color: var(--color-white);
+				font-size: to_rem(24);
+				text-align: center;
+			}
+		}
+
+		input {
+
+			&:checked {
+				& + .spice-spa-addon-checkbox-text {
+					border-color: var(--color-green-500);
+					// border-width: 14px;
+					background: var(--color-green-500);
+
+					&::after {
+						content: "✓";
+						z-index: 99;
+					}
+				}
+			}
+		}
+
+		&:hover, &:focus-within {
+
+			.spice-spa-addon-checkbox-text {
+				border-width: 4px;
+			}
+		}
+	}
+
+	.spice-spa-addon-product-price {
+		display: flex;
+		align-items: center;
+		font-size: var(--font-size-base);
+		font-weight: bold;
+		font-family: var(--font-sans-serif);
+
+		& > div:first-child, & > span:first-child {
+			&::before {
+				content: "+";
+				display: inline-block;
+			}
+		}
+	}
+
+	.spice-spa-addon-right {
+		flex-direction: column;
+		align-items: start;
+	}
+
+	.spice-spa-addon-price-main {
+		font-size: var(--font-size-lead);
+	}
+
+	.price-savings {
+		background-color: var(--color-blue-200);
+		color: var(--color-blue-500);
+		padding: var(--spacer-min);
+		border-radius: var(--border-radius-sm);
+		font-size: 1rem;
+	}
+}
+
+.spicegems-product-quickview {
+
+	.spicegems-modal-container {
+		margin: 0;
+		padding: 0;
+	}
+
+	.spicegems-modal-dialog {
+		width: auto;
+		max-width: 56rem;
+		border-radius: var(--border-radius-md);
+		box-shadow: var(--box-shadow);
+		overflow: hidden;
+	}
+
+	.spicegems-product-dec-main {
+		max-height: 99999px;
+	}
+
+	.spicegems-product-dec-footer {
+		display: none;
+	}
+
+	.spicegems-qv-modal-body {
+		margin: 0;
+		display: flex;
+
+		&::before, &::after {
+			display: none;
+		}
+	}
+
+	.spicegems-qv-picture-box,
+	.spicegems-qv-product-box {
+		padding: 0;
+		width: auto;
+	}
+
+	.spicegems-qv-picture-box {
+		aspect-ratio: 1/1;
+		height: 100%;
+		width: 100%;
+	}
+
+	.spicegems-modal-header {
+		position: absolute;
+		top: 0;
+		right: 0;
+		z-index: 45;
+	}
+
+	.spicegems-modal-close {
+		width: 2.5rem;
+		aspect-ratio: 1/1;
+		height: auto;
+
+		color: transparent;
+
+		&::before, &::after {
+			content: "";
+			display: block;
+			height: 2px;
+			width: 1.5rem;
+			border-radius: 4px;
+			background: var(--color-charcoal-500);
+			position: absolute;
+			top: 50%;
+			left: 50%;
+		}
+
+		&::before {
+			transform: translateY(-50%) translateX(-50%) rotate(45deg);
+		}
+
+		&::after {
+			transform: translateY(-50%) translateX(-50%) rotate(-45deg);
+		}
+	}
+
+	.spicegems-qv-product-box {
+		font-family: var(--font-sans-serif);
+		padding: var(--spacer-md);
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+	}
+
+	.spicegems-product-title {
+		font-size: var(--font-size-h2);
+		color: var(--color-charcoal-500);
+	}
+
+	.spice-spa-addon-price-main .money {
+		font-size: var(--font-size-h3);
+		color: var(--color-green-500);
+		font-weight: bold;
+	}
+
+	#spicegems-qv-add-btn {
+		@extend .button--yellow;
+		width: auto;
+
+		&:hover, &:focus {
+			background: var(--color-yellow-700);
+		}
+	}
+
+	.spicegems-qv-variant-options {
+		display: none;
+	}
+
+	#spicegems-qv-carousel {
+		aspect-ratio: 1/1;
+		height: 100%;
+		width: 100%;
+	}
+
+	.spicegems-carousel-inner img {
+		margin: 0;
+		min-height: 100%;
+		aspect-ratio: 1/1;
+		width: auto;
+	}
+
+	.spicegems-carousel-outer,
+	.spicegems-carousel-inner,
+	.spicegems-carousel-item {
+		display: contents;
+	}
+
+	.spicegems-carousel-indicators {
+		display: none;
+	}
+
+	.spicegems-carousel-control {
+		display: none;
+	}
+}

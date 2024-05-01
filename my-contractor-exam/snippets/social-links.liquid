@@ -1,0 +1,92 @@
+{% liquid
+  assign has_social_icons = true
+  if settings.social_instagram_link == blank and settings.social_tiktok_link == blank and settings.social_facebook_link == blank and settings.social_pinterest_link == blank and settings.social_twitter_link == blank and settings.social_youtube_link == blank and settings.social_linkedin_link == blank and settings.social_vimeo_link == blank
+    assign has_social_icons = false
+  endif
+%}
+
+{{ "social-links.css" | asset_url | stylesheet_tag }}
+
+{% if has_social_icons %}
+  <ul class="social-links d-flex" style="--gap: 0.563rem">
+    {% if settings.social_instagram_link != nil %}
+      <li class="social-links__item d-flex align-items-center justify-content-center">
+        <a href="{{ settings.social_instagram_link }}" class="text-decoratine-none">
+          {% render 'icon-instagram'
+            , color: {{color}} %}
+          <span class="visually-hidden">{{ 'general.social.links.instagram' | t }}</span>
+        </a>
+      </li>
+    {% endif %}
+
+    {% if settings.social_tiktok_link != nil %}
+      <li class="social-links__item d-flex align-items-center justify-content-center">
+        <a href="{{ settings.social_tiktok_link }}" class="text-decoratine-none d-flex align-items-center justify-content-center">
+          {% render 'icon-tiktok'
+            , color: {{color}} %}
+          <span class="visually-hidden">{{ 'general.social.links.tiktok' | t }}</span>
+        </a>
+      </li>
+    {% endif %}
+
+    {% if settings.social_facebook_link != nil %}
+      <li class="social-links__item d-flex align-items-center justify-content-center">
+        <a href="{{ settings.social_facebook_link }}" class="text-decoratine-none d-flex align-items-center justify-content-center">
+          {% render 'icon-facebook'
+            , color: {{color}} %}
+          <span class="visually-hidden">{{ 'general.social.links.facebook' | t }}</span>
+        </a>
+      </li>
+    {% endif %}
+
+    {% if settings.social_twitter_link != nil %}
+      <li class="social-links__item d-flex align-items-center justify-content-center">
+        <a href="{{ settings.social_twitter_link }}" class="text-decoratine-none d-flex align-items-center justify-content-center">
+          {% render 'icon-twitter'
+            , color: {{color}} %}
+          <span class="visually-hidden">{{ 'general.social.links.twitter' | t }}</span>
+        </a>
+      </li>
+    {% endif %}
+
+    {% if settings.social_pinterest_link != nil %}
+      <li class="social-links__item d-flex align-items-center justify-content-center">
+        <a href="{{ settings.social_pinterest_link }}" class="text-decoratine-none d-flex align-items-center justify-content-center">
+          {% render 'icon-pinterest'
+            , color: {{color}} %}
+          <span class="visually-hidden">{{ 'general.social.links.pinterest' | t }}</span>
+        </a>
+      </li>
+    {% endif %}
+
+    {% if settings.social_youtube_link != nil %}
+      <li class="social-links__item d-flex align-items-center justify-content-center">
+        <a href="{{ settings.social_youtube_link }}" class="text-decoratine-none d-flex align-items-center justify-content-center">
+          {% render 'icon-youtube'
+            , color: {{color}} %}
+          <span class="visually-hidden">{{ 'general.social.links.youtube' | t }}</span>
+        </a>
+      </li>
+    {% endif %}
+
+    {% if settings.social_vimeo_link != nil %}
+      <li class="social-links__item d-flex align-items-center justify-content-center">
+        <a href="{{ settings.social_vimeo_link }}" class="text-decoratine-none d-flex align-items-center justify-content-center">
+          {% render 'icon-vimeo'
+            , color: {{color}} %}
+          <span class="visually-hidden">{{ 'general.social.links.vimeo' | t }}</span>
+        </a>
+      </li>
+    {% endif %}
+
+    {% if settings.social_linkedin_link != nil %}
+      <li class="social-links__item d-flex align-items-center justify-content-center">
+        <a href="{{ settings.social_linkedin_link }}" class="text-decoratine-none d-flex align-items-center justify-content-center">
+          {% render 'icon-linkedin'
+            , color: {{color}} %}
+          <span class="visually-hidden">{{ 'general.social.links.linkedin' | t }}</span>
+        </a>
+      </li>
+    {% endif %}
+  </ul>
+{% endif %}

@@ -1,0 +1,13 @@
+{% liquid
+	if image == blank
+		assign image = "https://placekitten.com/120/120"
+	endif
+%}
+
+<figure class="testimonial-card">
+  <img src="{{ image }}" />
+  <figcaption>
+    <p>{{ title }}</p>
+    {{ content }}
+  </figcaption>
+</figure>

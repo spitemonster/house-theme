@@ -1,0 +1,14 @@
+<a class="linked-figure__link" href="{{ url }}">
+  <figure class="linked-figure col d-flex justify-content-center align-items-center">
+    <div class="img-wrap">
+      <img
+        src="{{ image | image_url: width: 280 }}"
+        width="280"
+        height="280"
+        aria-hidden="true"
+        alt="{{ content }}"
+        loading="lazy">
+    </div>
+    <figcaption>{{ content }}</figcaption>
+  </figure>
+</a>

@@ -1,0 +1,37 @@
+{
+    "current": {
+        "override_logo": false,
+        "login_link": "",
+        "favicon": "",
+        "fallback_image": "",
+        "footer_contact_content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+        "announcement_bar_content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+        "announcement_bar_link": "",
+        "social_instagram_link": "",
+        "social_tiktok_link": "",
+        "social_facebook_link": "",
+        "social_pinterest_link": "",
+        "social_twitter_link": "",
+        "social_youtube_link": "",
+        "social_linkedin_link": "",
+        "social_vimeo_link": "",
+        "analytics_code_head": "",
+        "analytics_code_body": "",
+        "content_for_index": [],
+        "blocks": {
+            "11432920177897217407": {
+                "type": "",
+                "disabled": false,
+                "settings": {}
+            },
+            "qikify-tmenu-1701320868": {
+                "type": "",
+                "disabled": false,
+                "settings": {}
+            }
+        }
+    },
+    "presets": {
+        "Default": {}
+    }
+}

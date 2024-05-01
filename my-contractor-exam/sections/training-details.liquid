@@ -1,0 +1,41 @@
+{% liquid
+  assign custom_fields = page.metafields.custom
+
+  assign featured_image = custom_fields.featured_image
+
+  if featured_image == blank
+    assign featured_image = settings.fallback_image
+  endif
+%}
+
+<div class="container m-top-lg">
+  {% render "breadcrumbs" %}
+  {% render "dashed-separator" %}
+</div>
+
+<div class="training-details__inner container grid m-block-lg" style="--column-count: 1; --md-column-count: 8; --gap: var(--spacer-base); --lg-gap: var(--spacer-lg);">
+  <div style="--column-span: 1; --md-column-span: 4; --lg-column-span: 3;">
+    <figure style="width: 100%; aspect-ratio: 1/1;">
+      <img
+        src="{{ featured_image | image_url: width: 400 }}"
+        alt="{{ page.title }}"
+        loading="eager"
+        height="400"
+        width="400"
+        style="object-fit: cover;">
+    </figure>
+  </div>
+  <div class="display-flex flex-column justify-content-center align-items-start" style="--column-span: 1; --md-column-span: 4; --lg-column-span: 5;">
+    <h1 class="m-bottom-md">{{ page.title }}</h1>
+    <div>{{ page.content }}</div>
+    <a class="display-inline-block m-top-lg w-auto button--yellow" href="#training-request-form">Request Information</a>
+  </div>
+</div>
+
+{% schema %}
+  {
+    "name": "Training Details",
+    "class": "training-details",
+    "tag": "section"
+  }
+{% endschema %}

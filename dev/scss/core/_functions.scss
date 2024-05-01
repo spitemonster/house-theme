@@ -1,0 +1,68 @@
+@use "sass:math";
+/**
+REM/EM CALC
+strip-unit() and covert-to-to_rem() are function dependencies to to_rem() and em().
+
+Usage
+Call with 1, 2, 3 or 4 parameters, 'px' is not required but supported:
+- to_rem(10 20 30px 40);
+
+Space delimited, if you want to delimit using comma's, wrap it in another pair of brackets
+- to_rem((10, 20, 30, 40px));
+
+Optionally call with a different base (eg: 8px) to calculate rem.
+- to_rem(16px 32px 48px, 8px);
+
+If you require to comma separate your list
+- to_rem((16px, 32px, 48), 8px);
+*/
+
+$rem: 16px;
+
+@function strip-unit($num) {
+	@return math.div($num, $num * 0 + 1);
+}
+
+@function convert-to-to_rem($value, $base-value: $rem) {
+	$value: math.div(strip-unit($value), strip-unit($base-value)) * 1rem;
+	@if ($value == 0rem) {
+		$value: 0;
+	} // Turn 0rem into 0
+	@return $value;
+}
+
+// convert a given value to its rem counterpart
+@function to_rem($values, $base-value: $rem) {
+	$max: length($values);
+
+	@if $max == 1 {
+		@return convert-to-to_rem(nth($values, 1), $base-value);
+	}
+
+	$remValues: ();
+	@for $i from 1 through $max {
+		$remValues: append(
+			$remValues,
+			convert-to-to_rem(nth($values, $i), $base-value)
+		);
+	}
+	@return $remValues;
+}
+
+@function em($values, $base-value: $rem) {
+	$remValues: to_rem($values, $base-value: $rem);
+
+	$max: length($remValues);
+
+	@if $max == 1 {
+		@return strip-unit(nth($remValues, 1)) * 1em;
+	}
+
+	$emValues: ();
+	@for $i from 1 through $max {
+		$emValues: append($emValues, strip-unit(nth($remValues, $i)) * 1em);
+	}
+	@return $emValues;
+}
+
+$threshold: 20%;

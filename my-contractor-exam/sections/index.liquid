@@ -1,0 +1,16 @@
+{% liquid
+  assign type = template.name
+
+  case type
+    when 'product'
+      assign content = product.content
+    when 'page'
+      assign content = page.content
+    when 'collection'
+      assign content = collection.content
+  endcase
+%}
+
+<div class="container m-block-lg">
+  {{ content }}
+</div>

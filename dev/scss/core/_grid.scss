@@ -1,0 +1,53 @@
+.display-grid,
+.grid {
+	--gap: 0;
+	--column-count: 12;
+
+	display: grid;
+	grid-template-columns: repeat(var(--column-count), 1fr);
+	gap: var(--gap);
+
+	& > * {
+		--column-span: 1;
+		
+		--order: auto;
+		
+		grid-column-end: span var(--column-span);
+		order: var(--order);
+	}
+
+	// automatically creates custom properties for all breakpoints
+	// needed to do this way so we could fetch the previous breakpoint value
+	// placed above styles just for clarity on the built end
+	@for $i from 1 through length($breakpoints) {
+		$bp: nth(map-keys($breakpoints), $i);
+		@if ($i == 1) {
+			--#{$bp}-column-count: var(--column-count);
+			--#{$bp}-gap: var(--gap);
+
+			& > * {
+				--#{$bp}-column-span: var(--column-span);
+			}
+		} @else {
+			$pbp: nth(map-keys($breakpoints), $i - 1); 
+
+			--#{$bp}-column-count: var(--#{$pbp}-column-count);
+			--#{$bp}-gap: var(--#{$pbp}-gap);
+
+			& > * {
+				--#{$bp}-column-span: var(--#{$pbp}-column-span);
+			}
+		}
+	}
+
+	@each $breakpoint_name, $breakpoint_size in $breakpoints {
+		@include media-breakpoint-up($breakpoint_name) {
+			gap: var(--#{$breakpoint_name}-gap);
+			grid-template-columns: repeat(var(--#{$breakpoint_name}-column-count), 1fr);
+
+			& > * {
+				grid-column-end: span var(--#{$breakpoint_name}-column-span);
+			}
+		}
+	}
+}

@@ -1,0 +1,25 @@
+<div class="cart-drawer card">
+  <div class="m-bottom-base">
+    {% if cart.item_count > 0 %}
+      {% for item in cart.items %}
+        <div class="flex cart-drawer-item">
+          <span>{{ item.title }}</span>
+          <span>${{ item.price | money_without_currency }}</span>
+        </div>
+      {% endfor %}
+    {% else %}
+      <p class="font-bold text-center">Your cart is empty.</p>
+    {% endif %}
+  </div>
+  <div class="cart-drawer__footer">
+    <p class="display-flex justify-content-between m-bottom-base font-bold font-size-h4">
+      <span>Total Price:
+      </span>
+      <span>${{ cart.total_price | money_without_currency }}</span>
+    </p>
+    <div class="flex justify-content-between">
+      <a href="/cart" class="button--yellow">Cart</a>
+      <a href="/checkout" class="button--green">Checkout</a>
+    </div>
+  </div>
+</div>

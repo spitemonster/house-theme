@@ -1,0 +1,20 @@
+{% liquid
+%}
+
+<div class="search-results__inner m-block-xl">
+  <h1 class="display-lg">Search Results</h1>
+  <div class="flex flex-column">
+    {% for item in search.results %}
+      <a class="m-block-md color-black text-decoration-none font-size-h2" href="{{ item.url }}">{{ item.title }}</a>
+      {% render "dashed-separator" %}
+    {% endfor %}
+  </div>
+</div>
+
+{% schema %}
+  {
+    "name": "Search Results",
+    "tag": "section",
+    "class": "search-results container"
+  }
+{% endschema %}

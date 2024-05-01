@@ -1,0 +1,29 @@
+{% liquid
+  assign product_columns = products_per_row
+
+  if products.count > 1 and products.count < 4
+    if product_columns == empty
+      assign product_columns = 2
+    endif
+  else
+    assign product_columns = 4
+  endif
+%}
+
+<div class="product-grid container">
+  {%- paginate collection.products by products_per_page -%}
+    <div class="product-grid__products grid" style="--column-count: 1; --lg-column-count: {{ product_columns }}; --gap: var(--spacer-base); --lg-gap: var(--spacer-md);">
+      {% for product in collection.products %}
+        {% render "product-card"	 
+          , product: product 
+          , card_type: card_type %}
+      {% endfor %}
+    </div>
+    {%- if paginate.pages > 1 -%}
+      {% render 'pagination'		
+        , paginate: paginate 	
+        , anchor: '#all-products'		
+        , card_type: card_type %}
+    {%- endif -%}
+  {%- endpaginate %}
+</div>

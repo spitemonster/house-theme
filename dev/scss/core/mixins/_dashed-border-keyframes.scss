@@ -1,0 +1,10 @@
+@mixin dashed-border-keyframes{
+    @keyframes borderAnimation {
+        from {
+            background-position: 0 0, -20px 0, 100% -20px, 0 100%;
+        }
+        to {
+            background-position: 0 -20px, 0 0, 100% 0, -20px 100%;
+        }
+    }
+}

@@ -1,0 +1,50 @@
+{% liquid
+%}
+
+{% if products.count > 0 %}
+  {{ "product-slider.css" | asset_url | stylesheet_tag }}
+  <div class="product-slider" style="--productCount: {{ products.count }}">
+
+    <div class="product-slider__inner p-bottom-md">
+      <button data-direction="prev">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none">
+          <path
+            d="M15 6L9 12L15 18"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round" />
+        </svg>
+        <span class="visually-hidden">Previous Product</span>
+      </button>
+
+      <div class="product-slider__product-area container">
+        {% for product in products %}
+          {% render "product-card"	
+            , product: product %}
+        {% endfor %}
+      </div>
+      <button data-direction="next">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none">
+          <path
+            d="M9 18L15 12L9 6"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round" />
+        </svg>
+        <span class="visually-hidden">Next Product</span>
+      </button>
+
+    </div>
+  </div>
+  <script src="{{ "product-slider.js" | asset_url }}" defer></script>
+{% endif %}

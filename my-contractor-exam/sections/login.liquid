@@ -1,0 +1,148 @@
+<div id="account-login" class="login__inner container">
+  <div id="recover" class="m-block-lg display-none">
+    <h1 class="display-md m-bottom-base">Lost Your Password?</h1>
+    <div class="m-bottom-md">
+      <p class="font-size-lead">Recover it here.</p>
+    </div>
+    {%- form 'recover_customer_password' -%}
+      {% assign recover_success = form.posted_successfully? %}
+      <label>
+        <input
+          type="email"
+          name="email"
+          value=""
+          placeholder=""
+          autocorrect="off"
+          autocapitalize="off"
+          autocomplete="email"
+          class="p-inline-base p-block-sm"
+          {% if form.errors %}
+          aria-invalid="true"
+          aria-describedby="RecoverEmail-email-error"
+          autofocus
+          {% endif %}>
+        <span>Email</span>
+      </label>
+      {%- if form.errors -%}
+        <small id="RecoverEmail-email-error" class="form__message">
+          <svg
+            aria-hidden="true"
+            focusable="false"
+            viewBox="0 0 13 13">
+            <circle
+              cx="6.5"
+              cy="6.50049"
+              r="5.5"
+              stroke="white"
+              stroke-width="2" />
+            <circle
+              cx="6.5"
+              cy="6.5"
+              r="5.5"
+              fill="#EB001B"
+              stroke="#EB001B"
+              stroke-width="0.7" />
+            <path d="M5.87413 3.52832L5.97439 7.57216H7.02713L7.12739 3.52832H5.87413ZM6.50076 9.66091C6.88091 9.66091 7.18169 9.37267 7.18169 9.00504C7.18169 8.63742 6.88091 8.34917 6.50076 8.34917C6.12061 8.34917 5.81982 8.63742 5.81982 9.00504C5.81982 9.37267 6.12061 9.66091 6.50076 9.66091Z" fill="white" />
+            <path
+              d="M5.87413 3.17832H5.51535L5.52424 3.537L5.6245 7.58083L5.63296 7.92216H5.97439H7.02713H7.36856L7.37702 7.58083L7.47728 3.537L7.48617 3.17832H7.12739H5.87413ZM6.50076 10.0109C7.06121 10.0109 7.5317 9.57872 7.5317 9.00504C7.5317 8.43137 7.06121 7.99918 6.50076 7.99918C5.94031 7.99918 5.46982 8.43137 5.46982 9.00504C5.46982 9.57872 5.94031 10.0109 6.50076 10.0109Z"
+              fill="white"
+              stroke="#EB001B"
+              stroke-width="0.7">
+          </svg>
+          {{ form.errors.messages.form }}
+        </small>
+      {%- endif -%}
+      <div class="flex m-top-base align-items-center" style="--gap: 1rem;">
+
+        <button class="button--yellow">
+          Recover My Password
+        </button>
+
+        <a href="#login" class="color-red-500 text-decoration-none">
+          Cancel
+        </a>
+      </div>
+    {%- endform -%}
+  </div>
+  <div id="login" class="m-block-lg">
+    <h1 class="display-md m-bottom-base">Already have an account?</h1>
+    <div class="m-bottom-md">
+      <p class="font-size-lead">Log in here.</p>
+    </div>
+    <div>
+      {%- if recover_success == true -%}
+        <h3 class="color-green-500">Successfully Recovered Password</h3>
+      {%- endif -%}
+      {%- form 'customer_login'
+        , novalidate: 'novalidate' -%}
+        {%- if form.errors -%}
+          <h2>Error</h2>
+          {{ form.errors | default_errors }}
+        {%- endif -%}
+        <div class="m-bottom-sm">
+          <label>
+            <input
+              type="email"
+              name="customer[email]"
+              id="CustomerEmail"
+              autocomplete="email"
+              autocorrect="off"
+              autocapitalize="off"
+              class="p-inline-base p-block-sm"
+              {% if form.errors contains 'form' %}
+              aria-invalid="true"
+              {% endif %}
+              placeholder="">
+            <span>Email</span>
+          </label>
+        </div>
+        {%- if form.password_needed -%}
+          <div>
+            <label>
+              <input
+                type="password"
+                value=""
+                name="customer[password]"
+                id="CustomerPassword"
+                autocomplete="current-password"
+                class="p-inline-base p-block-sm"
+                {% if form.errors contains 'form' %}
+                aria-invalid="true"
+                {% endif %}
+                placeholder="">
+              <span>Password</span>
+            </label>
+            <a
+              id="recover-trigger"
+              class="display-block font-size-sm color-blue-500 m-top-sm"
+              href="#recover">
+              Forgot Password?
+            </a>
+          </div>
+        {%- endif -%}
+        <div class="flex justify-content-start align-items-center m-top-base" style="--gap: 1rem;">
+          <button class="button--yellow">Sign In</button>
+          <a href="{{ routes.account_register_url }}" class="text-decoration-none color-green-500 font-size-lead">Create an Account</a>
+        </div>
+      {%- endform -%}
+      {%- if shop.checkout.guest_login -%}
+        <div>
+          <h2>Guest Login</h2>
+          {%- form 'guest_login' -%}
+            <button class="button--yellow">Login as Guest</button>
+          {%- endform -%}
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+<script src="{{ "login.js" | asset_url }}" defer></script>
+
+{% schema %}
+  {
+    "name": "Login",
+    "tag": "section",
+    "class": "login"
+  }
+{% endschema %}

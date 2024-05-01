@@ -1,0 +1,256 @@
+<script>
+  	const navTarget = document.getElementById("header-menu");
+  	const navData = JSON.parse(
+  		document.getElementById("qikify-smartmenu-data").innerText
+  	);
+  	const menuData = navData.megamenu;
+  	const header = document.querySelector('header.header');
+  	const newMenuContainer = navTarget.querySelector("nav.mega-menu");
+  	const newMenu = document.createElement("menu");
+
+  	// create top level navigation elements and build out mega menus from there
+  	menuData.forEach((topLevelNavItem) => {
+  		const navItem = document.createElement("li");
+  		navItem.classList.add("top-level")
+
+  		navItem.append(
+  			createNavElement(
+  				topLevelNavItem
+  			)
+  		);
+
+
+  		if (topLevelNavItem.menus.length > 0) {
+  			navItem.classList.add("has-children");
+  			  
+  			navItem.append(createMobileTrigger(navItem));
+  			navItem.append(createMegaMenu(topLevelNavItem.menus));
+  		}
+
+  		newMenu.appendChild(navItem);
+  	});
+
+  	function createMobileTrigger(parentItem) {
+  		const trigger = document.createElement("button");
+  		trigger.classList.add('mobile-trigger');
+  		trigger.innerHTML = `
+  			<span class="visually-hidden">Toggle Submenu</span>
+  			+
+  		`;
+
+  		trigger.addEventListener("click", () => {
+  			const currentlyOpen = navTarget.querySelectorAll('.nav-open');
+
+  			currentlyOpen.forEach(o => {
+  				if (o != parentItem) {
+  					o.classList.remove('nav-open');
+  				}
+  			})
+
+  			parentItem.classList.toggle("nav-open");
+  		});
+
+  		return trigger;
+  	}
+
+  	
+   /**
+    * Description
+    * @param {qikify menu object} menu
+    * @param {[string]} classes=null
+    * @returns {HTMLElement} either span or <a> element depending on the value of menu.setting.url
+    */
+  	function createNavElement(menu, classes = null) {
+  		let navEl;
+  		const link = extractLink(menu);
+
+  		if (link == '') {
+  			navEl = document.createElement("span");
+  		} else {
+  			navEl = document.createElement("a");
+  			navEl.href = link;
+  		}
+
+  		if (classes != null) {
+  			navEl.classList.add(...classes)
+  		}
+
+  		navEl.innerText = menu.setting.title;
+
+  		return navEl;
+  	}
+
+  	
+   /**
+    * Description
+    * @param {qikify menu object[]} menus
+    * @param {string} classes=null
+    * @returns {HTML element representing mega menu}
+    */
+  	function createMegaMenu(menus, classes = null) {
+  		const megaMenuWrap = document.createElement('div');
+  		megaMenuWrap.classList.add("mega-menu__submenu__wrap");
+
+  		const megaMenuEl = document.createElement("ul");
+  		megaMenuEl.classList.add("mega-menu__submenu");
+
+  		// we use the column count for styles along the way
+  		let columnCount = 0;
+
+  		// build the submenus/columns
+  		menus.forEach((menu) => {
+  			const submenu = menu.menus;
+  			const menuEl = document.createElement("li");
+
+  			menuEl.classList.add("mega-menu__submenu__column");
+
+  			// skip empty submenus
+  			if (submenu.length > 0) {
+  				const submenuEl = document.createElement("ul");
+
+  				if (menu.setting.item_layout == "image") {
+
+  					menuEl.append(createFigure(menu));
+  				} else if (menu.setting.item_layout != "block" && menu.setting.url != null) {
+  					menuEl.append(createNavElement(menu, ['column-header']))
+  				}
+
+  				submenu.forEach((item) => {
+  					const li = document.createElement("li");
+  					li.classList.add("mega-menu__submenu-item");
+  					
+  					if (item.setting.item_layout == "image") {
+  						li.append(
+  							createFigure(item)
+  						);
+  					} else {
+  						li.appendChild(
+  							createNavElement(item)
+  						);
+  					}
+  					
+  					submenuEl.appendChild(li);
+  				});
+
+  				menuEl.append(submenuEl);
+  			} else if (menu.setting.item_layout == "image") {
+  				const img = document.createElement("img");
+  				img.src = menu.setting.image;
+  				img.setAttribute("loading", "lazy");
+  				menuEl.append(createFigure(menu));
+  			} else {
+  				return;
+  			}
+
+  			megaMenuEl.append(menuEl);
+  			// only increment the column count on non-empty submenus
+  			columnCount++;
+  		});
+
+  		// set column count custom property
+  		megaMenuEl.style.setProperty("--column-count", 1);
+  		megaMenuEl.style.setProperty("--lg-column-count", columnCount);
+  		megaMenuWrap.append(megaMenuEl);
+  		return megaMenuWrap;
+  	}
+
+  	
+   /**
+    * Description
+    * @param {qikify menu object} menu
+    * @param {[string]} classes=null
+    * @returns {HTMLElement}
+    */
+  	function createFigure(menu, classes = null) {
+  		if (menu.setting.item_layout != "image") {
+  			return;
+  		}
+
+  		const fig = document.createElement('figure');
+  		const img = document.createElement('img');
+
+  		img.src = `${menu.setting.image}?width=200`;
+  		img.alt = menu.setting.title;
+  		img.width = 240;
+  		img.setAttribute("loading", "lazy");
+  		img.setAttribute("height", "auto");
+  		img.setAttribute("aria-hidden", true);
+  		img.setAttribute("role", "presentation");
+  		fig.append(img);
+
+  		if (menu.setting.title != null) {
+  			const captionEl = document.createElement('figcaption');
+  			captionEl.innerText = menu.setting.title;
+  			fig.append(captionEl)
+
+  			if (menu.setting.image_position == "bellow") {
+  				fig.classList.add('image-below');
+  			}
+  		}
+
+  		if (menu.setting.url != null) {
+  			const a = document.createElement('a');
+  			a.href = extractLink(menu);
+  			a.append(fig);
+
+  			if (classes != null) {
+  				a.classList.add(...classes)
+  			}
+  			
+  			return a;
+  		} else {
+  			if (classes != null) {
+  				fig.classList.add(...classes)
+  			}
+  			
+  			return fig;
+  		}
+  	}
+
+   /**
+    * Description
+    * @param {qikify menu object} menu
+    * @returns {string} link for the given menu object
+    */
+  	function extractLink(menu) {
+  		// excessive but since we're dealing with third party code for which we haven't accounted every possibility, we should make sure to fail relatively gracefully
+  		if (menu == null || menu.setting == null || menu.setting.url == null || menu.setting.url.type == null || menu.setting.url.type.id == null ||
+  		menu == undefined || menu.setting == undefined || menu.setting.url == undefined || menu.setting.url.type == undefined || menu.setting.url.type.id == undefined) {
+  			return ""
+  		}
+  		const itemLinkType = menu.setting.url.type.id;
+  		let link;
+  		// this is rough
+  		if (itemLinkType == "page" && menu.setting.url.page != null) {
+  			link = `/pages/${menu.setting.url.page.handle}`
+  		} else if (itemLinkType == "collection" && menu.setting.url.collection != null) {
+  			link = `/collections/${menu.setting.url.collection.handle}`;
+  		} else if (itemLinkType == "blog" && menu.setting.url.blog != null) {
+  			link = `/blogs/${menu.setting.url.blog.handle}`;
+  		} else if (menu.setting.url.collection != null && menu.setting.url.collection != undefined && menu.setting.url.collection != null) {
+  			link = `/collections/${menu.setting.url.collection.handle}`
+  		} else if (menu.setting.url.product != null && menu.setting.url.product != undefined && menu.setting.url.product != null) {
+  			link = `/products/${menu.setting.url.product.handle}`
+  		} else if (menu.setting.url.link != undefined && typeof menu.setting.url.link == "string" && menu.setting.url.link != "#") {
+  			link = menu.setting.url.link;
+  		} else {
+  			return ``;
+  		}
+
+  		return link
+  	}
+
+  	newMenuContainer.appendChild(newMenu);
+
+  	navTarget.appendChild(newMenuContainer);
+
+  	window.addEventListener("DOMContentLoaded", () => {
+  		const headerToggle = document.querySelector("button.header-toggle")
+
+  		headerToggle.addEventListener("click", () => {
+  			header.classList.toggle("main-nav-open");
+  			document.body.classList.toggle("no-scroll");
+  			document.documentElement.classList.toggle("no-scroll");
+  		})
+  	})
+</script>

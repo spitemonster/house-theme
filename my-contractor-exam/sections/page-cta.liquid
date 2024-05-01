@@ -1,0 +1,83 @@
+{% liquid
+  assign has-image = section.settings.image
+%}
+
+{{ "page-cta.css" | asset_url | stylesheet_tag }}
+
+{% if has-image %}
+  <section class="page-cta container p-block-xxl {% unless has-image %}image{% endunless %}" style="background: url('{{ section.settings.image | image_url: width: 1440 }}') no-repeat; background-size: cover;">
+{% else %}
+  <section class="page-cta background-color-blue-500 {% unless has-image %}no-image{% endunless %}">
+{% endif %}
+  <div class="page-cta__upper {% unless has-image %}d-flex align-items-center flex-column{% endunless %}">
+    <heading class="{% unless has-image %}d-flex align-items-center flex-column{% endunless %}"">
+      <h3>{{section.settings.heading}}</h3>
+      {{section.settings.subheading}}
+    </heading>
+    <div class="page-cta__lower d-flex m-top-lg flex-column md-flex-row align-items-start" style="--gap: 28px;">   
+      {% for block in section.blocks %}
+        {% assign item = block.settings %}
+        {% assign loop_count = loop_count | plus: 1 %}
+        {% if loop_count == 1 %}
+          <a class="button--yellow" href="{{item.url}}">{{item.label}}</a>
+        {% elsif loop_count == 2 %}
+          <a class="button--green" href="{{item.url}}">{{item.label}}</a>
+        {% endif %}
+      {% endfor %}
+    </div>
+   </div>
+</section>
+
+{% schema %}
+  {
+    "name": "Page CTA",
+    "tag": "section",
+    "class": "page-cta",
+	"enabled_on": {
+		"templates": [
+			"collection",
+			"product",
+			"page",
+			"index"
+		]
+	},
+    "settings": [
+      {
+        "id": "heading",
+        "label": "Heading",
+        "type": "text",
+        "default": "Lorem ipsum dolor? "
+      },
+      {
+        "id": "subheading",
+        "label": "Subheading",
+        "type": "richtext",
+        "default": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>"
+      },
+      {
+        "id": "image",
+        "label": "Background Image",
+        "type": "image_picker"
+      }
+    ],
+    "max_blocks": 2,
+    "blocks": [
+      {
+        "name": "Button",
+        "type": "button",
+        "settings": [
+          {
+            "id": "url",
+            "label": "URL",
+            "type": "url"
+          },
+          {
+            "id": "label",
+            "label": "Label",
+            "type": "text"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

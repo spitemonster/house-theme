@@ -1,0 +1,12 @@
+{% liquid
+  if heading == blank
+    assign heading = "Your Cart is Empty"
+  endif
+%}
+
+<div id="cart-empty" class="text-center m-block-xl">
+  <h1 class="md-m-bottom-md">{{ heading }}</h1>
+  <div class="d-flex justify-content-center">
+    <a href="/collections/all" class="button--yellow">Continue Shopping</a>
+  </div>
+</div>

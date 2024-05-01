@@ -1,0 +1,20 @@
+{
+    "sections": {
+        "header": {
+            "type": "page-header",
+            "settings": {
+                "background_image": "",
+                "heading": "Lorem Ipsum",
+                "content": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>",
+                "show_breadcrumbs": true
+            }
+        },
+        "posts": {
+            "type": "blog-posts",
+            "settings": {
+                "enable_filter": true
+            }
+        }
+    },
+    "order": ["header", "posts"]
+}

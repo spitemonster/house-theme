@@ -1,0 +1,32 @@
+@import "scss/core/mixins/media";
+
+.page-header {
+	position: relative;
+
+	&__background-image {
+		position: absolute;
+		top: 0;
+		right: 0;
+		height: 100%;
+		width: 100%;
+		max-width: 40%;
+		object-fit: contain;
+		z-index: 0;
+		object-position: center right;
+	}
+
+	&__content-wrap {
+		position: relative;
+		z-index: 1;
+	}
+
+	h1:only-child {
+		margin-bottom: 0;
+	}
+
+	@include media-breakpoint-down(md) {
+		.page-header__background-image {
+			display: none;
+		}
+	}
+}

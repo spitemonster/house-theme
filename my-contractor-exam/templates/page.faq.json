@@ -1,0 +1,113 @@
+{
+    "sections": {
+        "header": {
+            "type": "page-header",
+            "disabled": true,
+            "settings": {
+                "background_image": "shopify://shop_images/contractor-licensing-cta_d2b898f1-e38b-484f-90cf-8f4f36410836.jpg",
+                "heading": "Frequently Asked Questions",
+                "content": ""
+            }
+        },
+        "faq": {
+            "type": "faq",
+            "blocks": {
+                "4dac6431-3afe-4181-9070-6c370768f25f": {
+                    "type": "asked-question",
+                    "settings": {
+                        "question": "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat?",
+                        "answer": "<p>Lorem ipsum</p>"
+                    }
+                },
+                "598fc7fc-9380-4b5f-bb68-cf34a58d0a78": {
+                    "type": "asked-question",
+                    "settings": {
+                        "question": "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat?",
+                        "answer": "<p>Lorem ipsum</p>"
+                    }
+                },
+                "14e34ab4-4566-4678-a7a0-312fbc220f4a": {
+                    "type": "asked-question",
+                    "settings": {
+                        "question": "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat?",
+                        "answer": "<p>Lorem ipsum</p>"
+                    }
+                },
+                "818a19df-6ffd-4571-bff8-778b262a6334": {
+                    "type": "asked-question",
+                    "settings": {
+                        "question": "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat?",
+                        "answer": "<p>Lorem ipsum</p>"
+                    }
+                },
+                "985e84f8-ed63-40eb-8f2b-a666a1259939": {
+                    "type": "asked-question",
+                    "settings": {
+                        "question": "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat?",
+                        "answer": "<p>Lorem ipsum</p>"
+                    }
+                },
+                "d2ae0c0d-ce71-4fa9-b4bd-77920f98473c": {
+                    "type": "asked-question",
+                    "settings": {
+                        "question": "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat?",
+                        "answer": "<p>Lorem ipsum</p>"
+                    }
+                },
+                "01ad15a3-163a-4c2a-8c3c-0feab1fb12c1": {
+                    "type": "asked-question",
+                    "settings": {
+                        "question": "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat?",
+                        "answer": "<p>Lorem ipsum</p>"
+                    }
+                },
+                "dcdeef14-f3da-45ff-8ad8-997e7e895e61": {
+                    "type": "asked-question",
+                    "settings": {
+                        "question": "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat?",
+                        "answer": "<p>Lorem ipsum</p>"
+                    }
+                },
+                "0b59de82-ad8c-4b02-bb36-7c7eac3c0158": {
+                    "type": "asked-question",
+                    "settings": {
+                        "question": "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat?",
+                        "answer": "<p>Lorem ipsum</p>"
+                    }
+                },
+                "8181e14c-2623-4b39-8498-e4cb4ae18b28": {
+                    "type": "asked-question",
+                    "settings": {
+                        "question": "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat?",
+                        "answer": "<p>Lorem ipsum</p>"
+                    }
+                },
+                "75b9b2d3-a573-47d9-9be2-f49230c1f5e6": {
+                    "type": "asked-question",
+                    "settings": {
+                        "question": "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat?",
+                        "answer": "<p>Lorem ipsum</p>"
+                    }
+                }
+            },
+            "block_order": [
+                "4dac6431-3afe-4181-9070-6c370768f25f",
+                "598fc7fc-9380-4b5f-bb68-cf34a58d0a78",
+                "14e34ab4-4566-4678-a7a0-312fbc220f4a",
+                "818a19df-6ffd-4571-bff8-778b262a6334",
+                "985e84f8-ed63-40eb-8f2b-a666a1259939",
+                "d2ae0c0d-ce71-4fa9-b4bd-77920f98473c",
+                "01ad15a3-163a-4c2a-8c3c-0feab1fb12c1",
+                "dcdeef14-f3da-45ff-8ad8-997e7e895e61",
+                "0b59de82-ad8c-4b02-bb36-7c7eac3c0158",
+                "8181e14c-2623-4b39-8498-e4cb4ae18b28",
+                "75b9b2d3-a573-47d9-9be2-f49230c1f5e6"
+            ],
+            "settings": {
+                "section_heading": "Frequently Asked Questions",
+                "section_info": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing.</p>"
+            }
+        }
+    },
+    "order": ["header", "faq"]
+}

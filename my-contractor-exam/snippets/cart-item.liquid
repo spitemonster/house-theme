@@ -1,0 +1,83 @@
+{% liquid
+
+  assign has_discount = false
+
+  if item.total_discount > 0
+    assign has_discount = true
+  endif
+
+  assign is_part_of_bundle = false
+
+  if item.line_level_discount_allocations
+    for discount_alloc in item.line_level_discount_allocations
+      if discount_alloc.discount_application.title contains "Bundle"
+        assign is_part_of_bundle = true
+      else
+      endif
+    endfor
+  endif
+%}
+
+{% if item != blank %}
+
+  {% liquid
+
+    if item.image != blank
+      assign display_img = item.image
+    else
+      assign display_img = settings.fallback_image
+    endif
+  %}
+
+  <div
+    class="cart-item m-bottom-md flex flex-column md-flex-row align-items-center border-bottom-base p-block-md"
+    style="--gap: var(--spacer-lg);"
+    data-product-id="{{ item.variant_id }}"
+    data-item-key="{{ item.key }}"
+    data-item-index="{{ index }}">
+    <figure class="cart-item__img flex-no-shrink">
+      <img
+        src="{{ display_img | image_url: width: 240 }}"
+        alt="{{ item.title }}"
+        loading="eager"
+        width="120"
+        height="120">
+    </figure>
+    <div class="cart-item__details p-block-base flex flex-column width-100 justify-content-center">
+      <h3 class="text-center md-text-left">
+        <a class="color-black text-decoration-none" href="{{ item.url }}">{{ item.title }}
+          {% if is_part_of_bundle %}
+            <span class="font-size-base color-green-500">(Bundled)</span>
+          {% endif %}
+        </a>
+      </h3>
+    </div>
+    <div class="display-inline-flex flex-row align-items-center flex-shrink-none" style="--gap: var(--spacer-sm);">
+      <div class="quantity-input m-right-md md-m-right-0" data-product-id="{{ item.key }}">
+        <button data-action="remove">
+          <span class="visually-hidden">Remove one {{ item.title }} from cart</span>
+          -
+        </button>
+        <input
+          type="number"
+          class="quantity-value"
+          value="{{ item.quantity }}" />
+        <button data-action="add">
+          <span class="visually-hidden">Add one {{ item.title }} to cart</span>
+          +
+        </button>
+      </div>
+      <button class="btn remove flex align-items-center justify-content-center p-sm background-color-porcelain-300">
+        <span class="visually-hidden">Remove {{ item.title }} from cart</span>
+        {% render 'icon-trash' %}
+      </button>
+    </div>
+    <div>
+      {% if has_discount %}
+        <p class="line-total text-line-through">{{ item.original_price | money }}</p>
+      {% endif %}
+      <p class="m-top-none h4 line-total color-green-500">{{ item.final_line_price | money }}</p>
+    </div>
+  </div>
+
+{% endif %}

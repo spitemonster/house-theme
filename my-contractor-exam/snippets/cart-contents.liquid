@@ -1,0 +1,17 @@
+{% liquid
+	
+%}
+
+<div class="cart-contents">
+  <form
+    action="{{ routes.cart_url }}"
+    class="cart-contents critical-hidden"
+    method="post"
+    id="cart">
+    <div class="cart-items">
+      {% for item in cart.items %}
+        {% render "cart-item", item: item %}
+      {% endfor %}
+    </div>
+  </form>
+</div>

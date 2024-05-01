@@ -1,0 +1,66 @@
+@import "mixins/visually-hidden";
+
+.visually-hidden {
+	@include visually-hidden();
+}
+
+ul {
+	&.unstyled {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+}
+
+$size_options: (
+	"auto": auto,
+	"100": 100%,
+	"75": 75%,
+	"66": 66%,
+	"50": 50%,
+	"33": 33%,
+	"25": 25%
+);
+
+$sides: (
+	"top",
+	"right",
+	"bottom",
+	"left"
+);
+
+@each $label, $size in $size_options {
+	.height-#{$label} {
+		height: $size;
+	}
+
+	.width-#{$label} {
+		width: $size;
+	}
+
+	.min-height-#{$label} {
+		min-height: $size;
+	}
+
+	.min-width-#{$label} {
+		min-width: $size;
+	}
+
+	.max-height-#{$label} {
+		max-height: $size;
+	}
+
+	.max-width-#{$label} {
+		max-width: $size;
+	}
+
+	@each $side in $sides {
+		.#{$side}-#{$label} {
+			#{$side}: $size;
+		}
+	}
+}
+
+.square {
+	aspect-ratio: 1/1;
+}

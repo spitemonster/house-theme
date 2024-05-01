@@ -1,0 +1,78 @@
+{% liquid
+%}
+
+<div class="activate__inner container m-block-lg">
+  <h1 class="display-md m-bottom-lg">Activate Your Account</h1>
+
+  {%- form 'activate_customer_password' -%}
+    {%- if form.errors -%}
+      <h2 class="font-size-lead color-red-500 m-bottom-base">
+        There were errors with your submission.
+      </h2>
+    {%- endif -%}
+
+    <div>
+      <label>
+        <input
+          type="password"
+          name="customer[password]"
+          id="password"
+          class="p-inline-base p-block-sm"
+          autocomplete="new-password"
+          placeholder=""
+          {% if form.errors contains 'password' %}
+          aria-invalid="true"
+          aria-describedby="password-error"
+          {% endif %}>
+        <span>Password</span>
+        {%- if form.errors contains 'password' -%}
+          <small id="password-error" class="display-block color-red-500 m-top-xs">
+            {{ form.errors.translated_fields.password | capitalize }}
+            {{ form.errors.messages.password }}
+          </small>
+        {%- endif -%}
+      </label>
+    </div>
+
+    <div class="m-top-base">
+      <label>
+        <input
+          type="password"
+          name="customer[password_confirmation]"
+          id="password_confirmation"
+          autocomplete="new-password"
+          class="p-inline-base p-block-sm"
+          placeholder=""
+          {% if form.errors contains 'password' %}
+          aria-invalid="true"
+          aria-describedby="password_confirmation-error"
+          {% endif %}>
+        <span>Confirm Password</span>
+        {%- if form.errors contains 'password_confirmation' -%}
+          <small id="password_confirmation-error" class="display-block color-red-500">
+            {{ form.errors.translated_fields.password_confirmation | capitalize }}
+            {{ form.errors.messages.password_confirmation }}
+          </small>
+        {%- endif -%}
+      </label>
+    </div>
+
+    <div class="flex m-top-base" style="--gap: 1rem;">
+
+      <button class="button--yellow">
+        Submit & Create
+      </button>
+      <button class="button--red" name="decline">
+        Cancel
+      </button>
+    </div>
+  {%- endform -%}
+</div>
+
+{% schema %}
+  {
+    "name": "Activate",
+    "tag": "section",
+    "class": "activate"
+  }
+{% endschema %}

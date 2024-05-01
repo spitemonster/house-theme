@@ -1,0 +1,67 @@
+{% comment %}
+  A loop to catch and filter out the different tag categories.
+  This is mainly for advanced tagging, but will also help us strip
+  out any tag categories from our tags (E.g. remove BRAND_ from BRAND_tag)
+{% endcomment %}
+{% if template.name == 'collection' and collection.all_tags.size > 0 %}
+  {% assign categories = '' %}
+  {% for tag in collection.all_tags %}
+    {% if tag contains '_' %}
+      {% capture categories %}{% unless categories == blank  %}{{ categories }}|{% endunless %}{{ tag | split: '_' | first }}{% endcapture %}
+    {% endif %}
+  {% endfor %}
+  {% assign cat_array = categories | split: '|' | uniq %}
+{% endif %}
+
+{% unless template.name == 'index' or template.name == 'cart' %}
+  <nav
+    class="breadcrumbs text-bold m-bottom-base"
+    role="navigation"
+    aria-label="breadcrumbs">
+    <a class="color-black text-decoration-none" href="/">Home</a>
+
+    {% if template.name == 'product' %}
+
+      {% if collection %}
+        <span class="divider" aria-hidden="true">&rsaquo;</span>
+        {% if collection.handle %}
+          {% capture url %}/collections/{{ collection.handle }}{% endcapture %}
+          {{ collection.title | link_to: url }}
+        {% endif %}
+      {% endif %}
+      <span class="divider" aria-hidden="true">&rsaquo;</span>
+      <span class="breadcrumb--truncate-block">{{ product.title }}</span>
+
+    {% elsif template.name == 'collection' and collection.handle %}
+
+      <span class="divider" aria-hidden="true">&rsaquo;</span>
+      <a class="color-black text-decoration-none" href="/collections/all">Collections</a>
+      <span class="divider" aria-hidden="true">&rsaquo;</span>
+
+      <span>{{ collection.title }}</span>
+
+    {% elsif template.name == 'blog' %}
+
+      <span class="divider" aria-hidden="true">&rsaquo;</span>
+      <span>{{ page_title }}</span>
+
+    {% elsif template.name == 'article' %}
+
+      <span class="divider" aria-hidden="true">&rsaquo;</span>
+      {{ blog.title | link_to: blog.url }}
+      <span class="divider" aria-hidden="true">&rsaquo;</span>
+      <span>{{ article.title }}</span>
+
+    {% elsif template.name == 'page' %}
+
+      <span class="divider" aria-hidden="true">&rsaquo;</span>
+      <span>{{ page.title }}</span>
+
+    {% else %}
+
+      <span class="divider" aria-hidden="true">&rsaquo;</span>
+      <span>{{ page_title }}</span>
+
+    {% endif %}
+  </nav>
+{% endunless %}

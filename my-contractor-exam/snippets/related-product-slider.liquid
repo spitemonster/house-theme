@@ -1,0 +1,64 @@
+{{ "product-slider.css" | asset_url | stylesheet_tag }}
+
+
+<div
+  class="product-slider related-product-slider p-bottom-lg"
+  style="--sm-slides-visible: 1; --md-slides-visible: 2; --lg-slides-visible: 4;"
+  data-product-url="{{ routes.product_recommendations_url }}.json?product_id={{ product.id }}">
+  <div class="related-products-slider__inner">
+    <button data-direction="prev">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none">
+        <path
+          d="M15 6L9 12L15 18"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round" />
+      </svg>
+      <span class="visually-hidden">Previous Product</span>
+    </button>
+    <div class="product-slider__product-area container pb-sm">
+      <a
+        href="#"
+        class="product-card__link"
+        id="product-card-template">
+        <figure class="product-card card linked">
+          <div class="product-card__image-wrap">
+            <img src="" alt="" />
+          </div>
+          <figcaption>
+            <h3></h3>
+            <div class="product-card__price flex align-items-center" style="--gap: var(--spacer-base);">
+              <p class="price color-green-500"></p>
+              <p class="compare-at">
+                <span class="visually-hidden"></span>
+              </p>
+            </div>
+            <p class="price"></p>
+          </figcaption>
+        </figure>
+      </a>
+    </div>
+    <button data-direction="next">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none">
+        <path
+          d="M9 18L15 12L9 6"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round" />
+      </svg>
+      <span class="visually-hidden">Next Product</span>
+    </button>
+  </div>
+</div>
+
+<script src="{{ "related-product-slider.js" | asset_url }}" defer></script>

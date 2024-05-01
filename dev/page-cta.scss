@@ -1,0 +1,25 @@
+@import "/dev/scss/core/mixins/media";
+
+.page-cta {
+    &__upper {
+        color: white;
+
+        h3 {
+            
+            font-size: var(--font-size-display-md);
+        }
+
+        p {
+            max-width: 40.125rem;
+            font-size: var(--font-size-h4);
+        }
+    }
+
+    &.no-image {
+        .page-cta__upper {
+            p {
+                text-align: center;
+            }
+        }
+    }
+}

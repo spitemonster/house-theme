@@ -1,0 +1,43 @@
+{% liquid
+  assign custom_fields = collection.metafields.custom
+  assign heading = section.settings.heading
+  assign related_collections = custom_fields.related_collections.value
+
+  if custom_fields.related_collections_heading_override != blank
+    assign heading = custom_fields.related_collections_heading_override
+  endif
+%}
+
+{% if related_collections != blank %}
+
+  <div class="related-collections__inner container">
+    {% if heading != blank %}
+      <h2 class="display-md m-bottom-lg">{{ heading }}</h2>
+    {% endif %}
+
+    <div class="grid" style="--column-count: 1; --md-column-count: 2; --gap: var(--spacer-md);">
+      {% for col in related_collections %}
+        {% render "collection-card"
+          , collection: col %}
+      {% endfor %}
+    </div>
+
+  </div>
+
+{% endif %}
+
+{% schema %}
+  {
+    "name": "Related Collections",
+    "class": "related-collections m-bottom-lg",
+    "tag": "section",
+    "settings": [
+      {
+        "id": "heading",
+        "label": "Heading",
+        "type": "text",
+        "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+      }
+    ]
+  }
+{% endschema %}

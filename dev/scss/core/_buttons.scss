@@ -1,0 +1,14 @@
+.btn {
+	display: inline-block;
+	background: white;
+	padding: var(--spacer-sm) 1.75rem;
+	border: none;
+	font-weight: 600;
+	text-transform: uppercase;
+	border-radius: var(--border-radius-sm);
+	cursor: pointer;
+	transition: all 120ms ease;
+	text-decoration: none;
+	color: var(--color-black);
+	text-align: center;
+}

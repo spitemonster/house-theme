@@ -1,0 +1,45 @@
+.accordion-group {
+    .accordion-item {
+        cursor: pointer;
+        margin-bottom: var(--spacer-base);
+        border-radius: var(--border-radius-lg);
+        box-shadow: var(--box-shadow);
+
+        &:last-child {
+            margin-bottom: 0;
+        }
+
+        summary {
+            list-style: none;
+			padding: var(--spacer-base-lg);
+
+            h3 {
+                font-style: normal;
+                line-height: 120%;
+            }
+
+            .chevron {
+                margin-left: auto;
+                border-radius: 100%;
+                padding: var(--spacer-sm);
+				flex-shrink: 0;
+            }
+        }
+    
+        summary::-webkit-details-marker {
+            display: none;
+        }
+
+        &__content {
+			padding-inline: var(--spacer-base-lg);
+			padding-bottom: var(--spacer-base-lg);
+        }
+    }
+
+    details[open] {
+        .chevron {
+            transform: rotate(180deg);
+        }
+    }
+}
+    

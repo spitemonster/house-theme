@@ -1,0 +1,29 @@
+{% liquid
+%}
+<div class="related-products__inner">
+
+  {% if section.settings.heading != blank %}
+    <div class="container m-bottom-md">
+      <h2 class="display-md">{{ section.settings.heading }}</h2>
+    </div>
+  {% endif %}
+
+  {% render "related-product-slider"
+    , product: product %}
+</div>
+
+{% schema %}
+  {
+    "name": "Related Products",
+    "class": "related-products",
+    "tag": "section",
+    "settings": [
+      {
+        "id": "heading",
+        "label": "Heading",
+        "type": "text",
+        "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+      }
+    ]
+  }
+{% endschema %}

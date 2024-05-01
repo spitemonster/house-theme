@@ -1,0 +1,108 @@
+{% liquid
+
+  assign custom_fields = collection.metafields.custom
+
+  assign sidebar_heading = section.settings.sidebar_heading
+  assign sidebar_content = section.settings.sidebar_content
+
+  assign content_areas = custom_fields.content_areas.value
+  assign content_areas_count = content_areas.count
+
+  if custom_fields.sidebar_heading_override != blank
+    assign sidebar_heading = custom_fields.sidebar_heading_override
+  endif
+
+  if custom_fields.sidebar_content_override != blank
+    assign sidebar_content = custom_fields.sidebar_content_override | metafield_tag
+  endif
+%}
+
+{% if content_areas_count > 0 %}
+
+  {{ "collection-content-areas.css" | asset_url | stylesheet_tag }}
+
+  <div id="main-content" class="collection-content-areas__inner grid">
+    <aside class="collection-content-areas__sidebar position-relative lg-position-sticky background-color-porcelain-300 p-md lg-p-lg col" style="--column-span: 12; --lg-column-span: 5;">
+      <h3 class="h1 m-bottom-md">{{ sidebar_heading }}</h3>
+      <div class="lead">
+        {{ sidebar_content }}
+      </div>
+      <div class="collection-content-areas__sidebar__links m-top-lg">
+        <nav>
+          <menu class="p-none m-none">
+            {% for content_area in content_areas %}
+              {% liquid
+                assign anchor_text = content_area.sidebar_label | handleize
+              %}
+              <li>
+                <a class="display-flex justify-content-between" href="#{{ anchor_text }}">
+                  <span>{{ content_area.sidebar_label }}</span>
+                  <span>{% render "icon-link-arrow" %}</span>
+                </a>
+              </li>
+
+              {% for block in section.blocks %}
+                {% if block.type == "additional-link" %}
+                  {% assign link = block.settings %}
+                  <li>
+                    <a class="display-flex justify-content-between" href="{{ link.url }}">
+                      <span>{{ link.label }}</span>
+                      <span>{% render "icon-link-arrow" %}</span>
+                    </a>
+                  </li>
+                {% endif %}
+              {% endfor %}
+
+            {% endfor %}
+          </menu>
+        </nav>
+
+      </div>
+    </aside>
+    <div class="collection-content-areas__content col" style="--column-span: 12; --lg-column-span: 7;">
+      {% for content_area in custom_fields.content_areas.value %}
+        {% render "collection-content-area"	
+          , content_area: content_area %}
+      {% endfor %}
+    </div>
+  </div>
+{% endif %}
+
+{% schema %}
+  {
+    "name": "Collection Content Areas",
+    "tag": "section",
+    "class": "collection-content-areas container display-block position-relative",
+    "settings": [
+      {
+        "type": "text",
+        "id": "sidebar_heading",
+        "label": "Sidebar Heading",
+        "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+      }, {
+        "type": "richtext",
+        "id": "sidebar_content",
+        "label": "Sidebar Content",
+        "default": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>"
+      }
+    ],
+    "blocks": [
+      {
+        "name": "Additional Link",
+        "type": "additional-link",
+        "limit": 4,
+        "settings": [
+          {
+            "type": "url",
+            "id": "URL",
+            "label": "Link URL"
+          }, {
+            "type": "text",
+            "id": "label",
+            "label": "Link Label"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

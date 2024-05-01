@@ -1,0 +1,64 @@
+{% liquid
+  assign custom_fields = collection.metafields.custom
+  assign featured_products = custom_fields.featured_products.value
+  assign product_count = featured_products.count
+  assign heading = section.settings.heading
+  assign display_featured_products_heading = true
+
+  if custom_fields.featured_products_heading_override != blank
+    assign heading = custom_fields.featured_products_heading_override
+  endif
+
+  # done this way so that the heading is only hidden if the user deliberately selects false
+  if custom_fields.display_featured_products_heading == false
+    assign display_featured_products_heading = false
+  endif
+%}
+
+{% if product_count > 0 %}
+
+  <section id="featured-products" class="featured-products_inner p-block-lg">
+    {% if heading != blank and heading != "" and display_featured_products_heading != false %}
+      <h2 class="display-md m-bottom-lg">{{ heading }}</h2>
+    {% endif %}
+    <div class="featured-products__grid flex flex-column" style="--gap: var(--spacer-base); --lg-gap: var(--spacer-md);">
+      {% for product in featured_products %}
+        {% render "product-card"
+          , product: product
+          , price_style: section.settings.price_style
+          , card_type: "expanded" %}
+      {% endfor %}
+    </div>
+
+  </section>
+
+{% endif %}
+
+{% schema %}
+  {
+    "name": "Featured Products",
+    "tag": "section",
+    "class": "featured-products container",
+    "settings": [
+      {
+        "id": "heading",
+        "label": "Heading",
+        "type": "text",
+        "default": "Featured Products"
+      }, {
+        "id": "price_style",
+        "label": "Price Style",
+        "type": "select",
+        "options": [
+          {
+            "value": "default",
+            "label": "Default"
+          }, {
+            "value": "from",
+            "label": "From"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

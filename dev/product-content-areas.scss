@@ -1,0 +1,78 @@
+@import "/dev/scss/core/functions";
+@import "/dev/scss/core/mixins/visually-hidden";
+@import "/dev/scss/core/mixins/media";
+
+.product-content-areas {
+	position: relative;
+	overflow: hidden;
+
+	&__inner {
+
+	}
+
+	&__tabs {
+		
+		position: sticky;
+		top: 0;
+		left: 0;
+		overflow: scroll;
+		
+		nav {
+			
+		}
+
+		menu {
+			padding: 0;
+			margin: 0;
+			display: flex;
+			flex-direction: row;
+			flex-wrap: nowrap;
+			list-style: none;
+
+			li {
+				display: contents;
+			}
+		}
+	}
+
+	.product-content-area {
+		background: var(--color-porcelain-200);
+
+		@include media-breakpoint-up(md) {
+			&:not([aria-expanded]) {
+				display: none;
+			}
+		}
+
+		&__tab {
+			position: relative;
+			display: block;
+			cursor: pointer;
+			display: block;
+			width: max(calc(100% / 4.25), calc(100% / var(--tabCount)));
+			background: var(--color-porcelain-400);
+			border-bottom-left-radius: 0;
+			border-bottom-right-radius: 0;
+
+			&::before {
+				content: "";
+				position: absolute;
+				top: 0;
+				background: var(--color-blue-500);
+				height: to_rem(4);
+				width: 0;
+				left: 50%;
+				transition: all 120ms ease;
+			}
+
+			&[aria-selected] {
+				background: var(--color-porcelain-200);
+				
+				&::before {
+					width: 100%;
+					left: 0;
+				}
+			}
+		}
+	}
+}

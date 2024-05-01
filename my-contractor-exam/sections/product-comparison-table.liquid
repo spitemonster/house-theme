@@ -1,0 +1,176 @@
+{% comment %} retrieve an array of products from a collection and compare their features {% endcomment %}
+
+{% liquid
+
+  assign custom_fields = collection.metafields.custom
+  assign comparison_products = custom_fields.comparison_table_products.value
+
+  # collect all features
+  # new array
+  assign product_features = ""
+  assign product_features = product_features | split: ","
+
+  # iterate through all products, add their features to the array
+  # start from the end because we assume the last product to be the most thoroughly featured product
+  # and thus ensures the features are placed on the table in the correct order
+  for product in comparison_products reversed
+    assign feat = product.metafields.custom.product_features
+    for f in feat.value
+      assign t = f | split: ","
+      assign product_features = product_features | concat: t
+    endfor
+  endfor
+
+  # determine if we have footer content
+  # we use the class to style the tables border radius depending on if there is a table footer or not
+  assign footer_content = section.settings.footer_content
+  assign has_footer_content = false
+  assign has_footer_class = ""
+
+  if custom_fields.comparison_table_footer_content != blank
+    assign footer_content = custom_fields.comparison_table_footer_content
+  endif
+
+  if footer_content != blank
+    assign has_footer_content = true
+    assign has_footer_class = "has_footer"
+  endif
+
+  # remove duplicate and empty items from the array
+  assign product_features = product_features | uniq | compact
+%}
+
+{% if comparison_products.count > 0 %}
+  {% if section.settings.section_heading != empty %}
+    <h2 class="display-md m-bottom-md">{{ section.settings.section_heading }}</h2>
+  {% endif %}
+  {{ "product-comparison-table.css" | asset_url | stylesheet_tag }}
+  <div
+    id="comparison-table"
+    class="product-comparison-table__inner {{ has_footer_class }}"
+    style="--productCount: {{ comparison_products.count }}; --colCount: {{ comparison_products.count | plus: 1 }};">
+    <table cellspacing="1">
+      <thead>
+        <tr>
+          <th>
+            <div>
+              <p class="h2 table-heading">
+                {{ section.settings.table_heading }}
+              </p>
+            </div>
+          </th>
+          {% for product in comparison_products %}
+            {% liquid
+              assign title = product.metafields.custom.comparison_title
+              assign short_description = product.metafields.custom.short_description
+
+              if title == blank
+                assign title = product.title
+              endif
+            %}
+            <th scope="col">
+              <div class="flex flex-column align-items-center justify-content-start p-inline-md">
+                <p class="product-title h2">
+                  {{ title }}
+                </p>
+                <p class="product-price h2 m-top-none">
+                  {{ product.price | money_without_trailing_zeros }}
+                </p>
+                {% if short_description != blank %}
+                  <p class="product-short-description">{{ short_description }}</p>
+                {% endif %}
+                <a href="{{ product.url }}" class="display-inline-block m-top-base button--yellow align-self-end">
+                  Learn More</a>
+              </div>
+            </th>
+          {% endfor %}
+        </tr>
+      </thead>
+      <tbody>
+        {% if section.settings.featured_row_heading != blank and section.settings.featured_row_content != blank %}
+          <tr scope="row" class="background-color-light-blue-100 featured-row">
+            <td>{{ section.settings.featured_row_heading }}</td>
+            {% for product in comparison_products %}
+              <td>
+                <div class="featured-row-content">{{ section.settings.featured_row_content }}</div>
+              </td>
+            {% endfor %}
+          </tr>
+        {% endif %}
+
+        {% for feature in product_features %}
+          <tr scope="row">
+            <th>{{ feature }}</th>
+            {% for product in comparison_products %}
+              {% liquid
+                assign features = product.metafields.custom.product_features.value
+              %}
+              <td>
+
+                <div class="feature-content">
+                  {% if features contains feature %}
+                    {% render 'feature-check'
+                      , feature: feature %}
+                  {% endif %}
+                </div>
+              </td>
+            {% endfor %}
+          </tr>
+        {% endfor %}
+      </tbody>
+      {% if has_footer_content %}
+        <tfoot class="">
+          <tr>
+            <td class="background-color-porcelain-300 p-block-base p-inline-md" colspan="{{ comparison_products.count | plus: 1 }}">{{ section.settings.footer_content }}</td>
+          </tr>
+        </tfoot>
+      {% endif %}
+    </table>
+
+
+    {% for product in comparison_products %}
+      {% liquid
+        assign product_features = product.metafields.custom.product_features
+      %}
+    {% endfor %}
+  </div>
+
+{% endif %}
+
+{% schema %}
+  {
+    "name": "Product Comparison Table",
+    "tag": "section",
+    "class": "product-comparison-table container",
+    "settings": [
+      {
+        "id": "section_heading",
+        "type": "text",
+        "label": "Section Heading"
+      },
+      {
+        "type": "text",
+        "label": "Table Heading",
+        "id": "table_heading",
+        "default": "Lorem ipsum dolor sit amet?"
+      },
+      {
+        "type": "text",
+        "label": "Featured Row Heading",
+        "id": "featured_row_heading",
+        "default": "Lorem Ipsum"
+      },
+      {
+        "type": "text",
+        "label": "Featured Row Content",
+        "id": "featured_row_content",
+        "default": "Lorem ipsum"
+      }, {
+        "type": "inline_richtext",
+        "label": "Footer Content",
+        "id": "footer_content",
+        "default": "<i>* This is test content for the footer.</i>"
+      }
+    ]
+  }
+{% endschema %}

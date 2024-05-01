@@ -1,0 +1,37 @@
+{% liquid
+%}
+
+<header class="header background-color-blue-500">
+  {% if settings.display_announcement_bar %}
+    {% render "announcement-bar"
+      , content: settings.announcement_bar_content
+      , url: settings.announcement_bar_link
+      , id: "announcment-global" %}
+  {% endif %}
+  <div class="header__upper d-flex justify-content-between align-items-center container--min">
+    {% render 'site-logo' %}
+    <div class="display-none lg-display-flex flex align-items-center flex-grow justify-content-end" style="--gap: 1.5rem">
+      {% render 'header-search' %}
+      {% render 'cart-link' %}
+      {% render 'account-link' %}
+    </div>
+    <button class="header-toggle">
+      <span class="line"></span>
+      <span class="line"></span>
+      <span class="line"></span>
+      <span class="visually-hidden">Toggle Main Navigation</span>
+    </button>
+  </div>
+  <div class="header__lower container--min">
+    <div class="display-flex lg-display-none flex align-items-center flex-grow justify-content-center flex-wrap md-flex-nowrap p-block-base" style="--gap: 1.5rem">
+      {% render 'header-search' %}
+      {% render 'cart-link' %}
+      {% render 'account-link' %}
+    </div>
+    <div id="header-menu">
+      <nav class="mega-menu"></nav>
+    </div>
+  </div>
+</header>
+
+{% render "qikify-header-setup" %}

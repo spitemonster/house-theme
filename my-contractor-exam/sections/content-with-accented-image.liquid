@@ -1,0 +1,80 @@
+{% liquid
+%}
+
+<div class="grid m-bottom-md" style="--column-count: 1; --md-column-count: 5">
+  <div style="--column-span: 5; --md-column-span: 3;">
+    <h2 class="h4 color-blue-500">{{ section.settings.heading }}</h2>
+    <h3 class="h1">{{ section.settings.subhead }}</h3>
+  </div>
+</div>
+
+<div class="grid content-accented-image__inner" style="--column-count: 1; --md-column-count: 7; --gap: var(--spacer-md); --lg-gap: var(--spacer-xl);">
+  <div class="content-accented-image__content" style="--column-span: 1; --md-column-span: 3;">
+    {{ section.settings.content }}
+  </div>
+  <div class="d-flex justify-content-end align-items-start" style="--column-span: 1; --md-column-span: 4;">
+    <figure class="accented-image flex-shrink-none" style="--imgSrc: url('{{ section.settings.image | image_url: width: 640 }}'); ">
+      <img
+        src="{{ section.settings.image | image_url: width: 640 }}"
+        height="670"
+        width="640"
+        loading="lazy"
+        alt="{{ section.settings.heading }}" />
+      <figcaption class="statistic-row justify-content-around position-absolute top-100 d-flex align-items-center width-100">
+        {% for block in section.blocks %}
+          {% assign statistic = block.settings %}
+
+          <p class="statistic flex flex-column align-items-center justify-content-center text-center">
+            <span class="font-size-h2 font-bold">{{ statistic.stat }}</span>
+            <span>{{ statistic.label }}</span>
+          </p>
+        {% endfor %}
+      </figcaption>
+    </figure>
+  </div>
+</div>
+
+{% schema %}
+  {
+    "name": "Content + Accented Image",
+    "tag": "section",
+    "class": "container content-accented-image p-block-lg",
+    "settings": [
+      {
+        "id": "heading",
+        "label": "Heading",
+        "type": "text"
+      }, {
+        "id": "subhead",
+        "label": "Subhead",
+        "type": "text"
+      }, {
+        "id": "content",
+        "label": "Content",
+        "type": "richtext"
+      }, {
+        "id": "image",
+        "label": "Image",
+        "type": "image_picker"
+      }
+    ],
+    "blocks": [
+      {
+        "name": "Image Accent Stat",
+        "type": "image-accent-stat",
+        "limit": 3,
+        "settings": [
+          {
+            "id": "stat",
+            "label": "Stat",
+            "type": "text"
+          }, {
+            "id": "label",
+            "label": "Label",
+            "type": "text"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

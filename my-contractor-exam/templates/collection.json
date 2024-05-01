@@ -1,0 +1,52 @@
+{
+  "sections": {
+    "header": {
+      "type": "page-header",
+      "settings": {
+        "heading": "Lorem ipsum dolor sit amet, consectetur adipscing.",
+        "content": ""
+      }
+    },
+    "featured-content": {
+      "type": "collection-featured-content",
+      "settings": {
+      }
+    },
+    "featured-products": {
+      "type": "featured-products",
+      "settings": {
+        "heading": "Featured Products"
+      }
+    },
+    "comparison": {
+      "type": "product-comparison-table",
+      "settings": {
+        "table_heading": "What’s included in our exam prep packages?",
+        "featured_row_heading": "Full Set of Exam Books",
+        "featured_row_content": "Discounted price. Highlighted and tabbed for FREE*",
+        "footer_content": ""
+      }
+    },
+    "products": {
+      "type": "collection-products",
+      "settings": {
+        "heading": "Explore All Courses & Books"
+      }
+    },
+    "content-areas": {
+      "type": "collection-content-areas",
+      "settings": {
+        "sidebar_heading": "We’ve got you covered no matter where you are in your licensing journey.",
+        "sidebar_content": "<p>We help you meet all contractor license requirements with the right tools, resources, and exam prep services. Our study programs include everything you need to get a strong start in building and growing your construction career.<\/p><p>We have all the learning tools required for the exam and offer flexible courses to help you pass on the first try!<\/p><p>Jump to a specific section if you are interested:<\/p>"
+      }
+    }
+  },
+  "order": [
+    "header",
+    "featured-content",
+    "featured-products",
+    "comparison",
+    "products",
+    "content-areas"
+  ]
+}

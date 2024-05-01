@@ -1,0 +1,28 @@
+<div id="training-request-form" class="training-request-form__inner container m-block-lg">
+  <h2 class="display-md color-blue-500">{{ section.settings.heading }}</h1>
+  <div>
+	{{ section.settings.form_embed_code }}
+  </div>
+  </script>
+</div>
+
+{% schema %}
+  {
+    "name": "Training Request Form",
+    "class": "training-request-form",
+    "tag": "section",
+	"settings": [
+		{
+			"id": "heading",
+			"label": "Heading",
+			"type": "text",
+			"default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+		},
+		{
+			"id": "form_embed_code",
+			"type": "html",
+			"label": "Form Embed Code"
+		}
+	]
+  }
+{% endschema %}

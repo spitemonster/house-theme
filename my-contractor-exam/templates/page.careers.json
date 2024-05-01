@@ -1,0 +1,32 @@
+{
+    "sections": {
+        "header": {
+            "type": "page-header",
+            "settings": {
+                "heading": "Lorem ipsum dolor sit amet, consectetur adipscing.",
+                "content": "",
+                "show_breadcrumbs": true
+            }
+        },
+        "main": {
+            "type": "careers",
+            "blocks": {
+                "c5eb8302-2633-40bd-92c2-8efe0b8cd6b6": {
+                    "type": "job-opening",
+                    "settings": {
+                        "title": "Lorem ipsum",
+                        "description": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>",
+                        "requirements": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>",
+                        "benefits": "",
+                        "link": ""
+                    }
+                }
+            },
+            "block_order": ["c5eb8302-2633-40bd-92c2-8efe0b8cd6b6"],
+            "settings": {
+                "image": ""
+            }
+        }
+    },
+    "order": ["header", "main"]
+}

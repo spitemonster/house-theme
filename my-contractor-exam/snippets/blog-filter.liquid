@@ -1,0 +1,15 @@
+<nav class="blog-filter container m-block-lg">
+  <menu>
+    <li>Filter By:</li>
+    <li>
+      <a href="{{ blog.url }}" class="h4">All News</a>
+    </li>
+    {% for tag in blog.all_tags %}
+      <li>
+        <a href="{{ blog.url }}/tagged/{{ tag | handleize }}" class="h4">
+          {{ tag }}
+        </a>
+      </li>
+    {% endfor %}
+  </menu>
+</nav>

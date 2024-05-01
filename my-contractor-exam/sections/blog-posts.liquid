@@ -1,0 +1,34 @@
+{% liquid
+%}
+
+{{ "blog.css" | asset_url | stylesheet_tag }}
+
+{% if section.settings.enable_filter %}
+  {% render "blog-filter" %}
+{% endif %}
+
+<div class="blog-posts__inner container grid m-block-lg" style="--column-count: 1; --md-column-count: 2; --gap: var(--spacer-base); --md-gap: var(--spacer-md);">
+
+  {% for post in blog.articles %}
+    {% render "blog-card"
+      , post: post %}
+  {% endfor %}
+
+</div>
+
+
+{% schema %}
+  {
+    "name": "Blog Posts",
+    "tag": "section",
+    "class": "blog-posts",
+    "settings": [
+      {
+        "id": "enable_filter",
+        "label": "Enable Filter",
+        "type": "checkbox",
+        "default": true
+      }
+    ]
+  }
+{% endschema %}

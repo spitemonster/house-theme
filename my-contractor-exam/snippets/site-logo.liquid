@@ -1,0 +1,22 @@
+{% liquid
+	assign show_svg = true
+
+	if color == blank
+		assign color = "white"
+	endif
+
+	if settings.override_logo && settings.logo != blank
+		assign show_svg = false
+	endif
+%}
+
+<a href="/" title="{{ shop.name }}" class="site-logo">
+	<figure>
+		{% if show_svg %}
+			{% render 'icon-logo', color: color %}
+		{% else %}
+			<img src="{{ settings.logo | image_url: width: 240 }}" loading="eager" />
+		{% endif %}
+		<figcaption class="visually-hidden">Return to {{ shop.name }}</figcaption>
+	</figure>
+</a>

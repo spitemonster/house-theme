@@ -1,0 +1,21 @@
+<figure class="blog-card card">
+  <a href="{{ post.url }}" class="blog-card__image-wrap">
+    <img
+      src="{{ post.image | image_url: width: 600 }}"
+      alt="{{ post.title }}"
+      width="400"
+      height="400"
+      loading="eager">
+  </a>
+  <figcaption>
+    <h3 class="color-blue-500">
+      <a class="color-blue-500 text-decoration-none" href="{{ post.url }}">{{ post.title }}</a>
+    </h3>
+    <p class="m-bottom-base">
+      <span class="font-bold">{{ post.tags }}</span>
+      |
+      <span class="font-bold">{{ post.published_at | time_tag: '%b %d, %Y' }}</span>
+    </p>
+    <a href="{{ post.url }}" class="button--yellow">Read More</a>
+  </figcaption>
+</figure>

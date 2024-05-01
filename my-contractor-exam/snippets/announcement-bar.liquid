@@ -1,0 +1,37 @@
+{% liquid
+
+  assign classes = "announcement-bar__inner p-block-base"
+
+  assign color_class = "background-color-green-500"
+  
+  if color == "yellow"
+	assign color_class = "background-color-yellow-500"
+	assign classes = classes | append: " color-black"
+  else
+	assign classes = classes | append: " color-white"
+  endif
+%}
+
+{{ "announcement-bar.css" | asset_url | stylesheet_tag }}
+<aside data-announcement-id="{{ id }}" class="announcement-bar {{ color_class }} position-relative text-center font-bold font-size-lead d-flex align-items-center p-inline-base display-none">
+	{% if url != blank %}
+		<a href="{{ url }}" class="{{ classes }} display-block text-decoration-none">
+	{% else %}
+	<div class="{{ classes }}">
+	{% endif %}
+	
+	{{ content }}
+
+	
+	{% if url != blank %}
+		</a>
+	{% else %}
+		</div>
+	{% endif %}
+	<button class="announcement-bar__close">
+		<span class="visually-hidden">Close Announcement Bar</span>
+		{% render "icon-close" %}
+	</button>
+</aside>
+
+<script src="{{ "announcement-bar.js" | asset_url }}" defer></script>

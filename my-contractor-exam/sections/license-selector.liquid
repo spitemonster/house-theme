@@ -1,0 +1,153 @@
+{% liquid
+  assign background_image = section.settings.background_image
+  assign heading = section.settings.heading
+  assign subhead = section.settings.subhead
+  assign content = section.settings.header_content
+  assign selector_label = section.settings.selector_label
+%}
+
+{{ "license-selector.css" | asset_url | stylesheet_tag }}
+
+<div class="license-selector p-block-sm lg-p-none" style="--backgroundImage: url('{{ background_image }}')">
+  {% if background_image != blank %}
+    <div class="license-selector__background-wrap">
+      <img
+        srcSet="{{ background_image | image_url: width: 480 }} 480w,
+			{{ background_image | image_url: width: 960 }} 960w,
+			{{ background_image | image_url: width: 1440 }} 1440w,
+			{{ background_image | image_url: width: 1920 }} 1920w
+		"
+        sizes="(max-width: 480px) 240px, (max-width: 960px) 480px, (max-width: 1440px) 720px, (max-width: 1920) 960px"
+        role="presentation"
+        loading="eager">
+    </div>
+  {% endif %}
+  <div class="license-selector__inner container color-white">
+    {% if heading != blank and subhead == blank %}
+      <h1 class="m-bottom-lg display-lg col-12 lg-col-8">{{ heading }}</h1>
+    {% else if heading != blank and subhead != blank %}
+      <h1 class="m-bottom-base font-size-h4">
+        {{ heading }}
+      </h1>
+      <h2 class="m-bottom-lg display-lg col-12 lg-col-8">
+        {{ subhead }}
+      </h2>
+    {% endif %}
+    <div class="selector background-color-green-500 p-md lg-p-lg color-white d-flex">
+      <div class="selector__content col-12 lg-col-10 font-size-lead">
+        {% if content != blank %}
+          {{ content }}
+        {% endif %}
+        {% if selector_label != blank and section.settings.menu != blank %}
+          <p class="font-size-h3 font-bold m-bottom-md">{{ section.settings.selector_label }}</p>
+        {% endif %}
+        {% if section.settings.menu != blank %}
+          <form class="d-flex flex-column lg-flex-row align-items-stretch justify-items-start lg-p-right-md" style="--gap: 1rem;">
+            <label class="select-wrap">
+              <select
+                class="p-inline-base"
+                name=""
+                id="education-type">
+                <option
+                  value=""
+                  disabled
+                  selected>Select Education Type</option>
+                {% for link in section.settings.menu.links %}
+
+                  <option value="{{ link.title | remove: " " | remove: "." }}">{{ link.title }}</option>
+                {% endfor %}
+              </select>
+              <span class="visually-hidden">Select Education Type</span>
+            </label>
+            <label class="select-wrap">
+              <select
+                class="p-inline-base"
+                name=""
+                disabled
+                id="specialty">
+                <option
+                  value=""
+                  disabled
+                  selected>Select Specialty/Training</option>
+                {% for link in section.settings.menu.links %}
+                  {% if link.links != blank %}
+                    {% for sublink in link.links %}
+                      <option data-education-type="{{ link.title | remove: " " | remove: "." }}" value="{{ sublink.url }}">{{ sublink.title }}</option>
+                    {% endfor %}
+                  {% endif %}
+                {% endfor %}
+              </select>
+              <span class="visually-hidden">Select Specialty/Training</span>
+            </label>
+            <button class="button--yellow">Find Courses</button>
+          </form>
+        {% endif %}
+      </div>
+      <div class="svg-wrap display-none lg-display-block">
+        <svg
+          width="400"
+          height="400"
+          viewBox="0 0 220 220"
+          class="banner-animation">
+          <circle
+            class="banner-animation__outer-circle"
+            cx="110"
+            cy="110"
+            r="99"
+            stroke="#ffffff"
+            stroke-dasharray="5,7"
+            stroke-width="1.1"
+            fill="none" />
+          <circle
+            class="banner-animation__inner-circle"
+            cx="110"
+            cy="110"
+            r="71.5"
+            stroke="#ffffff"
+            stroke-dasharray="5,7"
+            stroke-width="1.1"
+            fill="none" />
+        </svg>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="{{ "license-selector.js" | asset_url }}" defer></script>
+
+{% schema %}
+  {
+    "name": "License Selector",
+    "tag": "section",
+    "class": "license-selector__container",
+    "settings": [
+      {
+        "id": "background_image",
+        "label": "Background Image",
+        "type": "image_picker"
+      },
+      {
+        "id": "heading",
+        "label": "Heading",
+        "type": "text",
+        "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+      },
+      {
+        "id": "header_content",
+        "label": "Content",
+        "type": "richtext",
+        "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+      },
+      {
+        "id": "selector_label",
+        "label": "Selector Label",
+        "type": "text",
+        "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit:"
+      }, {
+        "id": "menu",
+        "label": "Menu",
+        "type": "link_list"
+      }
+    ]
+  }
+{% endschema %}

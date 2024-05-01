@@ -1,0 +1,65 @@
+{% liquid
+%}
+
+<div class="contact__inner container m-block-lg">
+
+  <div class="grid" style="--column-count: 1; --md-column-count: 3; --gap: var(--spacer-base); --md-gap: var(--spacer-lg);">
+    <div style="--column-span: 1; --md-column-span: 2;">
+      <h1 class="display-md m-bottom-lg">{{ section.settings.heading }}</h1>
+      <div class="m-bottom-md">
+        {{ section.settings.content }}
+      </div>
+      {{ section.settings.form_embed_code }}
+    </div>
+    <div>
+      <div class="background-color-blue-200 p-md font-size-lead">
+        <h2 class="font-size-h1 color-blue-500">Lorem Ipsum</h2>
+        <p>
+          <a href="tel:8004237058" class="color-black text-decoration-none font-bold">(123) 456-7890</a>
+          <br>
+          <a href="mailto:info@ceihome.com" class="color-black text-decoration-none">lorem@ipsum.dol</a>
+        </p>
+
+        <p class="font-bold color-blue-500 m-bottom-base">Lorem Ipsum</p>
+        <p>Monday-Friday
+          <br>8:00am - 5:00pm XIV</p>
+
+        <p class="font-bold color-blue-500 m-bottom-base">Address</p>
+        <address>
+          Romanes Eunt Domus
+          <br>
+          Lorem Ipsum Dolor
+          <br>
+          Lorem ipsum dolor
+        </address>
+        <a href="/pages/frequently-asked-questions" class="display-block m-top-base color-black font-bold text-decoration-none">See FAQs</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+  {
+    "name": "Contact",
+    "tag": "section",
+    "class": "contact",
+    "settings": [
+      {
+        "id": "heading",
+        "label": "Page Heading",
+        "type": "text",
+        "default": "We're here to help."
+      }, {
+        "id": "content",
+        "label": "Page Content",
+        "type": "richtext",
+        "default": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.<\/p>"
+      }, {
+        "id": "form_embed_code",
+        "type": "html",
+        "label": "Form Embed Code",
+        "info": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt."
+      }
+    ]
+  }
+{% endschema %}

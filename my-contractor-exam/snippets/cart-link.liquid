@@ -1,0 +1,10 @@
+{% liquid
+%}
+
+<div class="cart-link__wrap">
+  <a href="{{ routes.cart_url }}" class="cart-link button--yellow color-black d-flex align-items-center font-bold text-uppercase">
+    {% render 'icon-shopping-bag' %}
+    Cart ({{ cart.item_count }})
+  </a>
+  {% render "cart-drawer" %}
+</div>

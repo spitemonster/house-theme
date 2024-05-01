@@ -1,0 +1,103 @@
+{
+    "sections": {
+        "header": {
+            "type": "page-header",
+            "settings": {
+                "heading": "Lorem ipsum dolor sit amet, consectetur adipscing.",
+                "content": "",
+                "show_breadcrumbs": true
+            }
+        },
+        "main": {
+            "type": "page-main-content",
+            "settings": {}
+        },
+        "house-cta": {
+            "type": "house-cta",
+            "settings": {
+                "heading": "Lorem ipsum dolor sit amet.",
+                "content": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>",
+                "button_link": "",
+                "button_label": "Learn More"
+            }
+        },
+        "program-outlines": {
+            "type": "program-outlines",
+            "blocks": {
+                "991f49e0-46dc-485f-9d17-041175c839c5": {
+                    "type": "program",
+                    "settings": {
+                        "title": "Lorem",
+                        "content": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>"
+                    }
+                },
+                "f8d17ec5-29df-46b0-a263-d35427716e87": {
+                    "type": "program",
+                    "settings": {
+                        "title": "",
+                        "content": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>"
+                    }
+                },
+                "e672fa20-81f2-4529-b071-bed5814d2df4": {
+                    "type": "program",
+                    "settings": {
+                        "title": "Lorem",
+                        "content": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>"
+                    }
+                },
+                "15545b3a-8333-48b0-82b7-40b779c9f29b": {
+                    "type": "program",
+                    "settings": {
+                        "title": "Lorem",
+                        "content": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>"
+                    }
+                },
+                "2da0f19f-4b5e-4451-95fb-f0bf4336eb5b": {
+                    "type": "program",
+                    "settings": {
+                        "title": "Lorem",
+                        "content": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>"
+                    }
+                },
+                "ec927596-fa02-4db4-8d21-c9aba253b2d6": {
+                    "type": "program",
+                    "settings": {
+                        "title": "Lorem",
+                        "content": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>"
+                    }
+                }
+            },
+            "block_order": [
+                "991f49e0-46dc-485f-9d17-041175c839c5",
+                "f8d17ec5-29df-46b0-a263-d35427716e87",
+                "e672fa20-81f2-4529-b071-bed5814d2df4",
+                "15545b3a-8333-48b0-82b7-40b779c9f29b",
+                "2da0f19f-4b5e-4451-95fb-f0bf4336eb5b",
+                "ec927596-fa02-4db4-8d21-c9aba253b2d6"
+            ],
+            "settings": {
+                "section_heading": "Lorem",
+                "section_content": ""
+            }
+        },
+        "cta": {
+            "type": "page-cta",
+            "settings": {
+                "heading": "Lorem ipsum dolor.",
+                "subheading": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>",
+                "image": ""
+            },
+            "blocks": {
+                "2": {
+                    "type": "button",
+                    "settings": {
+                        "url": "shopify://pages/contact",
+                        "label": "Contact Us"
+                    }
+                }
+            },
+            "block_order": ["2"]
+        }
+    },
+    "order": ["header", "main", "house-cta", "program-outlines", "cta"]
+}

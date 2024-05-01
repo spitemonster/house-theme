@@ -1,0 +1,30 @@
+{% liquid
+%}
+
+<div class="container m-top-lg">
+  {% render "breadcrumbs" %}
+  {% render "dashed-separator" %}
+</div>
+
+<div class="container m-top-xl">
+	<h1 class="display-md">
+		{{ article.title }}
+	</h1>
+	<p class="m-bottom-base font-size-2">
+      <span class="font-bold">{{ article.tags }}</span>
+      |
+      <span class="font-bold">{{ article.published_at | time_tag: '%b %d, %Y' }}</span>
+    </
+</div>
+
+<div class="post-content__inner container lead m-top-md m-bottom-xl">
+  {{ article.content }}
+</div>
+
+{% schema %}
+  {
+    "name": "Post Content",
+    "tag": "section",
+    "class": "post-content"
+  }
+{% endschema %}

@@ -1,0 +1,102 @@
+{% liquid
+%}
+
+{{ "cart.css" | asset_url | stylesheet_tag }}
+
+<div id="cart-main" class="cart__inner p-block-lg">
+  {% if cart == empty %}
+    {% render 'cart-empty' %}
+  {% else %}
+
+    <div class="cart__inner container">
+      <div class="flex justify-content-between align-items-center m-bottom-lg">
+        <h1 class="display-md">Your Cart</h1>
+        <a class="lead color-charcoal-400" href="/">Continue Shopping</a>
+      </div>
+      <form
+        action="{{ routes.cart_url }}"
+        id="cart"
+        method="post">
+        {% for item in cart.items %}
+          {% render "cart-item"
+            , item: item
+            , index: forloop.index %}
+        {% endfor %}
+      </form>
+    </div>
+    <script type="lazyload2">
+      	fbq('track', 'ViewContent');
+    </script>
+    {% render 'cross-sell' %}
+
+    <div class="flex flex-column text-right">
+      <div class="totals flex flex-row align-items-center justify-content-end m-bottom-base" style="--gap: var(--spacer-lg);">
+        <h2 class="h5">Subtotal</h2>
+        <p class="h4 color-green-500 m-top-none text-green-500 subtotal-value">{{ cart.original_total_price | money }}</p>
+      </div>
+
+      <div class="">
+        {% if cart.discount_applications.size > 0 %}
+          <ul
+            class="discounts list-unstyled"
+            role="list"
+            aria-label="Total discount">
+            {% for discount in cart.discount_applications %}
+              <li class="discounts__discount discounts__discount--position flex flex-row align-items-center justify-content-end m-bottom-sm" style="--gap: var(--spacer-lg);">
+                <span class="h5 font-bold">{{ discount.title }}</span>
+                <span class="color-red-500">(-{{ discount.total_allocated_amount | money }})</span>
+              </li>
+            {%- endfor -%}
+          </ul>
+        {% endif %}
+      </div>
+
+      <div class="totals flex flex-row align-items-center justify-content-end" style="--gap: var(--spacer-lg);">
+        <h2 class="h5">Total Before Tax</h2>
+        <p class="h4 color-green-500 m-top-none text-green-500 subtotal-value">{{ cart.total_price | money }}</p>
+      </div>
+
+      <p class="lead m-top-base">
+        Taxes and
+        <a href="{{ shop.shipping_policy.url }}">shipping</a>
+        calculated at checkout
+      </p>
+
+      <p class="m-block-base d-inline-flex justify-content-end flex-row align-content-end text-end w-100">
+        <input type="checkbox" id="agree" />
+        <label for="agree" class="lead">
+          I agree with the
+          <a href="/policies/shipping-policy" target="_blank">shipping</a>
+          and
+          <a href="/policies/refund-policy" target="_blank">
+            return policies</a>.
+        </label>
+      </p>
+      <div id="checkout-buttons-wrapper">
+        <div class="cart__ctas justify-content-end" {{ block.shopify_attributes }}>
+
+          <button
+            type="submit"
+            id="checkout"
+            class="cart__checkout-button button--yellow"
+            name="checkout"
+            disabled
+            form="cart">
+            Checkout
+          </button>
+        </div>
+      </div>
+    </div>
+
+  {% endif %}
+</div>
+
+<script src="{{ "cart.js" | asset_url }}" defer></script>
+
+{% schema %}
+  {
+    "name": "Cart",
+    "class": "cart container",
+    "tag": "section"
+  }
+{% endschema %}

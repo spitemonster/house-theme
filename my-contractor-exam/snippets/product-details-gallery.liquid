@@ -1,0 +1,32 @@
+{% liquid
+  assign primary_image = images[0]
+  assign image_count = images.size
+%}
+<div class="product-details-gallery">
+  <figure class="product-details-gallery__main-image">
+
+    <img
+      src="{{ primary_image | image_url: width: '600x' }}"
+      loading="eager"
+      width="420"
+      height="420"
+      alt="{{ primary_image.alt }}">
+  </figure>
+
+  {% if image_count > 1 %}
+    <div class="product-details-gallery__thumbs">
+      {% for img in images %}
+        <button><img
+            src="{{ primary_image | image_url: width: '120x'}}"
+            data-full-src="{{ primary_image | image_url: width: '600x' }}"
+            width="88"
+            height="88"
+            loading="lazy"
+            alt=""></button>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+</div>
+
+<script src="{{ "product-details-gallery.js" | asset_url }}" defer></script>

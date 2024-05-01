@@ -1,0 +1,153 @@
+{% liquid
+
+  assign background_image = section.settings.background_image
+  assign heading = section.settings.heading
+  assign subhead = section.settings.subhead
+  assign content = section.settings.content
+
+  assign custom_fields = page.metafields.custom
+
+  if custom_fields.header_background_image_override != blank
+    assign background_image = custom_fields.header_background_image_override
+  endif
+
+  if custom_fields.heading_override != blank
+    assign heading = custom_fields.heading_override
+  endif
+
+  if custom_fields.header_content_override != blank
+    assign content = custom_fields.header_content_override | metafield_tag
+  endif
+
+  if custom_fields.header_links != empty
+    assign header_links = custom_fields.header_links.value
+  endif
+%}
+
+{{ "license-selector.css" | asset_url | stylesheet_tag }}
+
+<div class="license-selector get-your-license-header__inner">
+  {% if background_image != blank %}
+    <div class="license-selector__background-wrap">
+      <img
+        srcSet="{{ background_image | image_url: width: 480 }} 480w,
+					{{ background_image | image_url: width: 960 }} 960w,
+					{{ background_image | image_url: width: 1440 }} 1440w,
+					{{ background_image | image_url: width: 1920 }} 1920w
+				"
+        sizes="(max-width: 480px) 240px, (max-width: 960px) 480px, (max-width: 1440px) 720px, (max-width: 1920) 960px"
+        role="presentation"
+        loading="eager">
+    </div>
+  {% endif %}
+
+  <div class="license-selector__inner container color-white">
+    {% if heading != blank and subhead == blank %}
+      <h1 class="m-bottom-lg display-lg col-12 lg-col-8">{{ heading }}</h1>
+    {% else if heading != blank and subhead != blank %}
+      <h1 class="m-bottom-base font-size-h4">
+        {{ heading }}
+      </h1>
+      <h2 class="m-bottom-lg display-lg col-12 lg-col-8">
+        {{ subhead }}
+      </h2>
+    {% endif %}
+
+    <div class="selector background-color-green-500 p-md lg-p-lg color-white d-flex">
+      <div class="selector__content font-size-lead col-12 lg-col-10">
+        <div class="selector__content-container m-bottom-md">
+          {{ section.settings.content }}
+        </div>
+        <p class="font-size-h3 font-bold m-bottom-md">{{ section.settings.selector_label }}</p>
+        <form class="d-flex flex-column lg-flex-row align-items-stretch justify-items-start" style="--gap: 1rem;">
+          <select
+            class="p-inline-base"
+            name=""
+            id="">
+            <option
+              value=""
+              disabled
+              selected>Lorem Ipsum</option>
+            {% for link in section.settings.menu.links %}
+
+              <option value="{{ link.url }}">{{ link.title }}</option>
+            {% endfor %}
+          </select>
+          <button class="button--yellow">Lorem Ipsum</button>
+        </form>
+      </div>
+      <div class="svg-wrap display-none lg-display-block">
+        <svg
+          width="400"
+          height="400"
+          viewBox="0 0 220 220"
+          class="banner-animation">
+          <circle
+            class="banner-animation__outer-circle"
+            cx="110"
+            cy="110"
+            r="99"
+            stroke="#ffffff"
+            stroke-dasharray="5,7"
+            stroke-width="1.1"
+            fill="none" />
+          <circle
+            class="banner-animation__inner-circle"
+            cx="110"
+            cy="110"
+            r="71.5"
+            stroke="#ffffff"
+            stroke-dasharray="5,7"
+            stroke-width="1.1"
+            fill="none" />
+        </svg>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+{% schema %}
+  {
+    "name": "Get Your License Header",
+    "tag": "header",
+    "class": "get-your-license-hero",
+    "settings": [
+      {
+        "id": "background_image",
+        "label": "Background Image",
+        "type": "image_picker"
+      },
+      {
+        "id": "heading",
+        "label": "Heading",
+        "type": "text",
+        "default": "Get Your License "
+      },
+      {
+        "id": "subhead",
+        "label": "Subheading",
+        "type": "text",
+        "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+      },
+      {
+        "id": "content",
+        "label": "Content",
+        "type": "richtext",
+        "default": "<h3>Sed do eiusmod tempor incididunt ut labore.</h3><p>Et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Lorem ipsum dolor sit amet, consectetur adipiscing elit!</p>"
+      }, {
+        "id": "selector_label",
+        "label": "Selector Label",
+        "type": "text",
+        "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+      }, {
+        "id": "menu",
+        "label": "Menu",
+        "type": "link_list"
+      }
+    ],
+    "enabled_on": {
+      "templates": ["page"]
+    }
+  }
+{% endschema %}

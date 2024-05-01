@@ -1,0 +1,6 @@
+{% if block.type == 'question-answer' %}
+    <h3>{{ block.settings.question }}</h3>
+    <div class="question-answer__content">
+        {{ block.settings.answer }}
+    </div>
+{% endif %}

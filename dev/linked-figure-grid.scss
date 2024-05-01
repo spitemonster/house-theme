@@ -1,0 +1,123 @@
+@import "/dev/scss/core/functions";
+@import "/dev/scss/core/mixins/dashed-border-keyframes";
+
+.linked-figure-grid {
+	pointer-events: none;
+
+	&__inner > p {
+		max-width: 45rem;
+	}
+
+	&:hover {
+		.linked-figure:not(:hover) {
+			filter: grayscale(1);
+		}
+
+	}
+}
+
+.linked-figure {
+	position: relative;
+	pointer-events: all;
+	width: 100%;
+	aspect-ratio: 1/1;
+	transition: filter 240ms ease;
+	
+	.img-wrap {
+		position: absolute;
+		top: 0;
+		left: 0;
+		display: block;
+		height: 100%;
+		width: 100%;
+		overflow: hidden;
+	}
+
+	img {
+		object-fit: cover;
+		position: absolute;
+		top: 0;
+		left: 0;
+		height: 100%;
+		width: 100%;
+		transition: transform 240ms ease;
+	}
+
+	figcaption {
+		position: absolute;
+		z-index: 2;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		display: grid;
+		place-items: center;
+
+		height: auto;
+		width: 100%;
+		color: var(--color-white);
+		font-size: to_rem(28px);
+		font-weight: 450;
+		text-align: center;
+		padding-inline: to_rem(8px);
+		line-height: 1.2;
+		text-shadow: 0 0 to_rem(10px) var(--color-black);
+		text-transform: capitalize;
+
+		&::after {
+			content: "";
+			height: 4px;
+			background: var(--color-yellow-500);
+			width: 0;
+			left: 50%;
+			transform: translateX(-50%);
+			position: absolute;
+			top: calc(100% + 2rem);
+			transition: all 240ms ease;
+		}
+	}
+
+	&::before {
+		pointer-events: none;
+		--offset: -.75rem;
+		--transition-speed: 240ms;
+		content:"";
+		position: absolute;
+		transform: translateX(var(--offset)) translateY(var(--offset));
+		z-index: 1;
+		height: 0;
+		width: 0;
+		bottom: 0;
+		right: 0;
+		top: unset;
+		left: unset;
+		transition: height var(--transition-speed) ease, width var(--transition-speed) ease;
+		@include dashed-border-keyframes;
+		animation: borderAnimation 1s infinite linear, opacityPop 0.3s forwards;
+		background-image: repeating-linear-gradient(0deg, #6bcbea, #6bcbea 10px, #0000 10px 20px, #6bcbea 20px), repeating-linear-gradient(90deg, #6bcbea, #6bcbea 10px, #0000 10px 20px, #6bcbea 20px), repeating-linear-gradient(#6bcbea, #6bcbea 10px, #0000 10px 20px, #6bcbea 20px), repeating-linear-gradient(270deg, #6bcbea, #6bcbea 10px, #0000 10px 20px, #6bcbea 20px);
+		background-position: 0 0, 0 0, 100% 0, 0 100%;
+		background-repeat: no-repeat;
+		background-size: 2px calc(100% + 20px), calc(100% + 20px) 2px, 2px calc(100% + 20px), calc(100% + 20px) 2px;
+	}
+	
+	&:hover {
+		img {
+			transform: scale(1.1);
+		}
+
+		figcaption {
+			&::after {
+				width: to_rem(140);
+				// left: 0%;
+			}
+		}
+
+		&::before {
+			bottom: unset;
+			right: unset;
+			top: 0;
+			left: 0;
+			height: 100%;
+			width: 100%;
+		}
+	}
+}

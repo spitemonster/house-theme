@@ -1,0 +1,27 @@
+{% liquid
+	
+%}
+
+<div class="training-form__inner container m-top-lg p-block-lg grid background-color-porcelain-200" style="--columns-count: 1; --md-column-count: 3;">
+	<div style="--column-span: 1; --md-column-span: 2;">
+		<h2 class="display-md m-bottom-lg color-blue-500">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</h1>
+		<div>
+			{{ section.settings.form_embed_code }}
+		</div>
+	</div>
+</div>
+
+{% schema %}
+	{
+		"name": "Training Form",
+		"tag": "section",
+		"class": "training-form",
+		"settings": [
+			{
+				"id": "form_embed_code",
+				"type": "html",
+				"label": "Form Embed Code"
+			}
+		]
+	}
+{% endschema %}

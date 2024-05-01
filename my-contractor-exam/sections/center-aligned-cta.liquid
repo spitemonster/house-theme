@@ -1,0 +1,46 @@
+{% liquid
+%}
+
+<div class="center-aligned-cta__inner continer flex flex-column align-items-center">
+  <div class="center-aligned-cta__content-container text-center m-bottom-md font-size-lead">
+    <h2 class="display-md">{{ section.settings.heading }}</h2>
+    {{ section.settings.content }}
+  </div>
+  {% if section.settings.button_text != blank and section.settings.button_url != blank %}
+    <a href="{{ section.settings.url }}" class="button--yellow">{{ section.settings.button_text }}</a>
+  {% endif %}
+</div>
+
+{% schema %}
+  {
+    "name": "Center Aligned CTA",
+    "tag": "section",
+    "class": "center-aligned-cta p-block-xl background-color-blue-500 color-white",
+    "settings": [
+      {
+        "id": "heading",
+        "label": "heading",
+        "type": "text",
+        "default": "One Year Guarantee"
+      }, {
+        "id": "content",
+        "label": "content",
+        "type": "richtext",
+        "default": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>"
+      }, {
+        "id": "button_url",
+        "label": "Button URL",
+        "type": "url",
+        "default": "/collections"
+      }, {
+        "id": "button_text",
+        "label": "Button Text",
+        "type": "text",
+        "default": "Learn More"
+      }
+    ],
+    "enabled_on": {
+      "templates": ["page", "product", "collection"]
+    }
+  }
+{% endschema %}

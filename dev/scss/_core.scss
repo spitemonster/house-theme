@@ -1,0 +1,264 @@
+@import "core/mixins/media";
+@import "core/mixins/color-contrast";
+@import "core/variables";
+
+:root {
+	@each $name, $color in $theme_colors {
+		--color-#{$name}: #{$color};
+	}
+
+	@each $name, $size in $font-sizes {
+		--font-size-#{$name}: #{$size};
+	}
+
+	@each $name, $size in $spacers {
+		--spacer-#{$name}: #{$size};
+	}
+
+	@each $radius, $size in $border-radii {
+		--border-radius-#{$radius}: #{$size};
+	}
+
+	--border-base: #{$border-base};
+
+	--box-shadow: #{$box-shadow};
+	--container-width: #{$container_width};
+	--container-max-width: #{$container_max_width};
+	--container-min-padding: #{$container_min_padding};
+	// this should never be set or changed but instead can be referenced throughout the document to provide the illusion of contained content while allowing for overflowing background images or other such options
+	--container-inline-padding: max(var(--container-min-padding), calc( (100vw - var(--container-width)) / 2 ));
+	--font-sans-serif: "brandon-grotesque", Arial, Helvetica, sans-serif;
+
+	font-size: $rem;
+  	min-height: 0vw;
+
+	font-family: var(--font-sans-serif);
+}
+
+
+
+@import "core/functions";
+@import "core/type";
+@import "core/utils";
+@import "core/flex";
+@import "core/grid";
+@import "core/buttons";
+@import "core/forms";
+
+
+
+// using padding allows us to use background colors, images and pseudo elements on container elements more easily than max-width
+// using padding-inline keeps it specific to x but still can be overwritten by padding-left or padding-right
+// no !important because we are all adults here
+.container {
+	padding-inline: var(--container-inline-padding);
+
+	// minimum padding applicable to a container; minimum padding until we hit our maximum viewport size
+	&--min {
+		padding-inline: max(calc((100vw - var(--container-max-width)) / 2), var(--container-min-padding));
+	}
+
+	// a container within a container should do nothing so nix out any inline padding
+	.container {
+		padding-inline: 0;
+	}
+
+	&--left {
+		padding-left: var(--container-inline-padding);
+	}
+
+	&--right {
+		padding-right: var(--container-inline-padding);
+	}
+}
+
+// base headings and classes may get cascaded styles added so add a utility font-size class
+@each $name, $size in $font-sizes {
+	.#{$name},
+	#{$name} {
+		font-size: $size;
+	}
+
+	.font-size-#{$name} {
+		font-size: $size;
+	}
+}
+
+$sides: (
+	"block",
+	"inline",
+	"top",
+	"right",
+	"bottom",
+	"left"
+);
+
+.p-none {
+	padding: 0;
+}
+
+.m-none {
+	margin: 0;
+}
+
+.border-none {
+	border: none;
+}
+
+.border-base {
+	border: var(--border-base);
+}
+
+@each $side in $sides {
+	.p-#{$side}-none {
+		padding-#{$side}: 0;
+	}
+
+	.m-#{$side}-none {
+		margin-#{$side}: 0;
+	}
+
+	.border-#{$side}-base {
+		border-#{$side}: var(--border-base);
+	}
+}
+
+@each $spacer_name, $spacer_size in $spacers {
+	.gap-#{$spacer_name} {
+		gap: var(--spacer-#{$spacer_name});
+	}
+
+	.p-#{$spacer_name} {
+		padding: var(--spacer-#{$spacer_name});
+	}
+
+	.m-#{$spacer_name} {
+		margin: var(--spacer-#{$spacer_name});
+	}
+
+	@each $breakpoint_name, $breakpoint_size in $breakpoints {
+		@include media-breakpoint-up($breakpoint_name) {
+			.#{$breakpoint_name}-p-#{$spacer_name} {
+				padding: var(--spacer-#{$spacer_name});
+			}
+		
+			.#{$breakpoint_name}-m-#{$spacer_name} {
+				margin: var(--spacer-#{$spacer_name});
+			}
+		}
+	}
+
+	@each $side in $sides {
+
+		@each $breakpoint_name, $breakpoint_size in $breakpoints {
+			@include media-breakpoint-up($breakpoint_name) {
+				.#{$breakpoint_name}-m-#{$side}-#{$spacer_name} {
+					margin-#{$side}: var(--spacer-#{$spacer_name});
+				}
+		
+				.#{$breakpoint_name}-p-#{$side}-#{$spacer_name} {
+					padding-#{$side}: var(--spacer-#{$spacer_name});
+				}
+			}
+		}
+
+		.m-#{$side}-#{$spacer_name} {
+			margin-#{$side}: var(--spacer-#{$spacer_name});
+		}
+
+		.p-#{$side}-#{$spacer_name} {
+			padding-#{$side}: var(--spacer-#{$spacer_name});
+		}
+	}
+	
+}
+
+$position-options: (
+	"static",
+	"relative",
+	"absolute",
+	"sticky",
+	"fixed"
+);
+
+@each $option in $position-options {
+	.position-#{$option} {
+		position: #{$option};
+	}
+}
+
+$display-options: (
+	"inline",
+	"inline-block",
+	"inline-flex",
+	"block",
+	"flex",
+	"none"
+);
+
+@each $d in $display-options {
+	.display-#{$d} {
+		display: #{$d};
+
+		@if ($d == "flex") or ($d == "inline-flex") {
+			gap: var(--gap);
+		}
+
+	}
+}
+
+.m-inline-auto {
+	margin-inline: auto;
+}
+
+@each $breakpoint_name, $breakpoint_size in $breakpoints {
+	@include media-breakpoint-up($breakpoint_name) {
+		.#{$breakpoint_name}-p-none {
+			padding: 0;
+		}
+	
+		.#{$breakpoint_name}-m-none {
+			margin: 0;
+		}
+
+		.#{$breakpoint_name}-m-inline-auto {
+			margin-inline: auto;
+		}
+
+		@each $option in $position-options {
+			.#{$breakpoint_name}-position-#{$option} {
+				position: #{$option};
+			}
+		}
+
+		@each $d in $display-options {
+			.#{$breakpoint_name}-display-#{$d} {
+				display: #{$d};
+			}
+		}
+	}
+}
+
+// Color utility styles
+@each $name, $color in $theme_colors {
+	.color-#{$name} {
+		color: #{$color}
+	}
+
+	.link-#{$name} {
+		color: #{$color};
+
+		&:hover,
+		&:focus {
+			color: contrast-color($color);
+		}
+	}
+
+	.background-color-#{$name} {
+		background-color: #{$color}
+	}
+}
+
+.visually-hidden {
+	@include visually-hidden();
+}

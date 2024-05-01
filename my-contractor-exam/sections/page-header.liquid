@@ -1,0 +1,116 @@
+{% liquid
+  assign background_image = section.settings.background_image
+  assign heading = section.settings.heading
+  assign has_content = false
+  assign content = section.settings.content
+  assign type = template.name
+  assign custom_fields = nil
+
+  assign has_background_image = false
+
+  case type
+    when 'product'
+      assign custom_fields = product.metafields.custom
+    when 'page'
+      assign custom_fields = page.metafields.custom
+    when 'collection'
+      assign custom_fields = collection.metafields.custom
+  endcase
+
+  if section.settings.background_image != blank
+    assign has_background_image = true
+    assign background_image = section.settings.background_image
+  endif
+
+  if custom_fields.header_background_image_override != blank
+    assign has_background_image = true
+    assign background_image = custom_fields.header_background_image_override
+  endif
+
+  if background_image == blank and custom_fields.featured_image != blank
+    assign has_background_image = true
+    assign background_image = custom_fields.featured_image
+  endif
+
+  if custom_fields.heading_override != blank
+    assign heading = custom_fields.heading_override
+  endif
+
+  if custom_fields.header_content_override != blank
+    assign content = custom_fields.header_content_override | metafield_tag
+  endif
+
+  if custom_fields.header_links != empty
+    assign header_links = custom_fields.header_links.value
+  endif
+
+  if content != blank
+    assign has_content = true
+  endif
+%}
+
+{{ "page-header.css" | asset_url | stylesheet_tag }}
+<div class="page-header__inner container background-color-porcelain-300 p-block-lg">
+  {% if background_image != blank %}
+    <img
+      class="page-header__background-image"
+      srcSet="{{ background_image | image_url: width: 480 }} 480w,
+			  {{ background_image | image_url: width: 960 }} 960w,
+			  {{ background_image | image_url: width: 1440 }} 1440w,
+			  {{ background_image | image_url: width: 1920 }} 1920w
+		  "
+      sizes="(max-width: 480px) 240px, (max-width: 960px) 480px, (max-width: 1440px) 720px, (max-width: 1920) 960px"
+      role="presentation"
+      loading="eager">
+  {% endif %}
+  <div class="page-header__content-wrap display-flex flex-column">
+    {% if section.settings.show_breadcrumbs %}
+      {% render "breadcrumbs" %}
+    {% endif %}
+    {% if heading != blank %}
+      <h1 class="m-bottom-base md-m-bottom-md display-lg md-col-8">{{ heading }}</h1>
+    {% endif %}
+    {% if has_content %}
+      <div class="md-col-7 lead md-col-8">
+        {{ content }}
+      </div>
+    {% endif %}
+    {% if header_links.count > 0 %}
+      <div class="flex m-top-lg flex-wrap" style="--gap: 1rem;">
+        {% for link in header_links %}
+          <a href="{{ link.url }}" class="button--yellow">{{ link.label }}</a>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+{% schema %}
+  {
+    "name": "Page Header",
+    "tag": "section",
+    "class": "page-header",
+    "settings": [
+      {
+        "id": "background_image",
+        "label": "Background Image",
+        "type": "image_picker"
+      }, {
+        "id": "heading",
+        "label": "Heading",
+        "type": "text",
+        "default": "Lorem ipsum dolor sit amet, consectetur adipscing."
+      }, {
+        "id": "content",
+        "label": "Content",
+        "type": "richtext",
+        "default": "<p>Hello World!</p>"
+      }, {
+        "id": "show_breadcrumbs",
+        "label": "Show Breadcrumbs?",
+        "type": "checkbox",
+        "default": true
+      }
+    ]
+  }
+{% endschema %}

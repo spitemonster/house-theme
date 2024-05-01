@@ -1,0 +1,57 @@
+{% liquid
+%}
+
+<div class="program-outlines__inner container font-size-lead">
+  {% if section.settings.section_heading != empty %}
+    <h2 class="display-md m-bottom-lg">{{ section.settings.section_heading }}</h2>
+  {% endif %}
+  {% if section.settings.section_content != empty %}
+    <div class="m-bottom-md">{{ section.settings.section_content }}</div>
+  {% endif %}
+  <div class="grid" style="--column-count: 1; --md-column-count: 2; --gap: var(--spacer-base); --md-gap: var(--spacer-md);">
+    {% for block in section.blocks %}
+      {% assign program = block.settings %}
+      <article class="program-outline flex flex-column md-m-bottom-md">
+        <h3 class="color-blue-500 m-bottom-base display-block">{{ program.title }}</h3>
+        <div>{{ program.content }}</div>
+      </article>
+    {% endfor %}
+  </div>
+</div>
+
+{% schema %}
+  {
+    "name": "Program Outlines",
+    "tag": "section",
+    "class": "program-outlines m-block-lg",
+    "settings": [
+      {
+        "id": "section_heading",
+        "type": "text",
+        "label": "Section Heading",
+        "default": "Lorem Ipsum"
+      }, {
+        "id": "section_content",
+        "type": "richtext",
+        "label": "Section Content"
+      }
+    ],
+    "blocks": [
+      {
+        "name": "Program",
+        "type": "program",
+        "settings": [
+          {
+            "id": "title",
+            "type": "text",
+            "label": "Title"
+          }, {
+            "id": "content",
+            "type": "richtext",
+            "label": "Content"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

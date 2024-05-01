@@ -1,0 +1,11 @@
+{
+	"sections": {
+	  "content": {
+		  "type": "post-content"
+	  }
+	},
+	"order": [
+	  "content"
+	]
+  }
+  

@@ -1,0 +1,134 @@
+{% liquid
+
+  assign custom_fields = product.metafields.custom
+
+  assign description = product.description
+  assign has_description = false
+
+  if custom_fields.product_card_description != blank
+    assign description = custom_fields.product_card_description | metafield_tag
+  endif
+
+  if description != blank
+    assign has_description = true
+  endif
+
+  if product.featured_image != blank
+    assign img_url = product.featured_image.src | image_url: width: 400
+    assign img_alt = product.featured_image.alt
+  else
+    assign img_url = settings.fallback_image | image_url: width: 400
+  endif
+
+  assign has_highlighted_feature = false
+
+  if custom_fields.highlighted_feature != blank
+    assign has_highlighted_feature = true
+    assign highlighted_feature = custom_fields.highlighted_feature
+    assign highlighted_feature_handle = highlighted_feature | handleize
+  endif
+
+  if custom_fields.highlighted_feature_override != blank
+    assign highlighted_feature = custom_fields.highlighted_feature_override
+  endif
+
+  if img_alt == blank
+    assign img_alt = product.title
+  endif
+
+  assign display_price = product.price | money
+%}
+
+{% comment %} opening tags for the card {% endcomment %}
+{% if card_type != "expanded" %}
+  <a class="product-card__link" href="{{ product.url }}">
+{% endif %}
+
+<figure class="product-card card {{ card_type }}">
+  {% if card_type == "expanded" %}
+    <a href="{{ product.url }}" class="product-card__image-wrap">
+      <img
+        src="{{ img_url }}"
+        alt="{{ img_alt }}"
+        width="420"
+        height="420"
+        loading="eager">
+
+      {% if has_highlighted_feature %}
+        <span class="highlight-tag {{ highlighted_feature_handle }}">{{ highlighted_feature }}</span>
+      {% endif %}
+    </a>
+  {% else %}
+    <div class="product-card__image-wrap">
+      <img
+        src="{{ img_url }}"
+        alt="{{ img_alt }}"
+        width="400"
+        height="400"
+        loading="eager">
+      {% if has_highlighted_feature %}
+        <span class="highlight-tag {{ highlighted_feature_handle }}">{{ highlighted_feature }}</span>
+      {% endif %}
+    </div>
+
+  {% endif %}
+  <figcaption class="">
+    {% if card_type == "expanded" %}
+      <h3>
+        <a href="{{ product.url }}" class="text-decoration-none">{{ product.title }}</a>
+      </h3>
+    {% else %}
+      <h3>{{ product.title }}</h3>
+    {% endif %}
+
+    <div class="product-card__price flex align-items-center" style="--gap: var(--spacer-base);">
+      <p class="price color-green-500">
+        {% if price_style == "from" %}
+          <span>From
+          </span>
+        {% endif %}
+        {{ display_price }}</p>
+      {% if product.compare_at_price != blank %}
+        <p class="compare-at">
+
+          {{ product.compare_at_price | money }}</p>
+      {% endif %}
+    </div>
+    {% if card_type == "expanded" %}
+      {% if has_description %}
+        <div class="product-card__description">
+          {{ description }}
+        </div>
+      {% endif %}
+
+      {% form 'product'
+        , product %}
+        {% if product.variants.size > 1 %}
+          <label class="select-wrap">
+            <select class="product-variant-selector" name="id">
+              {% for variant in product.variants %}
+                <option
+                  value="{{ variant.id }}"
+                  data-price="{{ variant.price | money_with_currency }}"
+                  data-sale-price="{{ variant.compare_at_price | money_with_currency }}">{{ variant.title }} - {{ variant.price | money }}</option>
+              {% endfor %}
+            </select>
+            <span>
+              Label
+            </span>
+          </label>
+        {% else %}
+          <input
+            type="hidden"
+            name="id"
+            value="{{ product.variants.first.id }}" />
+        {% endif %}
+        <button type="submit" class="button--yellow">Add to Cart</button>
+      {% endform %}
+    {% endif %}
+  </figcaption>
+</figure>
+
+{% if card_type != "expanded" %}
+  </a>
+{% endif %}

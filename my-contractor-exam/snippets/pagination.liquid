@@ -1,0 +1,58 @@
+{% liquid
+	
+%}
+
+{{ "pagination.css" | asset_url| stylesheet_tag }}
+
+{%- if paginate.parts.size > 0 -%}
+  <div class="pagination__container p-top-xl">
+    <nav class="pagination lead" role="navigation">
+      <menu class="flex m-none p-none list-unstyled justify-content-center" style="--gap: var(--spacer-md);" role="list">
+        {%- if paginate.previous -%}
+          <li>
+            <a href="{{ paginate.previous.url }}{{ anchor }}" class="pagination__previous">
+              < Prev
+            </a>
+          </li>
+        {%- endif -%}
+
+        {%- for part in paginate.parts -%}
+          <li>
+            {%- if part.is_link -%}
+              <a
+                href="{{ part.url }}{{ anchor }}"
+                class="flex justify-content-center align-items-center text-center lead color-blue-500"
+                aria-label="{{ part.title }}">
+                {{- part.title -}}
+              </a>
+            {%- else -%}
+              {%- if part.title == paginate.current_page -%}
+                <a
+                  role="link"
+                  aria-disabled="true"
+                  class="flex justify-content-center align-items-center text-center lead color-blue-500 current"
+                  aria-current="page"
+                  aria-label="{{ part.title }}">
+                  {{- part.title -}}
+                </a>
+              {%- else -%}
+                <span class="flex justify-content-center align-items-center text-center lead color-blue-500">{{ part.title }}</span>
+              {%- endif -%}
+            {%- endif -%}
+          </li>
+        {%- endfor -%}
+
+        {%- if paginate.next -%}
+          <li>
+            <a
+              href="{{ paginate.next.url }}{{ anchor }}"
+              class="pagination__next"
+              aria-label="Next">
+              Next >
+            </a>
+          </li>
+        {%- endif -%}
+      </menu>
+    </nav>
+  </div>
+{%- endif -%}

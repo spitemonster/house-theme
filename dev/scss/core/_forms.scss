@@ -1,0 +1,12 @@
+form {
+
+}
+
+select {
+	display: block;
+	min-width: to_rem(220);
+	background: white;
+	border: none;
+	border-radius: var(--border-radius-min);
+	height: auto;
+}

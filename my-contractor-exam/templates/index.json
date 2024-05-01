@@ -1,0 +1,170 @@
+{
+    "sections": {
+        "announcement-bar": {
+            "type": "page-announcement-bar",
+            "settings": {
+                "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt!",
+                "url": ""
+            }
+        },
+        "license-selector": {
+            "type": "license-selector",
+            "settings": {
+                "background_image": "shopify://shop_images/home-hero-img.jpg",
+                "heading": "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
+                "header_content": "<h2>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>",
+                "selector_label": "Lorem ipsum dolor sit amet, consectetur:",
+                "menu": "education-selector"
+            }
+        },
+        "main-content": {
+            "type": "content-with-accented-image",
+            "blocks": {
+                "1": {
+                    "type": "image-accent-stat",
+                    "settings": {
+                        "stat": "200,000+",
+                        "label": "lorem ipsum"
+                    }
+                },
+                "2": {
+                    "type": "image-accent-stat",
+                    "settings": {
+                        "stat": "99%",
+                        "label": "ipsum lorem"
+                    }
+                },
+                "3": {
+                    "type": "image-accent-stat",
+                    "settings": {
+                        "stat": "4.8",
+                        "label": "elit sed do"
+                    }
+                }
+            },
+            "block_order": ["1", "2", "3"],
+            "settings": {
+                "heading": "Lorem ipsum?",
+                "subhead": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+                "content": "<h3>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>",
+                "image": ""
+            }
+        },
+        "info-grid": {
+            "type": "info-card-grid",
+            "blocks": {
+                "07cb2b81-9d51-496b-b677-b8e6cef12be6": {
+                    "type": "info-card",
+                    "settings": {
+                        "image": "",
+                        "heading": "Lorem ipsum",
+                        "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+                    }
+                },
+                "d53b0431-c953-46fa-905c-66788eaec165": {
+                    "type": "info-card",
+                    "settings": {
+                        "image": "shopify://shop_images/icon-play.png",
+                        "heading": "Lorem ipsum",
+                        "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+                    }
+                },
+                "f7939f2b-9d63-4caa-b1f1-fb6002df45d1": {
+                    "type": "info-card",
+                    "settings": {
+                        "image": "shopify://shop_images/icon-teach.png",
+                        "heading": "Lorem ipsum",
+                        "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+                    }
+                },
+                "e0f9c6ff-f893-4fa4-b29b-3887eefd7f6d": {
+                    "type": "info-card",
+                    "settings": {
+                        "image": "shopify://shop_images/icon-book.png",
+                        "heading": "Lorem ipsum",
+                        "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+                    }
+                }
+            },
+            "block_order": [
+                "07cb2b81-9d51-496b-b677-b8e6cef12be6",
+                "d53b0431-c953-46fa-905c-66788eaec165",
+                "f7939f2b-9d63-4caa-b1f1-fb6002df45d1",
+                "e0f9c6ff-f893-4fa4-b29b-3887eefd7f6d"
+            ],
+            "settings": {
+                "heading": "Lorem ipsum",
+                "subhead": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+            }
+        },
+        "link-grid": {
+            "type": "linked-figure-grid",
+            "blocks": {
+                "1": {
+                    "type": "linked-figure",
+                    "settings": {
+                        "image": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+                        "url": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+                        "content": "Lorem ipsum dolor"
+                    }
+                },
+                "2": {
+                    "type": "linked-figure",
+                    "settings": {
+                        "image": "",
+                        "url": "",
+                        "content": "Lorem ipsum dolor"
+                    }
+                },
+                "3": {
+                    "type": "linked-figure",
+                    "settings": {
+                        "image": "",
+                        "url": "",
+                        "content": ""
+                    }
+                },
+                "4": {
+                    "type": "linked-figure",
+                    "settings": {
+                        "image": "",
+                        "url": "",
+                        "content": ""
+                    }
+                }
+            },
+            "block_order": ["1", "2", "3", "4"],
+            "settings": {
+                "heading": "Lorem ipsum dolor",
+                "subhead_content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+                "items_per_row": 4
+            }
+        },
+        "cta": {
+            "type": "page-cta",
+            "blocks": {
+                "c74e601c-ec52-45e0-a003-c35de601ef44": {
+                    "type": "button",
+                    "settings": {
+                        "url": "shopify://pages/contact",
+                        "label": "Contact Us"
+                    }
+                }
+            },
+            "block_order": ["c74e601c-ec52-45e0-a003-c35de601ef44"],
+            "settings": {
+                "heading": "Lorem ipsum dolor?",
+                "subheading": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>",
+                "image": "shopify://shop_images/Find_the_Right_Education_Training._Home_and_Other.png"
+            }
+        }
+    },
+    "order": [
+        "announcement-bar",
+        "license-selector",
+        "main-content",
+        "info-grid",
+        "link-grid",
+        "cta"
+    ]
+}

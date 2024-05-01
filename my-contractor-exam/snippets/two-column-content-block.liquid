@@ -1,0 +1,139 @@
+{% comment %} to be distinguished from collection content areas, this just renders a content metaobject from a metafield {% endcomment %}
+{% liquid
+
+  assign column_count = 1
+  assign has_any_left_column_content = false
+  assign has_any_right_column_content = false
+
+  assign has_left_column_media = false
+  assign has_left_column_content = false
+  assign has_left_column_button = false
+  assign left_column_media_accented = false
+  assign left_column_orientation_class = "flex-column"
+
+  assign has_right_column_media = false
+  assign has_right_column_content = false
+  assign has_right_column_button = false
+  assign right_column_media_accented = false
+  assign right_column_orientation_class = "flex-column"
+
+  assign two_column_class = ""
+
+  if content.left_column_content != empty
+    assign has_left_column_content = true
+  endif
+
+  if content.left_column_media != blank
+    assign has_left_column_media = true
+  endif
+
+  if content.left_column_button_text != blank and content.left_column_button_link != blank
+	assign has_left_column_button = true
+
+	if content.left_column_media_accented != blank and content.left_column_media_accented
+		assign left_column_media_accented = true
+	endif
+  endif
+
+  if content.left_column_orientation == "Media Top"
+	assign left_column_orientation_class = "flex-column-reverse"
+  endif
+
+  if content.right_column_content != blank
+    assign has_right_column_content = true
+  endif
+
+  if content.right_column_media != blank
+    assign has_right_column_media = true
+  endif
+
+  if content.right_column_orientation == "Media Top"
+	assign right_column_orientation_class = "flex-column-reverse"
+  endif
+
+  if content.right_column_button_text != blank and content.right_column_button_link != empty
+	assign has_right_column_button = true
+  endif
+
+
+  if content.right_column_media_accented != false
+	assign right_column_media_accented = true
+  endif
+
+  if has_left_column_content or has_left_column_media
+    assign has_any_left_column_content = true
+  endif
+
+  if has_right_column_content or has_right_column_media
+    assign has_any_right_column_content = true
+    assign column_count = 2
+	assign two_column_class = "two-column"
+  endif
+
+  assign has_heading = false
+
+  if content.section_heading != blank
+    assign has_heading = true
+  endif
+
+  assign has_subhead = false
+
+  if content.section_subhead != blank
+    assign has_subhead = true
+  endif
+%}
+
+{% if has_any_left_column_content %}
+  <div class="two-column-content-block container {{ two_column_class }} m-block-lg">
+    {% if has_heading or has_subhead %}
+      <div class="heading-container flex flex-column m-bottom-md">
+        {% if has_heading %}
+			{% liquid 
+				assign classes = "h4 color-green-500"
+				
+				unless has_subhead
+					assign classes = "display-md"
+				endunless
+			%}
+          <h2 class="{{ classes }}">{{ content.section_heading }}</h3>
+        {% endif %}
+        {% if has_subhead %}
+          <p class="display-md">{{ content.section_subhead }}</p>
+        {% endif %}
+      </div>
+
+    {% endif %}
+    <div class="content-container grid" style="--column-count: 1; --md-column-count: {{ column_count }}; --gap: var(--spacer-base); --md-gap: 9rem;">
+      <div class="d-flex {{ left_column_orientation_class }} justify-content-center" style="--gap: var(--spacer-base);">
+        {% if has_left_column_media %}
+			<figure class="{% if left_column_media_accented %} accented-image {% endif %}" style="--imgSrc: url('{{ content.left_column_media | image_url: width: '600x' }}'); ">
+				{{ content.left_column_media | media_tag: image_size: "600x" }}
+			</figure>
+        {% endif %}
+        {% if has_left_column_content %}
+          {{ content.left_column_content | metafield_tag }}
+        {% endif %}
+		{% if has_left_column_button %}
+		<div class="m-top-md">
+			
+				<a href="{{ content.left_column_button_link }}" class="button--green">{{ content.left_column_button_text }}</a>
+			
+		</div>
+		{% endif %}
+      </div>
+      {% if has_any_right_column_content %}
+        <div class="d-flex {{ right_column_orientation_class }}" style="--gap: var(--spacer-base);">
+          {% if has_right_column_media %}
+		  	<figure class="{% if right_column_media_accented %} accented-image {% endif %}" style="--imgSrc: url('{{ content.right_column_media | image_url: width: '600x' }}'); ">
+              {{ content.right_column_media | media_tag: image_size: "600x" }}
+            </figure>
+          {% endif %}
+          {% if has_right_column_content %}
+            {{ content.right_column_content | metafield_tag }}
+          {% endif %}
+        </div>
+      {% endif %}
+
+    </div>
+  </div>
+{% endif %}

@@ -1,0 +1,59 @@
+{% liquid
+
+%}
+
+{% comment %} {{ "photo-cta.css" | asset_url | stylesheet_tag }} {% endcomment %}
+
+<section class="photo-cta container feature-row--{{ section.id }}">
+    <div class="photo-cta__header">
+        <h2>{{ section.settings.heading }}</h2>
+        <p>{{ section.settings.sub-heading }}</p>
+    </div>
+      {% include 'photo-cta' %}
+    <hr/>
+</section>
+
+{% schema %}
+  {
+    "name": "Photo CTA",
+    "tag": "section",
+    "class": "photo-cta__container",
+    "settings": [
+        {
+            "type": "text",
+            "id": "heading",
+            "label": "Heading",
+            "default": "Lorem ipsum dolor sit amet."
+        },
+        {
+            "type": "text",
+            "id": "sub-heading",
+            "label": "Sub-heading",
+            "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+        }
+    ],
+    "blocks": [
+      {
+        "type": "photo_cta_data",
+        "name": "Photo CTA Data",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          },
+          {
+            "type": "url",
+            "id": "link",
+            "label": "Link"
+          },
+          {
+            "type": "text",
+            "id": "text",
+            "label": "Text"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

@@ -1,0 +1,12 @@
+{{ "photo-cta.css" | asset_url | stylesheet_tag }}
+
+<nav class="photo-cta grayscaleGroup grid p-block-xxl" style="--column-count: 1; --md-column-count: 4; --gap: var(--spacer-base); --md-gap: 4rem;">
+    {% for block in section.blocks %}
+        <figure class="photo-cta__inner__item grayscaleItem col">
+            <a class="photo-cta__inner__item__anchor" href="{{ block.settings.link }}" target="_blank">
+            <img src="{{ block.settings.image | img_url: 'original' }}" alt="{{ block.settings.text }}" loading="lazy">
+            <figcaption>{{ block.settings.text }}</figcaption>
+            </a>
+        </figure>
+    {% endfor %}    
+</nav>

@@ -1,0 +1,142 @@
+{% liquid
+  assign custom_fields = collection.metafields.custom
+  assign heading = section.settings.heading
+  assign display_product_heading = true
+
+  if custom_fields.product_heading_override != blank
+    assign heading = custom_fields.product_heading_override
+  endif
+
+  # done this way so that the heading is only hidden if the user deliberately selects false
+  if custom_fields.display_product_heading == false
+    assign display_product_heading = false
+  endif
+
+  assign products = collection.products
+%}
+
+{% if products.count > 0 %}
+  {% if section.settings.collapsible == true %}
+    <details id="all-products" class="collection-products__inner">
+      <summary class="container">
+		{% if heading != blank and heading != "" and display_product_heading %}
+        <h2 class="display-md">{{ heading }}</h2>
+      {% else %}
+        <h2 class="display-md">Explore Products</h2>
+      {% endif %}
+	  </summary>
+  {% else %}
+  <div id="all-products" class="collection-products__inner">
+    <div class="container m-bottom-base">
+      {% if heading != blank and heading != "" and display_product_heading %}
+        <h2 class="display-md">{{ heading }}</h2>
+      {% endif %}
+    </div>
+  {% endif %}
+  
+    {% if products.count == 1 %}
+      <div class="container">
+        {% render "product-card"
+          , product: collection.products[0]
+          , card_type: "expanded" %}
+      </div>
+    {% elsif section.settings.layout != "grid" and products.count <= section.settings.max_slider_products %}
+
+      {% render "product-slider"
+        , products: products
+        , price_style: section.settings.price_style %}
+    {% else %}
+      {% liquid
+        if section.settings.products_per_row == 1
+          assign card_type = "expanded"
+        endif
+      %}
+      {% render "product-grid"
+        , products: products
+        , 	products_per_row: section.settings.products_per_row
+        , card_type: card_type
+        , price_style: section.settings.price_style
+        , products_per_page: section.settings.products_per_page %}
+    {% endif %}
+
+	{% if section.settings.collapsible == true %}
+		</details>
+	  {% else %}
+		</div>
+	  {% endif %}
+
+{% endif %}
+
+{% schema %}
+  {
+    "name": "Collection Products",
+    "class": "collection-products m-block-lg",
+    "tag": "section",
+    "settings": [
+      {
+        "id": "heading",
+        "type": "text",
+        "label": "Section Heading",
+        "default": "Explore All Courses & Books"
+      },
+      {
+        "id": "layout",
+        "label": "Layout",
+        "type": "select",
+        "info": "By default, this section displays a slider for product counts greater than one and below Max Slider Products, and a grid for product counts greater. You may force one layout another here.",
+        "default": "default",
+        "options": [
+          {
+            "label": "Default",
+            "value": "default"
+          }, {
+            "label": "Grid",
+            "value": "grid"
+          }, {
+            "label": "Slider",
+            "value": "slider"
+          }
+        ]
+      },
+      {
+        "id": "max_slider_products",
+        "label": "Max Slider Products",
+        "type": "number",
+        "info": "Control the number of products to display in a slider before displaying products in a grid.",
+        "default": 12
+      },
+      {
+        "id": "products_per_page",
+        "label": "Products Per Page",
+        "type": "number",
+        "info": "Control the number of products per page when the total product count is great enough to show the paginated product grid.",
+        "default": 8
+      }, {
+        "id": "products_per_row",
+        "label": "Products Per Row",
+        "type": "number",
+        "info": "Control the number of products per row when a product grid is displayed.",
+        "default": 4
+      }, {
+        "id": "price_style",
+        "label": "Price Style",
+        "type": "select",
+        "options": [
+          {
+            "value": "default",
+            "label": "Default"
+          }, {
+            "value": "from",
+            "label": "From"
+          }
+        ]
+      },
+	  {
+		"id": "collapsible",
+		"label": "Collapsible?",
+		"type": "checkbox",
+		"default": false
+	  }
+    ]
+  }
+{% endschema %}

@@ -1,0 +1,22 @@
+{% liquid
+    assign selected_handles = 'discover, contractor-licensing, industry-training, my-account' | split: ', '
+%}
+
+<section class="footer__nav d-flex justify-content-between flex-wrap">
+    {% for list in linklists %}
+        {% if selected_handles contains list.handle %}
+            <nav>
+                <h3>{{ list.title }}</h3>
+                <ul class="list-unstyled">
+                    {% for link in list.links %}
+                        <li class="p-top-tiny">
+                            <a href="{{ link.url }}" class="link {% if link.url == request.path %}active{% endif %}">
+                                {{ link.title }}
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </nav>
+        {% endif %}
+    {% endfor %}
+</section>

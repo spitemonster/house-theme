@@ -1,0 +1,14 @@
+.site-logo {
+	figure {
+		position: relative;
+		display: block;
+		max-width: to_rem(320);
+	}
+
+	img {
+		display: block;
+		width: 100%;
+		height: auto;
+		aspect-ratio: 298/279;
+	}
+}

@@ -1,0 +1,89 @@
+{% liquid
+%}
+
+<div class="careers__inner container m-block-lg">
+  <div class="grid" style="--column-count: 1; --md-column-count: 2; --gap: var(--spacer-base); --md-gap: var(--spacer-lg);">
+    <div style="--column-span: 1;">
+      <h1 class="display-md m-bottom-lg">Job Openings</h1>
+      <div class="flex flex-column align-items-start" style="--gap: var(--spacer-base); --md-gap: var(--spacer-lg);">
+        {% for block in section.blocks %}
+          {% if block.type == "job-opening" %}
+            <article class="job-opening flex flex-column align-items-start md-p-right-xl">
+              {% assign opening = block.settings %}
+              <h3 class="color-green-500">{{ opening.title }}</h3>
+              {{ opening.description }}
+              <h4>Requirements</h4>
+              {{ opening.requirements }}
+              <h4>Salary and Benefits</h4>
+              {{ opening.benefits }}
+              {% if opening.link != blank %}
+                <a href="{{ opening.link }}" class="button--blue display-block m-top-lg text-uppercase">Apply Now</a>
+              {% endif %}
+            </article>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+    <div class="display-none md-display-block" style="--column-span: 1;">
+      <figure class="accented-image" style="--imgSrc: url('{{ section.settings.image | image_url: width: '600x' }}'); ">
+        <img
+          srcSet="{{ section.settings.image | image_url: width: 240 }} 240w,
+			{{ section.settings.image | image_url: width: 480 }} 480w,
+			{{ section.settings.image | image_url: width: 720 }} 720w,
+			{{ section.settings.image | image_url: width: 960 }} 960w
+		"
+          sizes="(max-width: 240px) 120px, (max-width: 480px) 240px, (max-width: 720px) 360px, (max-width: 960) 480px"
+          role="presentation"
+          loading="eager">
+      </figure>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+  {
+    "name": "Careers",
+    "tag": "section",
+    "class": "careers",
+    "settings": [
+      {
+        "id": "image",
+        "label": "Featured Image",
+        "type": "image_picker"
+      }
+    ],
+    "blocks": [
+      {
+        "name": "Job Opening",
+        "type": "job-opening",
+        "settings": [
+          {
+            "id": "title",
+            "label": "Title",
+            "type": "text"
+          },
+          {
+            "id": "description",
+            "label": "Description",
+            "type": "richtext"
+          },
+          {
+            "id": "requirements",
+            "label": "Requirements",
+            "type": "richtext"
+          },
+          {
+            "id": "benefits",
+            "label": "Salary and Benefits",
+            "type": "richtext"
+          }, {
+            "id": "link",
+            "label": "Application Link",
+            "type": "text",
+            "default": "mailto:lorem@ipsum.dolor"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

@@ -1,0 +1,20 @@
+.announcement-bar {
+
+	&.background-color-yellow-500 {
+		button {
+			path {
+				stroke: var(--color-black);
+			}
+		}
+	}
+
+	&__inner {
+		width: 100%;
+	}
+
+	button {
+		background: none;
+		cursor: pointer;
+		margin-left: 1rem;
+	}
+}

@@ -1,0 +1,6 @@
+{% liquid
+  assign custom_fields = page.metafields.custom
+  assign content = custom_fields.main_content.value
+%}
+
+{% render "two-column-content-block" content: content %}

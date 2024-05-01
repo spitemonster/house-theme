@@ -1,0 +1,25 @@
+
+%compare-at {
+	position: relative;
+	font-size: var(--font-size-base);
+	font-weight: bold;
+	color: var(--color-charcoal-300);
+	background: var(--color-porcelain-400);
+	display: block;
+	padding: var(--spacer-min) var(--spacer-sm);
+	border-radius: var(--border-radius-sm);
+	flex-grow: 0;
+	margin-top: 0;
+
+	&::after {
+		content: "";
+		position: absolute;
+		top: 50%;
+		left: 5px;
+		z-index: 10;
+		height: 2px;
+		width: calc(100% - 10px);
+		transform: translateY(-50%);
+		background: var(--color-charcoal-300);
+	}
+}

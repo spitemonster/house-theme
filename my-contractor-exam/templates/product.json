@@ -1,0 +1,28 @@
+{
+    "sections": {
+        "details": {
+            "type": "product-details",
+            "settings": {}
+        },
+        "content-areas": {
+            "type": "product-content-areas",
+            "settings": {}
+        },
+        "related-products": {
+            "type": "related-products",
+            "settings": {
+                "heading": "Explore Related Products"
+            }
+        },
+        "cta": {
+            "type": "center-aligned-cta",
+            "settings": {
+                "heading": "Lorem Ipsum Dolor",
+                "content": "<p>Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat!</p>",
+                "button_url": "shopify://pages/frequently-asked-questions",
+                "button_text": "Learn More"
+            }
+        }
+    },
+    "order": ["details", "content-areas", "related-products", "cta"]
+}

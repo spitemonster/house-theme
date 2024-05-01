@@ -1,0 +1,13 @@
+.question-answer-group {
+    h3 {
+        font-size: 18px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 135%;
+        margin-bottom: var(--spacer-tiny);
+    }
+
+    &__content {
+        margin-bottom: var(--spacer-base-sm);
+    }
+}
