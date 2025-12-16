@@ -33,7 +33,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-          git add assets/css assets/js
+          git add -f assets/css assets/js
 
           if git diff --cached --quiet; then
             echo "No asset changes to commit"
