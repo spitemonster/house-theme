@@ -40,5 +40,5 @@ jobs:
             exit 0
           fi
 
-          git commit -m "chore: build assets [skip ci]"
+          git commit -m "[gh action] production build scripts and styles"
           git push
