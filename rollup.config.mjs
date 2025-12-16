@@ -12,7 +12,10 @@ import wpResolve from 'rollup-plugin-wp-resolve'
 import glob from 'fast-glob'
 import copy from 'rollup-plugin-copy'
 
-const isProduction = process.env.NODE_ENV === 'production'
+import dotenv from 'dotenv'
+dotenv.config()
+
+const isProduction = process.env.NODE_ENV == 'production'
 
 const jsGlobals = {
     react: 'React',
@@ -45,12 +48,12 @@ const jsPluginConfig = [
     }),
     resolve(),
     json({ compact: true }),
+    commonjs(),
     babel({
         babelHelpers: 'runtime',
         presets: ['@babel/preset-env', '@babel/preset-react'],
         plugins: [['@babel/plugin-transform-runtime', { useESModules: true }]],
     }),
-    commonjs(),
     wpResolve(),
 ]
 
@@ -68,6 +71,7 @@ function globalJsConfig(name) {
             file: `./assets/js/${name}.min.js`,
             format: 'iife',
             globals: jsGlobals,
+            sourcemap: !isProduction,
         },
         external: jsExternals,
         plugins: jsPluginConfig,
@@ -84,7 +88,11 @@ function globalCssConfig(name) {
             extract: true,
             minimize: isProduction,
             syntax: 'postcss-scss',
-            plugins: [postcssImport({ root: process.cwd() }), autoprefixer(), postcssNesting()],
+            plugins: [
+                postcssImport({ root: process.cwd() }),
+                autoprefixer(),
+                postcssNesting(),
+            ],
         }),
     }
 }
@@ -148,6 +156,7 @@ blockScripts.forEach((script) => {
             file: `./assets/${script.replace('.js', '.min.js')}`,
             format: 'iife',
             globals: jsGlobals,
+            sourcemap: !isProduction,
         },
         external: jsExternals,
         plugins: [...jsPluginConfig, ...copyConfig],
@@ -164,7 +173,11 @@ blockStyles.forEach((style) => {
             extract: true,
             minimize: isProduction,
             syntax: 'postcss-scss',
-            plugins: [postcssImport({ root: process.cwd() }), autoprefixer(), postcssNesting()],
+            plugins: [
+                postcssImport({ root: process.cwd() }),
+                autoprefixer(),
+                postcssNesting(),
+            ],
         }),
     })
 })
