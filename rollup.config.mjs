@@ -5,7 +5,6 @@ import terser from '@rollup/plugin-terser'
 import postcssNesting from 'postcss-nesting'
 import autoprefixer from 'autoprefixer'
 import postcssImport from 'postcss-import'
-import commonjs from '@rollup/plugin-commonjs'
 import json from '@rollup/plugin-json'
 import { babel } from '@rollup/plugin-babel'
 import wpResolve from 'rollup-plugin-wp-resolve'
@@ -48,9 +47,9 @@ const jsPluginConfig = [
     }),
     resolve(),
     json({ compact: true }),
-    commonjs(),
     babel({
         babelHelpers: 'runtime',
+        extensions: ['.js', '.jsx'],
         presets: ['@babel/preset-env', '@babel/preset-react'],
         plugins: [['@babel/plugin-transform-runtime', { useESModules: true }]],
     }),
