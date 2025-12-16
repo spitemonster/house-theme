@@ -15,7 +15,6 @@
         "@babel/preset-env": "^7.24.4",
         "@babel/preset-react": "^7.24.1",
         "@rollup/plugin-babel": "^6.0.4",
-        "@rollup/plugin-commonjs": "^25.0.8",
         "@rollup/plugin-json": "^6.1.0",
         "@rollup/plugin-node-resolve": "^15.2.3",
         "@rollup/plugin-replace": "^6.0.2",
@@ -34,5 +33,8 @@
         "rollup-plugin-postcss": "^4.0.2",
         "rollup-plugin-watch": "^1.0.4",
         "rollup-plugin-wp-resolve": "^1.0.9"
+    },
+    "dependencies": {
+        "blaze-slider": "^1.9.3"
     }
 }

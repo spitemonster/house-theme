@@ -1,6 +1,7 @@
 node_modules
 assets/css
 assets/js
+assets/blocks
 .vscode
 .env
 .fake
