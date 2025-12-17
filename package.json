@@ -7,7 +7,8 @@
         "rollup:dev": "rollup -c ./rollup.config.mjs",
         "rollup:watch": "rollup -c ./rollup.config.mjs -w",
         "clean": "rm -rf ./assets/blocks/ && rm -rf ./assets/css && rm -rf ./assets/js",
-        "create-block": "npx hygen block new"
+        "block:static": "npx hygen block static",
+        "block:dynamic": "npx hygen block dynamic"
     },
     "devDependencies": {
         "@babel/core": "^7.24.4",
