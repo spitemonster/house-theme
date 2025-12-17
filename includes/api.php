@@ -1,6 +1,13 @@
 <?php
 
-function init_custom_endpoints() {
-}
+namespace House_Theme;
 
-add_action('rest_api_init', 'init_custom_endpoints');
+final class Api {
+	
+	public static function init() {
+		self::register_routes();
+	}
+
+	private static function register_routes() {
+	}
+}
