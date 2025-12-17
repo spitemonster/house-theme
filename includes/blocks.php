@@ -2,7 +2,6 @@
 $_BLOCK_SCOPE_NAME = 'kj';
 $_BLOCK_DIRS = glob(get_stylesheet_directory() . '/assets/blocks/*/', GLOB_ONLYDIR);
 
-
 add_action('init', function() use ($_BLOCK_DIRS) {
 
 	foreach ($_BLOCK_DIRS as $block_dir) {
@@ -30,7 +29,7 @@ add_action('enqueue_block_editor_assets', function() use ($_BLOCK_DIRS, $_BLOCK_
 
 		// no ticket.
 		if (!file_exists($block_json)) {
-		$block_dist_path = trailingslashit(get_template_directory() . '/assets/blocks/' . $block_name);
+			$block_dist_path = trailingslashit(get_template_directory() . '/assets/blocks/' . $block_name);
 		}
 		
 		$block_name = basename($block_dir);
