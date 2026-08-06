@@ -10,7 +10,7 @@ to: blocks/<%= title.toLowerCase().replace(' ', '-') %>/block.json
     "category": "<%= category %>",
     "icon": "<%= icon %>",
     "description": "<%= description; %>",
-    "textdomain": "<%= title.toLowerCase().replace(' ', '-') %>",
+    "textdomain": "house-theme",
 	<% if ( block_attributes.length > 0) { %>"attributes": {
 		<% block_attributes.split(',').forEach(function(attribute, index) { %>"<%= attribute.trim() %>": {
 		}<%= index < block_attributes.split(',').length - 1 ? ',' : '' %>
