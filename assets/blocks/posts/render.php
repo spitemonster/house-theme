@@ -1,4 +1,8 @@
 <?php
+	/**
+	 * @var array $attributes Block attributes.
+	 */
+	
 	$post_type = $attributes['postType'];
 	$post_count = $attributes['postCount'];
 
@@ -11,7 +15,7 @@
 	<ul>
 		<?php foreach ($posts as $post): ?>
 			<li>
-				<a href="<?= get_permalink($post) ?>"><?= $post->post_title; ?></a>
+				<a href="<?= esc_url(get_permalink($post)) ?>"><?= esc_html($post->post_title); ?></a>
 			</li>
 		<?php endforeach; ?>
 	</ul>

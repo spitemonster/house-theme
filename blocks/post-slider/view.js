@@ -8,12 +8,10 @@ window.addEventListener('DOMContentLoaded', () => {
 
         const config = {
             slidesToScroll: Number(postsToSlide),
-            enableAutoplay: Boolean(autoplay),
-            loop: Boolean(loop),
+            enableAutoplay: autoplay === '1',
+            loop: loop === '1',
             slidesToShow: Number(postsVisible),
         }
-
-        console.log(config)
 
         new BlazeSlider(slider, {
             all: config,
