@@ -1,10 +1,10 @@
 <?php
 /**
  * Title: Hidden post meta
- * Slug: dev/hidden-post-meta
+ * Slug: house-theme/hidden-post-meta
  * Inserter: no
  *
- * @package dev
+ * @package house-theme
  * @since 1.0.0
  */
 ?>
@@ -18,7 +18,7 @@
 	<!-- /wp:group -->
 	<!-- wp:group {"layout":{"type":"constrained"}} -->
 	<div class="wp-block-group">
-		<!-- wp:post-terms {"term":"category","prefix":"<?php echo esc_html__( 'Categories: ', 'dev' )?>"} /-->
+		<!-- wp:post-terms {"term":"category","prefix":"<?php echo esc_html__( 'Categories: ', 'house-theme' )?>"} /-->
 	</div>
 	<!-- /wp:group -->
 </div>

@@ -4,6 +4,6 @@
  *
  * @link https://core.trac.wordpress.org/ticket/54272
  *
- * @package dev
+ * @package house-theme
  * @since 1.0.0
  */

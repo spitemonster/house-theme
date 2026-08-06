@@ -1,10 +1,10 @@
 <?php
 /**
  * Title: Comments
- * Slug: dev/comments
+ * Slug: house-theme/comments
  * Categories: text
  *
- * @package dev
+ * @package house-theme
  * @since 1.0.0
  */
 ?>
@@ -14,7 +14,7 @@
 		<!-- wp:comments -->
 		<div class="wp-block-comments">
 			<!-- wp:heading -->
-			<h2><?php esc_html_e( 'Comments', 'dev' ); ?></h2>
+			<h2><?php esc_html_e( 'Comments', 'house-theme' ); ?></h2>
 			<!-- /wp:heading -->
 			<!-- wp:comments-title /-->
 			<!-- wp:comment-template -->
