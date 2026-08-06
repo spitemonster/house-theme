@@ -7,6 +7,8 @@ final class Theme {
 		require_once get_template_directory() . '/includes/blocks.php';
 		Blocks::init();
 
+		do_action('house_theme_before_init');
+
 		add_action('after_setup_theme', [self::class, 'setup']);
 
 		add_action('init', [self::class, 'register_post_types']);
@@ -14,9 +16,12 @@ final class Theme {
 		add_action('wp_enqueue_scripts', [self::class, 'enqueue_frontend_assets']);
 		add_action('admin_enqueue_scripts', [self::class, 'enqueue_admin_assets']);
 		add_action('enqueue_block_assets', [self::class, 'enqueue_editor_assets']);
+		do_action('house_theme_after_init');
 	}
 
 	public static function setup() {
+		do_action('house_theme_before_setup');
+
 		add_post_type_support('page', 'excerpt');
 		add_theme_support('title-tag');
 		add_theme_support('post-thumbnails');
@@ -31,9 +36,16 @@ final class Theme {
 		add_theme_support('editor-styles');
 		add_theme_support( 'wp-block-styles' );
 		remove_theme_support('core-block-patterns');
+
+		do_action('house_theme_after_setup');
 	}
 
 	public static function register_post_types() {
+		$post_types = apply_filters('house_theme_post_types', []);
+
+		foreach ($post_types as $slug => $settings) {
+			register_post_type($slug, $settings);
+		}
 	}
 
 	public static function enqueue_frontend_assets() {
