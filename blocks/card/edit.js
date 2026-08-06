@@ -18,10 +18,11 @@ export default function Edit({ attributes, setAttributes }) {
                 <ToolbarGroup>
                     <ToolbarButton
                         icon="admin-links"
-                        label={__('Edit Link', 'dev')}
+                        label={__('Edit Link', 'house-theme')}
                         onClick={() => {
+                            // eslint-disable-next-line no-alert
                             const newUrl = prompt(
-                                __('Enter a URL:', 'dev'),
+                                __('Enter a URL:', 'house-theme'),
                                 url || ''
                             )
                             if (newUrl !== null) {
@@ -48,14 +49,15 @@ export default function Edit({ attributes, setAttributes }) {
                                 variant="secondary"
                             >
                                 {mediaURL
-                                    ? __('Change Image', 'dev')
-                                    : __('Open Media Library', 'dev')}
+                                    ? __('Change Image', 'house-theme')
+                                    : __('Open Media Library', 'house-theme')}
                             </Button>
                         )}
                     />
                 </MediaUploadCheck>
                 <img
                     src={mediaURL ? mediaURL : 'https://placecats.com/200/200'}
+                    alt=""
                 />
                 <figcaption>
                     <RichText
@@ -64,7 +66,7 @@ export default function Edit({ attributes, setAttributes }) {
                         onChange={(value) => setAttributes({ content: value })}
                         placeholder={__(
                             'Enter caption for selected image.',
-                            'dev'
+                            'house-theme'
                         )}
                     />
                 </figcaption>

@@ -1,5 +1,4 @@
-import { useBlockProps } from '@wordpress/block-editor'
-import { RichText } from '@wordpress/block-editor'
+import { useBlockProps, RichText } from '@wordpress/block-editor'
 
 export default function save({ attributes }) {
     const { mediaURL, content, url } = attributes
@@ -18,7 +17,7 @@ export default function save({ attributes }) {
     return (
         <>
             {url ? (
-                <a style="display: block;" href={url}>
+                <a style={{ display: 'block' }} href={url}>
                     {renderCard()}
                 </a>
             ) : (
