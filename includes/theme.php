@@ -4,7 +4,7 @@ namespace House_Theme;
 
 final class Theme {
 	public static function init() {
-		require_once get_stylesheet_directory() . '/includes/blocks.php';
+		require_once get_template_directory() . '/includes/blocks.php';
 		Blocks::init();
 
 		add_action('after_setup_theme', [self::class, 'setup']);
@@ -37,19 +37,19 @@ final class Theme {
 	}
 
 	public static function enqueue_frontend_assets() {
-		wp_enqueue_style('main-style', get_stylesheet_directory_uri() . '/assets/css/main.min.css');
-		wp_enqueue_script('main-script', get_stylesheet_directory_uri() . '/assets/js/main.min.js');
+		wp_enqueue_style('main-style', get_template_directory_uri() . '/assets/css/main.min.css');
+		wp_enqueue_script('main-script', get_template_directory_uri() . '/assets/js/main.min.js');
 	}
 
 	public static function enqueue_admin_assets() {
-		wp_enqueue_style('admin-style', get_stylesheet_directory_uri() . '/assets/css/admin.min.css');
-		wp_enqueue_script( 'admin-script', get_stylesheet_directory_uri() . '/assets/js/admin.min.js');
+		wp_enqueue_style('admin-style', get_template_directory_uri() . '/assets/css/admin.min.css');
+		wp_enqueue_script( 'admin-script', get_template_directory_uri() . '/assets/js/admin.min.js');
 	}
 
 	public static function enqueue_editor_assets() {
 		if (is_admin()) {
-			wp_enqueue_style('editor-style', get_stylesheet_directory_uri() . '/assets/css/editor.min.css');
-			wp_enqueue_script( 'editor-script', get_stylesheet_directory_uri() . '/assets/js/editor.min.js', ['wp-dom-ready', 'wp-blocks', 'wp-element', 'wp-editor']);	   
+			wp_enqueue_style('editor-style', get_template_directory_uri() . '/assets/css/editor.min.css');
+			wp_enqueue_script( 'editor-script', get_template_directory_uri() . '/assets/js/editor.min.js', ['wp-dom-ready', 'wp-blocks', 'wp-element', 'wp-editor']);	   
 		}
 	}
 }
