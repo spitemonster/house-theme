@@ -2,12 +2,16 @@ import { __ } from '@wordpress/i18n'
 import { useBlockProps, InspectorControls } from '@wordpress/block-editor'
 
 import { useSelect } from '@wordpress/data'
-import { PanelBody, SelectControl } from '@wordpress/components'
-import { useState, useEffect } from 'react'
-import { __experimentalNumberControl as NumberControl } from '@wordpress/components'
+
+import {
+    PanelBody,
+    SelectControl,
+    // eslint-disable-next-line @wordpress/no-unsafe-wp-apis
+    __experimentalNumberControl as NumberControl,
+} from '@wordpress/components'
+import { useMemo } from 'react'
 
 export default function Edit({ attributes, setAttributes }) {
-    const [postTypes, setPostTypes] = useState([])
     const { postType, postCount } = attributes
 
     // get all postTypes on load
@@ -17,38 +21,29 @@ export default function Edit({ attributes, setAttributes }) {
         })
     }, [])
 
-    useEffect(() => {
-        if (availablePostTypes) {
-            // of core post types we only want to show posts, otherwise custom post types
-            const filteredPostTypes = availablePostTypes.filter(
+    const postTypes = useMemo(() => {
+        if (!availablePostTypes) {
+            return []
+        }
+
+        return availablePostTypes
+            .filter(
                 (selectedPostType) =>
                     selectedPostType.viewable &&
                     selectedPostType.slug !== 'page' &&
                     selectedPostType.slug !== 'attachment'
             )
-
-            // format the post types to work with the selectControl
-            const formattedPostTypes = filteredPostTypes.map(
-                (selectedPostType) => ({
-                    value: selectedPostType.slug,
-                    label: selectedPostType.name,
-                })
-            )
-
-            setPostTypes(formattedPostTypes)
-        }
+            .map((selectedPostType) => ({
+                value: selectedPostType.slug,
+                label: selectedPostType.name,
+            }))
     }, [availablePostTypes])
 
     const posts = useSelect(
         (select) => {
-            const posts = select('core').getEntityRecords(
-                'postType',
-                postType,
-                {
-                    per_page: postCount,
-                }
-            )
-            return posts
+            return select('core').getEntityRecords('postType', postType, {
+                per_page: postCount,
+            })
         },
         [postType, postCount]
     )
@@ -56,18 +51,21 @@ export default function Edit({ attributes, setAttributes }) {
     return (
         <>
             <InspectorControls>
-                <PanelBody title={__('Post Type', 'dev')}>
+                <PanelBody title={__('Post Type', 'house-theme')}>
                     <SelectControl
-                        label={__('Select Post Type', 'dev')}
+                        label={__('Select Post Type', 'house-theme')}
                         value={postType}
                         options={[
-                            { value: '', label: __('Select Post Type', 'dev') },
+                            {
+                                value: '',
+                                label: __('Select Post Type', 'house-theme'),
+                            },
                             ...postTypes,
                         ]}
-                        onChange={(postType) => setAttributes({ postType })}
+                        onChange={(type) => setAttributes({ postType: type })}
                     />
                     <NumberControl
-                        label={__('Number of Posts', 'dev')}
+                        label={__('Number of Posts', 'house-theme')}
                         value={postCount}
                         onChange={(count) =>
                             setAttributes({ postCount: count })
@@ -76,16 +74,16 @@ export default function Edit({ attributes, setAttributes }) {
                 </PanelBody>
             </InspectorControls>
             <div {...useBlockProps()}>
-                {!postType && __('Select a Post Type.', 'dev')}
+                {!postType && __('Select a Post Type.', 'house-theme')}
 
-                {!posts && __('Loading', 'dev')}
+                {!posts && __('Loading', 'house-theme')}
 
-                {posts && posts.length === 0 && __('No posts', 'dev')}
+                {posts && posts.length === 0 && __('No posts', 'house-theme')}
 
                 {posts && posts.length > 0 && (
                     <ul>
                         {posts.map((post) => (
-                            <li>{post.title.raw}</li>
+                            <li key={post.id}>{post.title.raw}</li>
                         ))}
                     </ul>
                 )}

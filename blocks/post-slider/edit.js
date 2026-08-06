@@ -5,11 +5,13 @@ import {
     SelectControl,
     PanelBody,
     FormTokenField,
+    // eslint-disable-next-line @wordpress/no-unsafe-wp-apis
     __experimentalNumberControl as NumberControl,
     ToggleControl,
 } from '@wordpress/components'
 import apiFetch from '@wordpress/api-fetch'
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef, useMemo } from 'react'
+import BlazeSlider from 'blaze-slider'
 
 export default function Edit({ attributes, setAttributes }) {
     const {
@@ -20,9 +22,9 @@ export default function Edit({ attributes, setAttributes }) {
         autoplay,
         loop,
     } = attributes
+    const [fallbackImage, setFallbackImage] = useState('')
 
-    const [postTypes, setPostTypes] = useState([])
-    const [fallbackImage, setFallbackImage] = useState([])
+    const sliderEl = useRef(null)
 
     // get all postTypes on load
     const availablePostTypes = useSelect((select) => {
@@ -31,26 +33,22 @@ export default function Edit({ attributes, setAttributes }) {
         })
     }, [])
 
-    useEffect(() => {
-        if (availablePostTypes) {
-            // of core post types we only want to show posts, otherwise custom post types
-            const filteredPostTypes = availablePostTypes.filter(
-                (selectedPostType) =>
-                    selectedPostType.viewable &&
-                    selectedPostType.slug !== 'page' &&
-                    selectedPostType.slug !== 'attachment'
-            )
-
-            // format the post types to work with the selectControl
-            const formattedPostTypes = filteredPostTypes.map(
-                (selectedPostType) => ({
-                    value: selectedPostType.slug,
-                    label: selectedPostType.name,
-                })
-            )
-
-            setPostTypes(formattedPostTypes)
+    const postTypes = useMemo(() => {
+        if (!availablePostTypes) {
+            return []
         }
+
+        return availablePostTypes
+            .filter(
+                (type) =>
+                    type.viewable &&
+                    type.slug !== 'page' &&
+                    type.slug !== 'attachment'
+            )
+            .map((type) => ({
+                value: type.slug,
+                label: type.name,
+            }))
     }, [availablePostTypes])
 
     // grab fallback image from custom api endpoint
@@ -59,6 +57,27 @@ export default function Edit({ attributes, setAttributes }) {
             .then((data) => setFallbackImage(data))
             .catch(console.error)
     }, [])
+
+    useEffect(() => {
+        const slider = sliderEl.current
+
+        if (slider) {
+            // eslint-disable-next-line no-shadow
+            const { postsVisible, postsToSlide, autoplay, loop } =
+                slider.dataset
+
+            const config = {
+                slidesToScroll: Number(postsToSlide),
+                enableAutoplay: Boolean(autoplay),
+                loop: Boolean(loop),
+                slidesToShow: Number(postsVisible),
+            }
+
+            new BlazeSlider(slider, {
+                all: config,
+            })
+        }
+    }, [sliderEl])
 
     const posts = useSelect(
         (select) =>
@@ -69,17 +88,41 @@ export default function Edit({ attributes, setAttributes }) {
         [selectedPostType]
     )
 
-    // cannot express how fucking annoyed I am that I cannot get this to indent correctly
-    const postOptions = posts
-        ? posts.map((post) => {
-              return {
-                  id: post.id,
-                  title: post.title.raw,
-                  excerpt: post.excerpt.raw,
-                  featuredImage: post.featured_media,
-              }
-          })
-        : []
+    const media = useSelect(
+        (select) => {
+            const imgs = {}
+
+            selectedPosts.forEach((post) => {
+                let imgSrc = fallbackImage
+
+                if (post.featuredImage) {
+                    const res = select('core').getMedia(post.featuredImage)
+
+                    if (res) {
+                        imgSrc = res.link
+                    }
+                }
+
+                imgs[post.id] = imgSrc
+            })
+
+            return imgs
+        },
+        [fallbackImage, selectedPosts]
+    )
+
+    const postOptions = useMemo(() => {
+        return posts
+            ? posts.map((post) => {
+                  return {
+                      id: post.id,
+                      title: post.title.raw,
+                      excerpt: post.excerpt.raw,
+                      featuredImage: post.featured_media,
+                  }
+              })
+            : []
+    }, [posts])
 
     const handlePostSelection = useCallback(
         (tokens) => {
@@ -90,9 +133,9 @@ export default function Edit({ attributes, setAttributes }) {
                 if (matchingPost) {
                     acc.push({
                         id: matchingPost.id,
-                        title: matchingPost.title.raw,
-                        excerpt: matchingPost.excerpt.raw,
-                        featuredImage: matchingPost.featured_media,
+                        title: matchingPost.title,
+                        excerpt: matchingPost.excerpt,
+                        featuredImage: matchingPost.featuredImage,
                     })
                 }
                 return acc
@@ -108,7 +151,7 @@ export default function Edit({ attributes, setAttributes }) {
             <InspectorControls>
                 <PanelBody title="Posts" initialOpen={false}>
                     <SelectControl
-                        label={__('Select Post Type', 'kj')}
+                        label={__('Select Post Type', 'house-theme')}
                         value={selectedPostType}
                         options={[
                             { value: '', label: 'Select a Post Type' },
@@ -122,7 +165,7 @@ export default function Edit({ attributes, setAttributes }) {
                         }
                     />
                     <FormTokenField
-                        label={__('Select Posts', 'kj')}
+                        label={__('Select Posts', 'house-theme')}
                         value={selectedPosts.map(
                             (selectedPost) =>
                                 postOptions.find(
@@ -134,7 +177,7 @@ export default function Edit({ attributes, setAttributes }) {
                     />
                     <NumberControl
                         __next40pxDefaultSize
-                        label={__('Posts Visible', 'kj')}
+                        label={__('Posts Visible', 'house-theme')}
                         value={postsVisible}
                         min={1}
                         max={selectedPosts.length}
@@ -144,7 +187,7 @@ export default function Edit({ attributes, setAttributes }) {
                     />
                     <NumberControl
                         __next40pxDefaultSize
-                        label={__('Posts to Slide', 'kj')}
+                        label={__('Posts to Slide', 'house-theme')}
                         value={postsToSlide}
                         min={1}
                         max={selectedPosts.length}
@@ -153,13 +196,13 @@ export default function Edit({ attributes, setAttributes }) {
                         }
                     />
                     <ToggleControl
-                        label={__('Autoplay', 'kj')}
+                        label={__('Autoplay', 'house-theme')}
                         value={autoplay}
                         checked={autoplay}
                         onChange={(value) => setAttributes({ autoplay: value })}
                     />
                     <ToggleControl
-                        label={__('Loop', 'kj')}
+                        label={__('Loop', 'house-theme')}
                         value={loop}
                         checked={loop}
                         onChange={(value) => setAttributes({ loop: value })}
@@ -169,37 +212,44 @@ export default function Edit({ attributes, setAttributes }) {
             <div {...useBlockProps()}>
                 {!selectedPostType && 'Select a post type.'}
 
-                {!selectedPosts && 'Loading'}
+                {selectedPosts.length === 0 && 'No Posts'}
 
-                {selectedPosts && selectedPosts.length === 0 && 'No Posts'}
-
-                {selectedPosts && selectedPosts.length > 0 && (
-                    <ul>
-                        {selectedPosts.map((post, index) => {
-                            let imgSrc = fallbackImage
-
-                            if (post.featuredImage) {
-                                const res = wp.data
-                                    .select('core')
-                                    .getMedia(post.featuredImage)
-
-                                if (res) imgSrc = res.link
-                            }
-
-                            return (
-                                <li key={index}>
-                                    <figure className="post-card">
-                                        <img src={imgSrc} />
-                                        <figcaption>
-                                            {post?.excerpt?.raw ||
-                                                post?.title ||
-                                                __('No title available', 'kj')}
-                                        </figcaption>
-                                    </figure>
-                                </li>
-                            )
-                        })}
-                    </ul>
+                {selectedPosts.length > 0 && (
+                    <div
+                        className="blaze-slider"
+                        data-posts-visible={postsVisible}
+                        data-posts-to-slide={postsToSlide}
+                        data-autoplay={autoplay}
+                        data-loop={loop}
+                        ref={sliderEl}
+                    >
+                        <div className="blaze-container">
+                            <div className="blaze-track-container">
+                                <ul className="blaze-track">
+                                    {selectedPosts.map((post, index) => {
+                                        return (
+                                            <li key={index}>
+                                                <figure className="post-card">
+                                                    <img
+                                                        src={media[post.id]}
+                                                        alt={post.title}
+                                                    />
+                                                    <figcaption>
+                                                        {post?.excerpt ||
+                                                            post?.title ||
+                                                            __(
+                                                                'No title available',
+                                                                'house-theme'
+                                                            )}
+                                                    </figcaption>
+                                                </figure>
+                                            </li>
+                                        )
+                                    })}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
                 )}
             </div>
         </>
