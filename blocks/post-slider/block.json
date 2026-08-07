@@ -37,6 +37,6 @@
             "default": true
         }
     },
-    "textdomain": "post-slider",
+    "textdomain": "house-theme",
     "render": "file:./render.php"
 }

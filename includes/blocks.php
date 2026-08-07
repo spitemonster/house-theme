@@ -107,7 +107,7 @@ final class Blocks {
 				wp_enqueue_script(
 					$block_name . '-view-script',
 					$block_dist_uri . 'view.js',
-					['wp-blocks', 'wp-element', 'wp-editor'],
+					['wp-blocks', 'wp-element'],
 					filemtime($block_dist_path . 'view.js')
 				);
 			}
