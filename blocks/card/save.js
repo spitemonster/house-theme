@@ -6,7 +6,7 @@ export default function save({ attributes }) {
     function renderCard() {
         return (
             <figure {...useBlockProps.save()}>
-                <img src={mediaURL} alt="Block media" />
+                <img src={mediaURL} alt="" />
                 <figcaption>
                     <RichText.Content tagName="p" value={content} />
                 </figcaption>

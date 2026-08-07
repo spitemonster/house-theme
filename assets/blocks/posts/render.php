@@ -11,7 +11,7 @@
 		'posts_per_page' => $post_count
 	])
 ?>
-<p <?php echo get_block_wrapper_attributes(); ?>>
+<div <?php echo get_block_wrapper_attributes(); ?>>
 	<ul>
 		<?php foreach ($posts as $post): ?>
 			<li>
@@ -19,4 +19,4 @@
 			</li>
 		<?php endforeach; ?>
 	</ul>
-</p>
+</div>

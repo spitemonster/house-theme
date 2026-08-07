@@ -21,6 +21,6 @@
             "default": 5
         }
     },
-    "textdomain": "posts",
+    "textdomain": "house-theme",
     "render": "file:./render.php"
 }
