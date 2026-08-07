@@ -9,8 +9,7 @@ import {
     __experimentalNumberControl as NumberControl,
     ToggleControl,
 } from '@wordpress/components'
-import apiFetch from '@wordpress/api-fetch'
-import { useState, useEffect, useCallback, useRef, useMemo } from 'react'
+import { useEffect, useCallback, useRef, useMemo } from 'react'
 import BlazeSlider from 'blaze-slider'
 
 export default function Edit({ attributes, setAttributes }) {
@@ -22,7 +21,6 @@ export default function Edit({ attributes, setAttributes }) {
         autoplay,
         loop,
     } = attributes
-    const [fallbackImage, setFallbackImage] = useState('')
 
     const sliderEl = useRef(null)
 
@@ -50,13 +48,6 @@ export default function Edit({ attributes, setAttributes }) {
                 label: type.name,
             }))
     }, [availablePostTypes])
-
-    // grab fallback image from custom api endpoint
-    useEffect(() => {
-        apiFetch({ path: '/site-settings/v1/fallback-image' })
-            .then((data) => setFallbackImage(data))
-            .catch(console.error)
-    }, [])
 
     useEffect(() => {
         const slider = sliderEl.current
@@ -93,7 +84,7 @@ export default function Edit({ attributes, setAttributes }) {
             const imgs = {}
 
             selectedPosts.forEach((post) => {
-                let imgSrc = fallbackImage
+                let imgSrc = ''
 
                 if (post.featuredImage) {
                     const res = select('core').getMedia(post.featuredImage)
@@ -108,7 +99,7 @@ export default function Edit({ attributes, setAttributes }) {
 
             return imgs
         },
-        [fallbackImage, selectedPosts]
+        [selectedPosts]
     )
 
     const postOptions = useMemo(() => {

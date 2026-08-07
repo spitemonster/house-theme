@@ -55,10 +55,7 @@ export default function Edit({ attributes, setAttributes }) {
                         )}
                     />
                 </MediaUploadCheck>
-                <img
-                    src={mediaURL ? mediaURL : 'https://placecats.com/200/200'}
-                    alt=""
-                />
+                <img src={mediaURL} alt="" />
                 <figcaption>
                     <RichText
                         tagName="p"
