@@ -152,7 +152,7 @@ blockScripts.forEach((script) => {
     config.push({
         input: script,
         output: {
-            file: `./assets/${script.replace('.js', '.min.js')}`,
+            file: `./assets/${script.replace('.js', '.js')}`,
             format: 'iife',
             globals: jsGlobals,
             sourcemap: !isProduction,
@@ -166,7 +166,7 @@ blockStyles.forEach((style) => {
     config.push({
         input: style,
         output: {
-            file: `./assets/${style.replace('.css', '.min.css')}`,
+            file: `./assets/${style.replace('.css', '.css')}`,
         },
         plugins: postcss({
             extract: true,
