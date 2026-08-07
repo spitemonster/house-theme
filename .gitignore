@@ -6,3 +6,4 @@ assets/blocks
 .env
 .fake
 .DS_Store
+vendor
