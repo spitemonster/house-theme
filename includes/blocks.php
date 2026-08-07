@@ -2,7 +2,7 @@
 namespace House_Theme;
 
 final class Blocks {
-	private const _BLOCK_SCOPE_NAME = 'kj';
+	private const BLOCK_SCOPE_NAME = 'house-theme';
 	private static array $block_dirs;
 
 	public static function init(): void {
@@ -10,18 +10,18 @@ final class Blocks {
 		add_action('init', [self::class, 'register_block_styles']);
 
 		// enqueue editor scripts and styles
-		add_action('enqueue_block_editor_assets', [self::class, 'enqueue_block_editor_assets'], 10, 2);
+		add_action('enqueue_block_editor_assets', [self::class, 'enqueue_block_editor_assets']);
 
 		// front end scripts and styles
-		// to ensure we're always delivering the most up to date scripts
-		// but also not running file_exists on every script and style for every block on every page load
-		// cache block assets in a transient for 1 hour and enqueue the results if the block dir hasn't had any updates
 		add_action('enqueue_block_assets', [self::class, 'enqueue_frontend_block_assets']);
-    }
+	}
 
 	public static function register_blocks(): void {
-		foreach (self::get_block_directories() as $block_dir) {
-			$block_json = $block_dir . 'block.json';
+		$block_dirs = self::get_block_directories();
+
+		foreach ($block_dirs as $block) {
+			$block_path = $block['path'];
+			$block_json = $block_path . 'block.json';
 
 			if (!file_exists($block_json)) {
 				continue;
@@ -32,31 +32,41 @@ final class Blocks {
 	}
 
 	public static function register_block_styles(): void {
-		$block_styles = [
-			// [
-			// 	'block' => '',
-			// 	'name' => '',
-			// 	'label' => __('', 'house-theme')
-			// ]
-		];
+		$block_styles = apply_filters('house_theme_block_styles', []);
 
-		foreach ($block_styles as $style) {
-			register_block_style($style['block'], [
-				'name' => $style['name'],
-				'label' => $style['label'],
+		foreach ($block_styles as $slug => $settings) {
+			register_block_style($slug, [
+				'name' => $settings['name'],
+				'label' => $settings['label'],
 			]);
 		}
 	}
 
+	/**
+	 * retrieve or invalidate block view asset transient and enqueue block view scripts and styles
+	 * @return void
+	 */
 	public static function enqueue_frontend_block_assets(): void {
+		$block_dirs = self::get_block_directories();
 
+		// get most recently updated file from block asset directories
+		// (checks the files themselves, not just the directory, so edits
+		// to an existing view.js/style.css also bust the cache)
 		$block_cache_key = 'block_view_assets';
-		$last_modified = array_reduce(self::get_block_directories(), function ($carry, $dir) {
-			return max($carry, filemtime($dir));
+		$last_modified = array_reduce($block_dirs, function ($carry, $block) {
+			$path = $block['path'];
+			$files = glob($path . '*') ?: [];
+			$files[] = $path;
+
+			$dir_last_modified = array_reduce($files, fn($max, $file) => max($max, filemtime($file)), 0);
+
+			return max($carry, $dir_last_modified);
 		}, 0);
 
+		// get cached last modified timestamp
 		$cached_last_modified = get_transient($block_cache_key . '_timestamp');
 
+		// refresh transient if files have been updated since transient was set
 		if ($cached_last_modified != $last_modified) {
 			delete_transient($block_cache_key);
 			set_transient($block_cache_key . "_timestamp", $last_modified, HOUR_IN_SECONDS);
@@ -64,144 +74,130 @@ final class Blocks {
 
 		$block_assets = get_transient($block_cache_key);
 
+		// refresh block assets transient
 		if ($block_assets === false) {
 			$block_assets = [];
 
-			foreach (self::get_block_directories() as $block_dir) {
-				$block_name = basename($block_dir);
-				$block_dist_path = trailingslashit(get_stylesheet_directory() . '/assets/blocks/' . $block_name);
+			foreach ($block_dirs as $block) {
+				$block_path = $block['path'];
+				$block_slug = $block['slug'];
 
-				$block_assets[$block_name] = [
-					'has_script' => file_exists($block_dist_path . 'view.min.js'),
-					'has_style' => file_exists($block_dist_path . 'style.min.css'),
+				$block_assets[$block_slug] = [
+					'path' => $block_path,
+					'uri' => $block['uri'],
+					'has_script' => file_exists($block_path . 'view.js'),
+					'has_style' => file_exists($block_path . 'style.css'),
+					'scope' => $block['scope']
 				];
 			}
 			set_transient($block_cache_key, $block_assets, HOUR_IN_SECONDS);
 		}
 
 		foreach ($block_assets as $block_name => $files) {
-			$scoped_name = self::_BLOCK_SCOPE_NAME . '/' . $block_name;
+			$scoped_name = $files['scope'] . '/' . $block_name;
 
 			if (!has_block($scoped_name)) {
 				continue;
 			}
 
-			$block_dist_path = trailingslashit(get_stylesheet_directory() . '/assets/blocks/' . $block_name);
-			$block_dist_uri = trailingslashit(get_template_directory_uri() . '/assets/blocks/' . $block_name);
+			$block_dist_path = $files['path'];
+			$block_dist_uri = $files['uri'];
 
 			if ($files['has_script']) {
 				wp_enqueue_script(
-					$block_name . '-view-script', 
-					$block_dist_uri . 'view.min.js', 
-					array('wp-blocks', 'wp-element', 'wp-editor'),
-					filemtime($block_dist_path . 'view.min.js')
+					$block_name . '-view-script',
+					$block_dist_uri . 'view.js',
+					['wp-blocks', 'wp-element', 'wp-editor'],
+					filemtime($block_dist_path . 'view.js')
 				);
 			}
 
 			if ($files['has_style']) {
 				wp_enqueue_style(
-					$block_name . '-view-style', 
-					$block_dist_uri . 'style.min.css', 
-					array(), 
-					filemtime($block_dist_path . 'style.min.css')
+					$block_name . '-view-style',
+					$block_dist_uri . 'style.css',
+					[],
+					filemtime($block_dist_path . 'style.css')
 				);
 			}
 		}
 	}
 
-	public static function enqueue_block_editor_assets() {
-		// TODO: Optimize block directory lookups by caching the results in a transient.
-		// This will reduce the number of file system operations by storing the block directories
-		// in a transient and only updating it when the block directories change.
-		// Steps:
-		// 1. Check if a transient with the block directories exists.
-		// 2. If it exists, use the cached block directories.
-		// 3. If it does not exist or is expired, perform the directory lookup and store the result in a transient.
-		foreach (self::get_block_directories() as $block_dir) {
-			$block_json = $block_dir . 'block.json';
-
-			// no ticket.
-			if (!file_exists($block_json)) {
-				$block_dist_path = trailingslashit(get_template_directory() . '/assets/blocks/' . $block_name);
-			}
-			
-			$block_name = basename($block_dir);
-			$scoped_name = self::_BLOCK_SCOPE_NAME . '/' . $block_name;
-			// _path is used for checking if a file exists
-			$block_dist_path = trailingslashit(get_stylesheet_directory() . '/assets/blocks/' . $block_name);
-			
-			// uri is for enqueuing
-			$block_dist_uri = trailingslashit(get_template_directory_uri() . '/assets/blocks/' . $block_name);
+	/**
+	 * get filtered block directories and enqueue active blocks
+	 * @return void
+	 */
+	public static function enqueue_block_editor_assets(): void {
+		foreach (self::get_block_directories() as $block) {
+			$block_slug = $block['slug'];
+			$scoped_name = $block['scope'] . '/' . $block_slug;
+			$block_dist_path = $block['path'];
+			$block_dist_uri = $block['uri'];
 
 			// no point in running if there's no main editor script
-			if (!file_exists($block_dist_path . 'index.min.js')) {
+			if (!file_exists($block_dist_path . 'index.js')) {
 				continue;
 			}
 
-			$settings = array();
-
-			$editor_script_name = $block_name . '-editor-script';
-			$editor_style_name = $block_name . '-editor-style';
-			$view_style_name = $block_name . '-view-style';
-			$view_script_name = $block_name . '-view-script';
+			$editor_script_name = $block_slug . '-editor-script';
+			$editor_style_name = $block_slug . '-editor-style';
+			$view_style_name = $block_slug . '-view-style';
 
 			wp_enqueue_script(
-				$editor_script_name, 
-				$block_dist_uri . 'index.min.js', 
-				array('wp-blocks', 'wp-element', 'wp-editor')
+				$editor_script_name,
+				$block_dist_uri . 'index.js',
+				['wp-blocks', 'wp-element', 'wp-editor'],
+				filemtime($block_dist_path . 'index.js')
 			);
 
-			$settings['editor_script'] = $editor_script_name;
-
-			// only enqueue scripts and styles that exist
-			if (file_exists($block_dist_path . 'editor.min.css') && has_block($scoped_name)) {
+			if (file_exists($block_dist_path . 'editor.css') && has_block($scoped_name)) {
 				wp_enqueue_style(
-					$editor_style_name, 
-					$block_dist_uri . 'editor.min.css', 
-					array(), 
-					filemtime($block_dist_path . 'editor.min.css'), 
-					false
+					$editor_style_name,
+					$block_dist_uri . 'editor.css',
+					[],
+					filemtime($block_dist_path . 'editor.css')
 				);
-
-				$settings['editor_style'] = $editor_style_name;
 			}
 
-			// want to bring in main styles
-			if (file_exists($block_dist_path . 'style.min.css') && has_block($scoped_name)) {
+			if (file_exists($block_dist_path . 'style.css') && has_block($scoped_name)) {
 				wp_enqueue_style(
-					$view_style_name, 
-					$block_dist_uri . 'style.min.css', 
-					array(), 
-					filemtime($block_dist_path . 'style.min.css'), 
-					false
+					$view_style_name,
+					$block_dist_uri . 'style.css',
+					[],
+					filemtime($block_dist_path . 'style.css')
 				);
-
-				$settings['style'] = $view_style_name;
 			}
-
-			// might remove but may want to include view scripts in the editor
-			if (file_exists($block_dist_path . 'view.min.js') && has_block($scoped_name)) {
-				wp_enqueue_script(
-					$view_script_name, 
-					$block_dist_uri . 'view.min.js', 
-					array('wp-blocks', 'wp-element', 'wp-editor')
-				);
-
-				$settings['view_script'] = $view_script_name;
-			}
-
-			register_block_type($block_json, $settings);
 		}
 	}
 
+	/**
+	 * return an array keyed by block slug containing block registration data
+	 * @return array
+	 */
 	private static function get_block_directories(): array {
 		if (!isset(self::$block_dirs)) {
-			self::$block_dirs = glob(
-				get_stylesheet_directory() . '/assets/blocks/*/',
+			$dirs = glob(
+				get_template_directory() . '/assets/blocks/*/',
 				GLOB_ONLYDIR
 			) ?: [];
+
+			$block_dirs = [];
+
+			foreach ($dirs as $path) {
+				$block_slug = basename(rtrim($path, '/'));
+				$uri = get_template_directory_uri() . '/assets/blocks/' . $block_slug . '/';
+
+				$block_dirs[$block_slug] = [
+					'slug' => $block_slug,
+					'path' => $path,
+					'uri' => $uri,
+					'scope' => self::BLOCK_SCOPE_NAME
+				];
+			}
+
+			self::$block_dirs = $block_dirs;
 		}
 
-		return self::$block_dirs;
+		return apply_filters('house_theme_block_directories', self::$block_dirs);
 	}
 }
