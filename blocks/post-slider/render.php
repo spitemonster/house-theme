@@ -1,6 +1,7 @@
 <?php
 	/**
 	 * @var array $attributes Block attributes.
+	 * @var array $content block inner content
 	 */
 
 	$selected_post_type = (string)$attributes["selectedPostType"] ?: "";
@@ -10,7 +11,7 @@
 	$autoplay = (bool)$attributes["autoplay"];
 	$loop = (bool)$attributes["loop"];
 
-	$post_ids = array_map(function($item) {
+	$post_ids = array_map(function ($item) {
 		return (int)$item["id"];
 	}, $selected_posts);
 
@@ -19,7 +20,9 @@
 		'numberposts' => count($post_ids),
 		'post_type' => $selected_post_type
 	]);
-?>
+
+	?>
+
 <div class="post-slider blaze-slider" 
 	data-posts-visible="<?= esc_attr($posts_visible); ?>" 
 	data-posts-to-slide="<?= esc_attr($posts_to_slide); ?>" 
@@ -28,17 +31,21 @@
 	<div class="blaze-container">
 		<div class="blaze-track-container">
 			<ul class="blaze-track">
-			<?php foreach ($posts as $post): 
-				$featured_image_url = get_the_post_thumbnail_url($post);
-				$image_url = $featured_image_url ?: get_option("fallback_image");
+			<?php foreach ($posts as $index => $post) :
+				$post_thumb_id = get_post_thumbnail_id($post);
 
 				$permalink = get_the_permalink($post);
 				?>
 				<li>
 					<a class="post-card" href="<?= esc_url($permalink); ?>">
 						<figure>
-							<?php if (!empty($image_url)): ?>
-								<img src="<?= esc_url($image_url) ?>" alt="<?= esc_attr($post->post_title); ?>">
+							<?php if (!empty($post_thumb_id)) :
+								echo wp_get_attachment_image($post_thumb_id, 'medium_large', false, [
+									'alt' => esc_attr($post->post_title),
+									'loading' => $index === 0 ? 'eager' : 'lazy',
+									'sizes' => '(min-width: 782px) 33vw, 100vw'
+								]);
+								?>
 							<?php endif; ?>
 
 							<figcaption>
