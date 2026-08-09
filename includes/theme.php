@@ -37,7 +37,7 @@ final class Theme {
 		]);
 
 		add_theme_support('editor-styles');
-		add_theme_support( 'wp-block-styles' );
+		add_theme_support('wp-block-styles');
 		remove_theme_support('core-block-patterns');
 
 		do_action('house_theme_after_setup');
@@ -58,13 +58,17 @@ final class Theme {
 
 	public static function enqueue_admin_assets() {
 		wp_enqueue_style('admin-style', get_template_directory_uri() . '/assets/css/admin.min.css');
-		wp_enqueue_script( 'admin-script', get_template_directory_uri() . '/assets/js/admin.min.js');
+		wp_enqueue_script('admin-script', get_template_directory_uri() . '/assets/js/admin.min.js');
 	}
 
 	public static function enqueue_editor_assets() {
 		if (is_admin()) {
 			wp_enqueue_style('editor-style', get_template_directory_uri() . '/assets/css/editor.min.css');
-			wp_enqueue_script( 'editor-script', get_template_directory_uri() . '/assets/js/editor.min.js', ['wp-dom-ready', 'wp-blocks', 'wp-element', 'wp-editor']);	   
+			wp_enqueue_script(
+				'editor-script',
+				get_template_directory_uri() . '/assets/js/editor.min.js',
+				['wp-dom-ready', 'wp-blocks', 'wp-element', 'wp-editor']
+			);
 		}
 	}
 }
