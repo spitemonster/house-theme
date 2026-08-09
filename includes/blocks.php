@@ -55,7 +55,7 @@ final class Blocks {
 	private static function get_block_directories(): array {
 		if (!isset(self::$block_dirs)) {
 			$dirs = glob(
-				get_template_directory() . '/assets/blocks/*/',
+				get_template_directory() . '/blocks/*/',
 				GLOB_ONLYDIR
 			) ?: [];
 
