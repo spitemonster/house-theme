@@ -4,10 +4,10 @@ namespace House_Theme;
 
 final class Theme {
 	public static function init() {
+		do_action('house_theme_before_init');
+
 		Api::init();
 		Blocks::init();
-
-		do_action('house_theme_before_init');
 
 		add_action('after_setup_theme', [self::class, 'setup']);
 
