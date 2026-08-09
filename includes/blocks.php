@@ -9,13 +9,7 @@ final class Blocks {
 		add_action('init', [self::class, 'register_blocks']);
 		add_action('init', [self::class, 'register_block_styles']);
 
-		// enqueue editor scripts and styles
-		add_action('enqueue_block_editor_assets', [self::class, 'enqueue_block_editor_assets']);
-
-		// front end scripts and styles
-		add_action('enqueue_block_assets', [self::class, 'enqueue_frontend_block_assets']);
-	}
-
+		add_filter('block_type_metadata', [self::class, 'set_block_meta_version_from_filemtime']);
 	public static function register_blocks(): void {
 		$block_dirs = self::get_block_directories();
 
@@ -199,5 +193,19 @@ final class Blocks {
 		}
 
 		return apply_filters('house_theme_block_directories', self::$block_dirs);
+	}
+
+	/**
+	 * sets block meta version using filemtime
+	 * @param mixed $metadata
+	 * @hooked block_type_metadata
+	 */
+	public static function set_block_meta_version_from_filemtime($metadata) {
+		if (!str_starts_with($metadata['name'] ?? '', 'house-theme/')) {
+			return $metadata;
+		}
+		$dir = dirname($metadata['file']);
+		$metadata['version'] = (string) max(array_map('filemtime', glob($dir . '/*') ?: [$dir]));
+		return $metadata;
 	}
 }
