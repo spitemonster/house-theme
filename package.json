@@ -6,7 +6,7 @@
         "rollup:prod": "cross-env NODE_ENV=production rollup -c ./rollup.config.mjs",
         "rollup:dev": "rollup -c ./rollup.config.mjs",
         "rollup:watch": "rollup -c ./rollup.config.mjs -w",
-        "clean": "rm -rf ./assets/blocks/ && rm -rf ./assets/css && rm -rf ./assets/js",
+        "clean": "rm -rf ./blocks/*/dist && rm -rf ./assets/css && rm -rf ./assets/js",
         "block:static": "npx hygen block static",
         "block:dynamic": "npx hygen block dynamic",
         "lint:js": "eslint blocks src"
