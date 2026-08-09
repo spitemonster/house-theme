@@ -9,12 +9,12 @@ import json from '@rollup/plugin-json'
 import { babel } from '@rollup/plugin-babel'
 import wpResolve from 'rollup-plugin-wp-resolve'
 import glob from 'fast-glob'
-import copy from 'rollup-plugin-copy'
+import path from 'path'
 
 import dotenv from 'dotenv'
 dotenv.config()
 
-const isProduction = process.env.NODE_ENV == 'production'
+const isProduction = process.env.NODE_ENV === 'production'
 
 const jsGlobals = {
     react: 'React',
@@ -42,7 +42,7 @@ const jsPluginConfig = [
     replace({
         preventAssignment: true,
         'process.env.NODE_ENV': JSON.stringify(
-            isProduction ? 'production' : 'development'
+            isProduction ? 'production' : 'development',
         ),
     }),
     resolve(),
@@ -103,70 +103,32 @@ function globalCssConfig(name) {
 
 const blockScripts = await glob('./blocks/**/*.js')
 const blockStyles = await glob('./blocks/**/*.css')
-const blockMeta = await glob('./blocks/**/block.json')
-const blockViews = await glob('./blocks/**/render.php')
-
-const copiedConfig = new Set()
 
 blockScripts.forEach((script) => {
-    const blockDir = script.replace(/\/[^/]+\.js$/, '')
-    // check if there's block meta or a render template in the block directory
-    const meta = blockMeta.find((m) => m.startsWith(blockDir))
-    const render = blockViews.find((v) => v.startsWith(blockDir))
-
-    const copyConfig = []
-    const copyTargetConfig = []
-
-    // if meta, add it to the copy config and then ensure it's not copied twice
-    if (meta && !copiedConfig.has(meta)) {
-        copyTargetConfig.push({
-            src: meta,
-            dest: meta
-                .replace('/blocks', '/assets/blocks')
-                .replace('block.json', ''),
-        })
-
-        copiedConfig.add(meta)
-    }
-
-    // add render template to copy config
-    if (render && !copiedConfig.has(render)) {
-        copyTargetConfig.push({
-            src: render,
-            dest: render
-                .replace('/blocks', '/assets/blocks')
-                .replace('render.php', ''),
-        })
-        copiedConfig.add(render)
-    }
-
-    // if anything was added to the copy targets, add the config to the copy method
-    if (copyTargetConfig.length > 0) {
-        copyConfig.push(
-            copy({
-                targets: copyTargetConfig,
-            })
-        )
-    }
+    const scriptDir = path.dirname(script)
+    const scriptName = path.basename(script)
 
     config.push({
         input: script,
         output: {
-            file: `./assets/${script.replace('.js', '.js')}`,
+            file: `./${scriptDir}/dist/${scriptName.replace('.js', '.min.js')}`,
             format: 'iife',
             globals: jsGlobals,
             sourcemap: !isProduction,
         },
         external: jsExternals,
-        plugins: [...jsPluginConfig, ...copyConfig],
+        plugins: [...jsPluginConfig],
     })
 })
 
 blockStyles.forEach((style) => {
+    const styleDir = path.dirname(style)
+    const styleName = path.basename(style)
+
     config.push({
         input: style,
         output: {
-            file: `./assets/${style.replace('.css', '.css')}`,
+            file: `./${styleDir}/dist/${styleName.replace('.css', '.min.css')}`,
         },
         plugins: postcss({
             extract: true,
