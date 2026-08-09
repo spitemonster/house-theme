@@ -1,7 +1,7 @@
 node_modules
 assets/css
 assets/js
-assets/blocks
+blocks/*/dist
 .vscode
 .env
 .fake
