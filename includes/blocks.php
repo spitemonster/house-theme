@@ -3,7 +3,6 @@
 namespace House_Theme;
 
 final class Blocks {
-	private const BLOCK_SCOPE_NAME = 'house-theme';
 	private static array $block_dirs;
 
 	public static function init(): void {
@@ -64,13 +63,9 @@ final class Blocks {
 
 			foreach ($dirs as $path) {
 				$block_slug = basename(rtrim($path, '/'));
-				$uri = get_template_directory_uri() . '/assets/blocks/' . $block_slug . '/';
 
 				$block_dirs[$block_slug] = [
-					'slug' => $block_slug,
 					'path' => $path,
-					'uri' => $uri,
-					'scope' => self::BLOCK_SCOPE_NAME
 				];
 			}
 
