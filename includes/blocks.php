@@ -12,6 +12,12 @@ final class Blocks {
 
 		add_filter('block_type_metadata', [self::class, 'set_block_meta_version_from_filemtime']);
 	}
+
+	/**
+	 * register custom blocks with their block.json
+	 * @return void
+	 * @hooked init
+	 */
 	public static function register_blocks(): void {
 		$block_dirs = self::get_block_directories();
 
@@ -27,6 +33,11 @@ final class Blocks {
 		}
 	}
 
+	/**
+	 * register custom block styles from house theme filter
+	 * @return void
+	 * @hooked init
+	 */
 	public static function register_block_styles(): void {
 		$block_styles = apply_filters('house_theme_block_styles', []);
 
