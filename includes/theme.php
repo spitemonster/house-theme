@@ -2,9 +2,6 @@
 
 namespace House_Theme;
 
-require_once get_template_directory() . '/includes/api.php';
-require_once get_template_directory() . '/includes/blocks.php';
-
 final class Theme {
 	public static function init() {
 		Api::init();
