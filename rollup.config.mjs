@@ -42,7 +42,7 @@ const jsPluginConfig = [
     replace({
         preventAssignment: true,
         'process.env.NODE_ENV': JSON.stringify(
-            isProduction ? 'production' : 'development',
+            isProduction ? 'production' : 'development'
         ),
     }),
     resolve(),
@@ -101,8 +101,8 @@ function globalCssConfig(name) {
     config.push(globalCssConfig(name), globalJsConfig(name))
 })
 
-const blockScripts = await glob('./blocks/**/*.js')
-const blockStyles = await glob('./blocks/**/*.css')
+const blockScripts = await glob('./blocks/**/*.js', { ignore: '**/dist/**' })
+const blockStyles = await glob('./blocks/**/*.css', { ignore: '**/dist/**' })
 
 blockScripts.forEach((script) => {
     const scriptDir = path.dirname(script)
