@@ -82,24 +82,20 @@ export default function Edit({ attributes, setAttributes }) {
     const media = useSelect(
         (select) => {
             const imgs = {}
-
-            selectedPosts.forEach((post) => {
-                let imgSrc = ''
-
-                if (post.featuredImage) {
-                    const res = select('core').getMedia(post.featuredImage)
-
-                    if (res) {
-                        imgSrc = res.link
-                    }
-                }
-
-                imgs[post.id] = imgSrc
+            selectedPosts.forEach(({ id }) => {
+                const record = select('core').getEditedEntityRecord(
+                    'postType',
+                    selectedPostType,
+                    id
+                )
+                const mediaId = record?.featured_media
+                imgs[id] = mediaId
+                    ? select('core').getMedia(mediaId)?.source_url
+                    : ''
             })
-
             return imgs
         },
-        [selectedPosts]
+        [selectedPosts, selectedPostType]
     )
 
     const postOptions = useMemo(() => {
