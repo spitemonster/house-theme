@@ -1,10 +1,11 @@
 import BlazeSlider from 'blaze-slider'
 
 window.addEventListener('DOMContentLoaded', () => {
-    const slider = document.querySelector('.blaze-slider')
+    const postSlider = document.querySelector('.post-slider.blaze-slider')
 
-    if (slider) {
-        const { postsVisible, postsToSlide, autoplay, loop } = slider.dataset
+    if (postSlider) {
+        const { postsVisible, postsToSlide, autoplay, loop } =
+            postSlider.dataset
 
         const config = {
             slidesToScroll: Number(postsToSlide),
@@ -13,7 +14,7 @@ window.addEventListener('DOMContentLoaded', () => {
             slidesToShow: Number(postsVisible),
         }
 
-        new BlazeSlider(slider, {
+        new BlazeSlider(postSlider, {
             all: config,
         })
     }
