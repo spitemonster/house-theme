@@ -22,8 +22,6 @@ export default function Edit({ attributes, setAttributes }) {
         loop,
     } = attributes
 
-    const sliderEl = useRef(null)
-
     // get all postTypes on load
     const availablePostTypes = useSelect((select) => {
         return select('core').getPostTypes({
@@ -49,27 +47,6 @@ export default function Edit({ attributes, setAttributes }) {
             }))
     }, [availablePostTypes])
 
-    useEffect(() => {
-        const slider = sliderEl.current
-
-        if (slider) {
-            // eslint-disable-next-line no-shadow
-            const { postsVisible, postsToSlide, autoplay, loop } =
-                slider.dataset
-
-            const config = {
-                slidesToScroll: Number(postsToSlide),
-                enableAutoplay: Boolean(autoplay),
-                loop: Boolean(loop),
-                slidesToShow: Number(postsVisible),
-            }
-
-            new BlazeSlider(slider, {
-                all: config,
-            })
-        }
-    }, [sliderEl])
-
     const posts = useSelect(
         (select) =>
             select('core').getEntityRecords('postType', selectedPostType, {
@@ -90,7 +67,11 @@ export default function Edit({ attributes, setAttributes }) {
                 )
                 const mediaId = record?.featured_media
                 imgs[id] = mediaId
-                    ? select('core').getMedia(mediaId)?.source_url
+                    ? select('core').getEntityRecord(
+                          'postType',
+                          'attachment',
+                          mediaId
+                      )?.source_url
                     : ''
             })
             return imgs
@@ -132,6 +113,29 @@ export default function Edit({ attributes, setAttributes }) {
         },
         [postOptions, setAttributes]
     )
+
+    const sliderEl = useRef(null)
+
+    useEffect(() => {
+        const slider = sliderEl.current
+
+        if (slider) {
+            // eslint-disable-next-line no-shadow
+            const { postsVisible, postsToSlide, autoplay, loop } =
+                slider.dataset
+
+            const config = {
+                slidesToScroll: Number(postsToSlide),
+                enableAutoplay: Boolean(autoplay),
+                loop: Boolean(loop),
+                slidesToShow: Number(postsVisible),
+            }
+
+            new BlazeSlider(slider, {
+                all: config,
+            })
+        }
+    }, [sliderEl])
 
     return (
         <>
