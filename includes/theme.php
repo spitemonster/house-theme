@@ -22,7 +22,7 @@ final class Theme {
 	/**
 	 * general theme setup
 	 * @return void
-	 * @hoooked after_setup_theme
+	 * @hooked after_setup_theme
 	 */
 	public static function setup() {
 		do_action('house_theme_before_setup');
