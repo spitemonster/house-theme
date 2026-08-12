@@ -12,6 +12,7 @@ final class Theme {
 		add_action('after_setup_theme', [self::class, 'setup']);
 
 		add_action('init', [self::class, 'register_post_types']);
+		add_action('init', [self::class, 'register_post_taxonomies']);
 
 		add_action('wp_enqueue_scripts', [self::class, 'enqueue_frontend_assets']);
 		add_action('admin_enqueue_scripts', [self::class, 'enqueue_admin_assets']);
@@ -50,6 +51,26 @@ final class Theme {
 
 		foreach ($post_types as $slug => $settings) {
 			register_post_type($slug, $settings);
+		}
+	}
+
+
+	/**
+	 * apply custom filter and register taxonomies from array result
+	 * expects taxonomy array should follow this format:
+	 * [
+	 * 		string $tax_slug => [
+	 * 			string|array post_type
+	 * 			array settings
+	 * 		]
+	 * ]
+	 * @return void
+	 */
+	public static function register_post_taxonomies() {
+		$taxonomies = apply_filters('house_theme_post_taxonomies', []);
+
+		foreach ($taxonomies as $tax_slug => $tax_config) {
+			register_taxonomy($tax_slug, $tax_config['post_type'], $tax_config['settings']);
 		}
 	}
 
