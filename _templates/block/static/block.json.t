@@ -16,8 +16,8 @@ to: blocks/<%= title.toLowerCase().replaceAll(' ', '-') %>/block.json
 		}<%= index < block_attributes.split(',').length - 1 ? ',' : '' %>
 		<% }); %>}
 	<% } %>,
-	"editorScript": "file:./index.js",
-    "editorStyle": "file:./editor.css",
-    "style": "file:./style.css",
-    "viewScript": "file:./view.js"
+	"editorScript": "file:./dist/index.min.js",
+    "editorStyle": "file:./dist/editor.min.css",
+    "style": "file:./dist/style.min.css",
+    "viewScript": "file:./dist/view.min.js"
 }

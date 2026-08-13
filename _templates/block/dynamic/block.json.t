@@ -17,8 +17,8 @@ to: blocks/<%= title.toLowerCase().replaceAll(' ', '-') %>/block.json
 		<% }); %>}
 	<% } %>,
     "render": "file:./render.php",
-	"editorScript": "file:./index.js",
-    "editorStyle": "file:./editor.css",
-    "style": "file:./style.css",
-    "viewScript": "file:./view.js"
+	"editorScript": "file:./dist/index.min.js",
+    "editorStyle": "file:./dist/editor.min.css",
+    "style": "file:./dist/style.min.css",
+    "viewScript": "file:./dist/view.min.js"
 }
