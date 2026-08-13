@@ -1,8 +1,6 @@
 ---
 to: blocks/<%= title.toLowerCase().replaceAll(' ', '-') %>/edit.js
 ---
-import { __ } from '@wordpress/i18n'
+// <%= title.toLowerCase().replaceAll(' ', '-') %> editor script
 
-export default function Edit({ attributes, setAttributes }) {
-    return
-}
+export default function Edit() {}
