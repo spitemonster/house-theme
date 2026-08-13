@@ -1,6 +1,8 @@
 ---
 to: blocks/<%= title.toLowerCase().replaceAll(' ', '-') %>/index.js
 ---
+// <%= title.toLowerCase().replaceAll(' ', '-') %> index script
+
 import Edit from './edit'
 <%_ if (type === 'static') { _%>
 import Save from './save'
