@@ -2,7 +2,7 @@
 	/**
 	 * @var array $attributes Block attributes.
 	 */
-	
+
 	$post_type = $attributes['postType'];
 	$post_count = $attributes['postCount'];
 
@@ -10,10 +10,12 @@
 		'post_type' => $post_type,
 		'posts_per_page' => $post_count
 	])
-?>
+
+	?>
+
 <div <?php echo get_block_wrapper_attributes(); ?>>
 	<ul>
-		<?php foreach ($posts as $post): ?>
+		<?php foreach ($posts as $post) : ?>
 			<li>
 				<a href="<?= esc_url(get_permalink($post)) ?>"><?= esc_html($post->post_title); ?></a>
 			</li>

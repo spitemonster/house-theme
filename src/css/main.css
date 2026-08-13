@@ -1,3 +1,5 @@
+@import './lib/reset.css';
+
 html {
     scroll-behavior: smooth;
 }
@@ -11,4 +13,13 @@ html {
 body {
     -moz-osx-font-smoothing: grayscale;
     -webkit-font-smoothing: antialiased;
+
+    .entry-content {
+        padding-inline: 0;
+    }
+
+    .wp-site-blocks main.wp-block-group {
+        margin-block: 0 !important;
+        padding-block: 0 !important;
+    }
 }

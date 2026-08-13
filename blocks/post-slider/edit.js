@@ -22,8 +22,6 @@ export default function Edit({ attributes, setAttributes }) {
         loop,
     } = attributes
 
-    const sliderEl = useRef(null)
-
     // get all postTypes on load
     const availablePostTypes = useSelect((select) => {
         return select('core').getPostTypes({
@@ -49,27 +47,6 @@ export default function Edit({ attributes, setAttributes }) {
             }))
     }, [availablePostTypes])
 
-    useEffect(() => {
-        const slider = sliderEl.current
-
-        if (slider) {
-            // eslint-disable-next-line no-shadow
-            const { postsVisible, postsToSlide, autoplay, loop } =
-                slider.dataset
-
-            const config = {
-                slidesToScroll: Number(postsToSlide),
-                enableAutoplay: Boolean(autoplay),
-                loop: Boolean(loop),
-                slidesToShow: Number(postsVisible),
-            }
-
-            new BlazeSlider(slider, {
-                all: config,
-            })
-        }
-    }, [sliderEl])
-
     const posts = useSelect(
         (select) =>
             select('core').getEntityRecords('postType', selectedPostType, {
@@ -82,24 +59,24 @@ export default function Edit({ attributes, setAttributes }) {
     const media = useSelect(
         (select) => {
             const imgs = {}
-
-            selectedPosts.forEach((post) => {
-                let imgSrc = ''
-
-                if (post.featuredImage) {
-                    const res = select('core').getMedia(post.featuredImage)
-
-                    if (res) {
-                        imgSrc = res.link
-                    }
-                }
-
-                imgs[post.id] = imgSrc
+            selectedPosts.forEach(({ id }) => {
+                const record = select('core').getEditedEntityRecord(
+                    'postType',
+                    selectedPostType,
+                    id
+                )
+                const mediaId = record?.featured_media
+                imgs[id] = mediaId
+                    ? select('core').getEntityRecord(
+                          'postType',
+                          'attachment',
+                          mediaId
+                      )?.source_url
+                    : ''
             })
-
             return imgs
         },
-        [selectedPosts]
+        [selectedPosts, selectedPostType]
     )
 
     const postOptions = useMemo(() => {
@@ -136,6 +113,29 @@ export default function Edit({ attributes, setAttributes }) {
         },
         [postOptions, setAttributes]
     )
+
+    const sliderEl = useRef(null)
+
+    useEffect(() => {
+        const slider = sliderEl.current
+
+        if (slider) {
+            // eslint-disable-next-line no-shadow
+            const { postsVisible, postsToSlide, autoplay, loop } =
+                slider.dataset
+
+            const config = {
+                slidesToScroll: Number(postsToSlide),
+                enableAutoplay: Boolean(autoplay),
+                loop: Boolean(loop),
+                slidesToShow: Number(postsVisible),
+            }
+
+            new BlazeSlider(slider, {
+                all: config,
+            })
+        }
+    }, [sliderEl])
 
     return (
         <>

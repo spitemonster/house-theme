@@ -11,6 +11,13 @@ module.exports = [
         default: 'namespace',
     },
     {
+        type: 'select',
+        name: 'type',
+        message: 'Static or dynamic?',
+        default: 'dynamic',
+        choices: ['static', 'dynamic'],
+    },
+    {
         type: 'input',
         name: 'description',
         message: 'Enter a block description.',
@@ -30,7 +37,8 @@ module.exports = [
     {
         type: 'input',
         name: 'block_attributes',
-        message: 'Enter any attributes by name, separated by commas.',
+        message:
+            'Enter all attribute names, using camelCase, separated by commas. These will be generated with null types and defaults; update attribute types for them to be usable.',
         default: '',
     },
 ]

@@ -6,9 +6,8 @@
         "rollup:prod": "cross-env NODE_ENV=production rollup -c ./rollup.config.mjs",
         "rollup:dev": "rollup -c ./rollup.config.mjs",
         "rollup:watch": "rollup -c ./rollup.config.mjs -w",
-        "clean": "rm -rf ./assets/blocks/ && rm -rf ./assets/css && rm -rf ./assets/js",
-        "block:static": "npx hygen block static",
-        "block:dynamic": "npx hygen block dynamic",
+        "clean": "rm -rf ./blocks/*/dist && rm -rf ./assets/css && rm -rf ./assets/js",
+        "block:new": "npx hygen block new",
         "lint:js": "eslint blocks src"
     },
     "devDependencies": {
@@ -21,13 +20,17 @@
         "@rollup/plugin-node-resolve": "^15.2.3",
         "@rollup/plugin-replace": "^6.0.2",
         "@rollup/plugin-terser": "^1.0.0",
+        "@types/react": "^18.3.31",
+        "@wordpress/block-editor": "^16.1.0",
         "@wordpress/blocks": "^15.24.0",
+        "@wordpress/components": "^38.0.0",
         "@wordpress/eslint-plugin": "^25.8.0",
         "@wordpress/i18n": "^6.24.0",
         "autoprefixer": "^10.4.19",
         "cross-env": "^10.1.0",
         "dotenv": "^17.2.3",
         "fast-glob": "^3.3.3",
+        "globals": "^17.9.0",
         "postcss-import": "^16.1.0",
         "postcss-nesting": "^12.1.2",
         "postcss-scss": "^4.0.9",
@@ -36,9 +39,7 @@
         "rollup-plugin-copy": "^3.5.0",
         "rollup-plugin-postcss": "^4.0.2",
         "rollup-plugin-watch": "^1.0.4",
-        "rollup-plugin-wp-resolve": "^1.0.9",
-        "@types/react": "^18.3.31",
-        "globals": "^17.9.0"
+        "rollup-plugin-wp-resolve": "^1.0.9"
     },
     "dependencies": {
         "blaze-slider": "^1.9.3"

@@ -2,19 +2,17 @@
 
 namespace House_Theme;
 
-require_once get_template_directory() . '/includes/api.php';
-require_once get_template_directory() . '/includes/blocks.php';
-
 final class Theme {
 	public static function init() {
+		do_action('house_theme_before_init');
+
 		Api::init();
 		Blocks::init();
-
-		do_action('house_theme_before_init');
 
 		add_action('after_setup_theme', [self::class, 'setup']);
 
 		add_action('init', [self::class, 'register_post_types']);
+		add_action('init', [self::class, 'register_post_taxonomies']);
 
 		add_action('wp_enqueue_scripts', [self::class, 'enqueue_frontend_assets']);
 		add_action('admin_enqueue_scripts', [self::class, 'enqueue_admin_assets']);
@@ -22,6 +20,11 @@ final class Theme {
 		do_action('house_theme_after_init');
 	}
 
+	/**
+	 * general theme setup
+	 * @return void
+	 * @hooked after_setup_theme
+	 */
 	public static function setup() {
 		do_action('house_theme_before_setup');
 
@@ -37,7 +40,7 @@ final class Theme {
 		]);
 
 		add_theme_support('editor-styles');
-		add_theme_support( 'wp-block-styles' );
+		add_theme_support('wp-block-styles');
 		remove_theme_support('core-block-patterns');
 
 		do_action('house_theme_after_setup');
@@ -51,6 +54,26 @@ final class Theme {
 		}
 	}
 
+
+	/**
+	 * apply custom filter and register taxonomies from array result
+	 * expects taxonomy array should follow this format:
+	 * [
+	 * 		string $tax_slug => [
+	 * 			string|array post_type
+	 * 			array settings
+	 * 		]
+	 * ]
+	 * @return void
+	 */
+	public static function register_post_taxonomies() {
+		$taxonomies = apply_filters('house_theme_post_taxonomies', []);
+
+		foreach ($taxonomies as $tax_slug => $tax_config) {
+			register_taxonomy($tax_slug, $tax_config['post_type'], $tax_config['settings']);
+		}
+	}
+
 	public static function enqueue_frontend_assets() {
 		wp_enqueue_style('main-style', get_template_directory_uri() . '/assets/css/main.min.css');
 		wp_enqueue_script('main-script', get_template_directory_uri() . '/assets/js/main.min.js');
@@ -58,13 +81,17 @@ final class Theme {
 
 	public static function enqueue_admin_assets() {
 		wp_enqueue_style('admin-style', get_template_directory_uri() . '/assets/css/admin.min.css');
-		wp_enqueue_script( 'admin-script', get_template_directory_uri() . '/assets/js/admin.min.js');
+		wp_enqueue_script('admin-script', get_template_directory_uri() . '/assets/js/admin.min.js');
 	}
 
 	public static function enqueue_editor_assets() {
 		if (is_admin()) {
 			wp_enqueue_style('editor-style', get_template_directory_uri() . '/assets/css/editor.min.css');
-			wp_enqueue_script( 'editor-script', get_template_directory_uri() . '/assets/js/editor.min.js', ['wp-dom-ready', 'wp-blocks', 'wp-element', 'wp-editor']);	   
+			wp_enqueue_script(
+				'editor-script',
+				get_template_directory_uri() . '/assets/js/editor.min.js',
+				['wp-dom-ready', 'wp-blocks', 'wp-element', 'wp-editor']
+			);
 		}
 	}
 }

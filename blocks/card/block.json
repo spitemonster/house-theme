@@ -40,5 +40,9 @@
             "attribute": "href"
         }
     },
-    "textdomain": "house-theme"
+    "textdomain": "house-theme",
+    "editorScript": "file:./dist/index.min.js",
+    "editorStyle": "file:./dist/editor.min.css",
+    "style": "file:./dist/style.min.css",
+    "viewScript": "file:./dist/view.min.js"
 }
