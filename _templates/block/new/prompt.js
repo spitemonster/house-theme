@@ -38,7 +38,7 @@ module.exports = [
         type: 'input',
         name: 'block_attributes',
         message:
-            'Enter all attribute names, separated by commas. These will be generated with null types and defaults; update attribute types for them to be usable.',
+            'Enter all attribute names, using camelCase, separated by commas. These will be generated with null types and defaults; update attribute types for them to be usable.',
         default: '',
     },
 ]
